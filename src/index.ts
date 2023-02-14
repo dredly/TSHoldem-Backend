@@ -1,5 +1,7 @@
 import { createServer } from 'http';
 import { WebSocketServer } from 'ws';
+import { parseClientMessage } from './parsers';
+import { isClientMessage } from './typeGuards';
 
 const server = createServer();
 const wss = new WebSocketServer({ port: 8080 })
@@ -10,7 +12,14 @@ wss.on("connection", ws => {
         console.log("Received message from frontend")
         try {
             const obj = JSON.parse(data.toString())
-            console.dir(obj)
+            try {
+                const clientMessage = parseClientMessage(obj)
+                console.log("clientMessage", clientMessage)
+            } catch (err) {
+                if (err instanceof Error) {
+                    console.log(err.message)
+                }
+            }
         } catch (err) {
             console.log("parsing error", err)
         }
