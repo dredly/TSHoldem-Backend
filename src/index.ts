@@ -1,9 +1,24 @@
-import { Player } from "./types"
+import { createServer } from 'http';
+import { WebSocketServer } from 'ws';
 
-const player1: Player = {
-    id: "1",
-    name: "Miguel",
-    role: "DEALER"
-}
+const server = createServer();
+const wss = new WebSocketServer({ port: 8080 })
 
-console.log("Started")
+wss.on("connection", ws => {
+    console.log("Someone connected")
+    ws.on("message", data => {
+        console.log("Received message from frontend")
+        try {
+            const obj = JSON.parse(data.toString())
+            console.dir(obj)
+        } catch (err) {
+            console.log("parsing error", err)
+        }
+        
+    })
+    ws.on("close", () => {
+        console.log("Someone disconnected")
+    })
+})
+
+console.log("The WebSocket server is running on port 8080");
