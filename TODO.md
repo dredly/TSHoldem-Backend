@@ -1,0 +1,3 @@
+- [ ] Basic gameplay
+    - [x] Function to initialise roles for players
+    - [ ] Function to switch roles at end of round

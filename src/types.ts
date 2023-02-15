@@ -1,4 +1,4 @@
-export type Role = 'DEALER' | 'SMALL_BLIND' | 'BIG_BLIND' | 'OTHER'
+export type Role = 'SMALL_BLIND' | 'BIG_BLIND' | 'OTHER'
 
 export interface Player {
     id: String,
