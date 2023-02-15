@@ -1,3 +1,7 @@
 - [ ] Basic gameplay
     - [x] Function to initialise roles for players
-    - [ ] Function to switch roles at end of round
+    - [x] Function to switch roles at end of round
+    - [ ] Implement money
+        - [ ] Gameplay rules/config file thing
+        - [ ] Add money to player type
+        - [ ] Function to bet money
