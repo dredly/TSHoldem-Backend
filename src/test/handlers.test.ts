@@ -56,4 +56,31 @@ describe("handleJoin function", () => {
         expect(state.games[0].players).toHaveLength(2)
         expect(state.games[0].players[1].name).toBe("Alice")
     })
+
+    it("throws an error if given a player id not in the list of players", () => {
+        const state: ApplicationState = {
+            players: [createPlayer("miguel")],
+            games: [
+                {
+                    id: "1",
+                    players: [createPlayer("bob")]
+                }
+            ]
+        }
+        expect(() => {handleJoin({ playerId: "foo", gameId: "1" }, state)}).toThrowError("player not found")
+    })
+
+    it("throws an error if given a game id not in the list of games", () => {
+        const joinee = createPlayer("miguel")
+        const state: ApplicationState = {
+            players: [joinee],
+            games: [
+                {
+                    id: "1",
+                    players: [createPlayer("bob")]
+                }
+            ]
+        }
+        expect(() => {handleJoin({ playerId: joinee.id, gameId: "foo" }, state)}).toThrowError("game not found")
+    })
 })

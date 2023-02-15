@@ -20,4 +20,18 @@ export const handleGameCreation = (message: CreateGameMessage, applicationState:
 
 export const handleJoin = (message: JoinGameMessage, applicationState: ApplicationState) => {
     console.log(debug, `Player with id ${message.playerId} joining game with id ${message.gameId}`)
+
+    const player = applicationState.players.find(p => p.id === message.playerId)
+    if (!player) {
+        throw new Error("player not found")
+    }
+
+    const game = applicationState.games.find(g => g.id === message.gameId)
+    if (!game) {
+        throw new Error("game not found")
+    }
+
+    applicationState.players = applicationState.players.filter(p => p.id !== message.playerId)
+    applicationState.games = applicationState.games
+        .map(g => g.id === message.gameId ? { ...g, players: g.players.concat(player) } : g)
 }
