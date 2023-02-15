@@ -1,18 +1,21 @@
 import { randomUUID } from "crypto";
+import { gameConfig } from "./gameConfig";
 import { Game, Player } from "./types";
 
 export const createPlayer = (name: String): Player => {
     return {
         id: randomUUID(),
         name,
-        role: "OTHER"
+        role: "OTHER",
+        money: gameConfig.startingMoney
     }
 }
 
 export const createGame = (player: Player): Game => {
     return {
         id: randomUUID(),
-        players: [player]
+        players: [player],
+        pot: 0
     }
 }
 

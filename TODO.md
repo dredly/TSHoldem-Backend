@@ -2,6 +2,9 @@
     - [x] Function to initialise roles for players
     - [x] Function to switch roles at end of round
     - [ ] Implement money
-        - [ ] Gameplay rules/config file thing
-        - [ ] Add money to player type
+        - [x] Gameplay rules/config file thing
+        - [x] Add money to player type
+        - [x] Add pot to game type
         - [ ] Function to bet money
+- [ ] Better typechecking
+    - [ ] Check that properties are actually strings and not just that they are not undefined

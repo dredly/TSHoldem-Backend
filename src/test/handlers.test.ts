@@ -47,7 +47,8 @@ describe("handleJoin function", () => {
             games: [
                 {
                     id: "1",
-                    players: [host]
+                    players: [host],
+                    pot: 0
                 }
             ]
         }
@@ -63,7 +64,8 @@ describe("handleJoin function", () => {
             games: [
                 {
                     id: "1",
-                    players: [createPlayer("bob")]
+                    players: [createPlayer("bob")],
+                    pot: 0
                 }
             ]
         }
@@ -77,7 +79,8 @@ describe("handleJoin function", () => {
             games: [
                 {
                     id: "1",
-                    players: [createPlayer("bob")]
+                    players: [createPlayer("bob")],
+                    pot: 0
                 }
             ]
         }

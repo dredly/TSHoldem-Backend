@@ -13,7 +13,8 @@ describe("createGame function", () => {
         const testPlayer: Player = {
             id: "1",
             name: "Miguel",
-            role: "OTHER"
+            role: "OTHER",
+            money: 42069
         }
         const newGame = createGame(testPlayer)
         expect(newGame.players).toHaveLength(1)
@@ -37,7 +38,8 @@ describe("leaveGame function", () => {
         const players = ["bob", "alice", "jess"].map(name => createPlayer(name))
         const game: Game = {
             id: "1",
-            players
+            players,
+            pot: 0
         }
         const updatedGame = leaveGame(game, players[2])
         expect(updatedGame.players).toHaveLength(2)
@@ -46,7 +48,8 @@ describe("leaveGame function", () => {
     it("throws an error if the player is not in that game already", () => {
         const game: Game = {
             id: "1",
-            players: [createPlayer("Miguel")]
+            players: [createPlayer("Miguel")],
+            pot: 0
         }
         const playerNotInGame = createPlayer("Outsider Joe")
         expect(() => {leaveGame(game, playerNotInGame)}).toThrowError("Tried to leave game but player not in it")

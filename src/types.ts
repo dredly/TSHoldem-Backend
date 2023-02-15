@@ -3,17 +3,24 @@ export type Role = 'SMALL_BLIND' | 'BIG_BLIND' | 'OTHER'
 export interface Player {
     id: String,
     name: String,
-    role: Role
+    role: Role,
+    money: Number
 }
 
 export interface Game {
     id: String,
-    players: Player[]
+    players: Player[],
+    pot: Number
 }
 
 export interface ApplicationState {
     players: Player[]
     games: Game[]
+}
+
+export interface GameConfig {
+    startingMoney: Number
+    startingBlind: Number
 }
 
 export interface CreatePlayerMessage {
