@@ -10,3 +10,13 @@ export interface Game {
     id: String,
     players: Player[]
 }
+
+export interface CreatePlayerMessage {
+    name: String
+}
+
+export interface CreateGameMessage {
+    playerId: String
+}
+
+export type ClientMessage = CreatePlayerMessage | CreateGameMessage
