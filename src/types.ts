@@ -11,6 +11,11 @@ export interface Game {
     players: Player[]
 }
 
+export interface ApplicationState {
+    players: Player[]
+    games: Game[]
+}
+
 export interface CreatePlayerMessage {
     name: String
 }
@@ -19,4 +24,9 @@ export interface CreateGameMessage {
     playerId: String
 }
 
-export type ClientMessage = CreatePlayerMessage | CreateGameMessage
+export interface JoinGameMessage {
+    playerId: String
+    gameId: String
+}
+
+export type ClientMessage = CreatePlayerMessage | CreateGameMessage | JoinGameMessage
