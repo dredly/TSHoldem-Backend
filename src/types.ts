@@ -4,13 +4,13 @@ export interface Player {
     id: String,
     name: String,
     role: Role,
-    money: Number
+    money: number
 }
 
 export interface Game {
     id: String,
     players: Player[],
-    pot: Number
+    pot: number
 }
 
 export interface ApplicationState {
@@ -19,8 +19,8 @@ export interface ApplicationState {
 }
 
 export interface GameConfig {
-    startingMoney: Number
-    startingBlind: Number
+    startingMoney: number
+    startingBlind: number
 }
 
 export interface CreatePlayerMessage {

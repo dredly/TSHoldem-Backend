@@ -1,10 +1,15 @@
 - [ ] Basic gameplay
     - [x] Function to initialise roles for players
     - [x] Function to switch roles at end of round
-    - [ ] Implement money
+    - [ ] Implement money (basic)
         - [x] Gameplay rules/config file thing
         - [x] Add money to player type
         - [x] Add pot to game type
-        - [ ] Function to bet money
+        - [x] Function to find betting order
+        - [x] Function to bet money
+        - [ ] Function for winning pot (with possibility of splitting) (dont consider partial takings for all in yet)
 - [ ] Better typechecking
     - [ ] Check that properties are actually strings and not just that they are not undefined
+- [ ] Niceties
+    - [ ] Eslint
+    - [ ] Code coverage
