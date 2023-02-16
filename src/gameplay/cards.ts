@@ -1,4 +1,4 @@
-import { Card } from "../types"
+import { Card, Suit } from "../types"
 
 export const rankNameMapping = new Map<number, String>([
     [0, "Two"],
@@ -24,4 +24,8 @@ export const getRankName = (rank: number, mapping: Map<number, String>): String 
 
 export const getCardName = (card: Card, mapping: Map<number, String>): String => {
     return getRankName(card.rank, mapping) + " of " + card.suit.substring(0, 1) + card.suit.substring(1).toLowerCase()
+}
+
+export const makeDeck = (ranks: number[], suits: Suit[]): Card[] => {
+    return ranks.flatMap(rank => suits.map(suit => ({ rank, suit })))
 }

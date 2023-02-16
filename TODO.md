@@ -10,7 +10,8 @@
         - [x] Function for winning pot (with possibility of splitting) (dont consider partial takings for all in yet)
     - [ ] Implement cards
         - [x] Function to display card name
-        - [ ] Function to generate the deck
+        - [x] Function to generate the deck
+        - [ ] Card counting function to detect pairs, threes etc
 - [ ] Better typechecking
     - [ ] Check that properties are actually strings and not just that they are not undefined
 - [ ] Niceties

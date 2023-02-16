@@ -1,4 +1,4 @@
-import { getCardName, rankNameMapping } from "../../gameplay/cards"
+import { getCardName, makeDeck, rankNameMapping } from "../../gameplay/cards"
 import { Card } from "../../types"
 
 describe("getCardName function", () => {
@@ -15,5 +15,19 @@ describe("getCardName function", () => {
             suit: "SPADES"
         }
         expect(() => { getCardName(card, rankNameMapping) }).toThrowError("No name for that rank")
+    })
+})
+
+describe("makeDeck function", () => {
+    it("generates a deck as expected", () => {
+        const expectedDeck: Card[] = [
+            { rank: 0, suit: "DIAMONDS" },
+            { rank: 0, suit: "HEARTS" },
+            { rank: 1, suit: "DIAMONDS" },
+            { rank: 1, suit: "HEARTS" },
+            { rank: 2, suit: "DIAMONDS" },
+            { rank: 2, suit: "HEARTS" },
+        ]
+        expect(makeDeck([0, 1, 2], ["DIAMONDS", "HEARTS"])).toEqual(expectedDeck)
     })
 })
