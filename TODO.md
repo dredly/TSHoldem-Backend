@@ -11,7 +11,7 @@
     - [ ] Implement cards
         - [x] Function to display card name
         - [x] Function to generate the deck
-        - [ ] Card counting function to detect pairs, threes etc
+        - [x] Card counting function to detect groups
 - [ ] Better typechecking
     - [ ] Check that properties are actually strings and not just that they are not undefined
 - [ ] Niceties

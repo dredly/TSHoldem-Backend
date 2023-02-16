@@ -29,3 +29,14 @@ export const getCardName = (card: Card, mapping: Map<number, String>): String =>
 export const makeDeck = (ranks: number[], suits: Suit[]): Card[] => {
     return ranks.flatMap(rank => suits.map(suit => ({ rank, suit })))
 }
+
+export const countCardsOfRank = (rank: number, cards: Card[]): number => {
+    return cards.filter(c => c.rank === rank).length
+}
+
+export const findPotentialGroup = (cards: Card[], groupSize: number): number | undefined => {
+    // If group(s) found, return the rank of the highest ranking group, otherwise return undefined
+    return [ ...cards.map(c => c.rank) ]
+        .sort((r1, r2) => r2 - r1)
+        .find(r => countCardsOfRank(r, cards) === groupSize)
+}

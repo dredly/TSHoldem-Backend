@@ -2,6 +2,8 @@ export type Role = 'SMALL_BLIND' | 'BIG_BLIND' | 'OTHER'
 
 export type Suit = 'SPADES' | 'HEARTS' | 'DIAMONDS' | 'CLUBS'
 
+export type Hand = 'PAIR' | 'THREE OF A KIND' | 'FOUR OF A KIND' | 'STRAIGHT' | 'FLUSH' | 'HIGH CARD'
+
 export interface Card {
     rank: number,
     suit: Suit
@@ -27,7 +29,8 @@ export interface ApplicationState {
 
 export interface GameConfig {
     startingMoney: number
-    startingBlind: number
+    startingBlind: number,
+    handRankings: Hand[]
 }
 
 export interface CreatePlayerMessage {
