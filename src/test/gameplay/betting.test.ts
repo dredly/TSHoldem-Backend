@@ -1,5 +1,5 @@
 import { createPlayer } from "../../gameManagement"
-import { betAmount, getBettingOrder, makeBet } from "../../gameplay/betting"
+import { betAmount, getBettingOrder, makeBet, winPot } from "../../gameplay/betting"
 import { Player, Game } from "../../types"
 
 describe("getBettingOrder function", () => {
@@ -59,5 +59,33 @@ describe("makeBet function", () => {
             pot: 600
         }
         expect(() => { makeBet(game, player2, 800) }).toThrowError("Player does not have enough money")
+    })
+})
+
+describe("winPot function", () => {
+    it("works with a single winner", () => {
+        const player1 =  { ...createPlayer("bob"), money: 100 }
+        const player2 = { ...createPlayer("bill"), money: 200 }
+        const game: Game = {
+            id: "1",
+            players: [player1, player2],
+            pot: 600
+        }
+        const updatedGame = winPot(game, [player1])
+        expect(updatedGame.pot).toBe(0)
+        expect(updatedGame.players[0].money).toBe(700)
+    })
+    it("works with multiple winners", () => {
+        const player1 =  { ...createPlayer("bob"), money: 100 }
+        const player2 = { ...createPlayer("bill"), money: 200 }
+        const game: Game = {
+            id: "1",
+            players: [player1, player2],
+            pot: 600
+        }
+        const updatedGame = winPot(game, [player1, player2])
+        expect(updatedGame.pot).toBe(0)
+        expect(updatedGame.players[0].money).toBe(400)
+        expect(updatedGame.players[1].money).toBe(500)
     })
 })

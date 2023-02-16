@@ -7,9 +7,10 @@
         - [x] Add pot to game type
         - [x] Function to find betting order
         - [x] Function to bet money
-        - [ ] Function for winning pot (with possibility of splitting) (dont consider partial takings for all in yet)
+        - [x] Function for winning pot (with possibility of splitting) (dont consider partial takings for all in yet)
 - [ ] Better typechecking
     - [ ] Check that properties are actually strings and not just that they are not undefined
 - [ ] Niceties
+    - [ ] TestUtils to eliminate repetition with test data
     - [ ] Eslint
     - [ ] Code coverage
