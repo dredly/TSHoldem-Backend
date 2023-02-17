@@ -1,4 +1,4 @@
-import { findPotentialFlush, findPotentialFullHouse, findPotentialGroup, findPotentialTwoPairs, getCardName, makeDeck, rankNameMapping } from "../../gameplay/cards"
+import { findPotentialFlush, findPotentialFullHouse, findPotentialGroup, findPotentialStraight, findPotentialTwoPairs, getCardName, makeDeck, rankNameMapping } from "../../gameplay/cards"
 import { Card } from "../../types"
 
 describe("getCardName function", () => {
@@ -169,5 +169,70 @@ describe("findPotentialTwoPairs function", () => {
             { rank: 3, suit: "DIAMONDS" },
         ]
         expect(findPotentialTwoPairs(cards)).toBeUndefined
+    })
+})
+
+describe("findPotentialStraight function", () => {
+    it("finds a straight and returns the rank of the highest card", () => {
+        const cards: Card[] = [
+            { rank: 4, suit: "CLUBS" },
+            { rank: 2, suit: "DIAMONDS" },
+            { rank: 3, suit: "HEARTS" },
+            { rank: 5, suit: "CLUBS" },
+            { rank: 5, suit: "DIAMONDS" },
+            { rank: 10, suit: "CLUBS" },
+            { rank: 6, suit: "CLUBS" }
+        ]
+        expect(findPotentialStraight(cards)).toBe(6)
+    })
+
+    it("finds a straight and returns the rank of the highest card when straight longer than 5", () => {
+        const cards: Card[] = [
+            { rank: 4, suit: "CLUBS" },
+            { rank: 2, suit: "DIAMONDS" },
+            { rank: 7, suit: "SPADES" },
+            { rank: 3, suit: "HEARTS" },
+            { rank: 5, suit: "CLUBS" },
+            { rank: 5, suit: "DIAMONDS" },
+            { rank: 10, suit: "CLUBS" },
+            { rank: 6, suit: "CLUBS" }
+        ]
+        expect(findPotentialStraight(cards)).toBe(7)
+    })
+
+    it("returns undefined when no straight found", () => {
+        const cards: Card[] = [
+            { rank: 4, suit: "CLUBS" },
+            { rank: 2, suit: "DIAMONDS" },
+            { rank: 3, suit: "HEARTS" },
+            { rank: 5, suit: "CLUBS" },
+            { rank: 5, suit: "DIAMONDS" },
+            { rank: 10, suit: "CLUBS" },
+        ]
+        expect(findPotentialStraight(cards)).toBeUndefined
+    })
+
+    it("detects a straight where the ace is low", () => {
+        const cards: Card[] = [
+            { rank: 0, suit: "CLUBS" },
+            { rank: 1, suit: "DIAMONDS" },
+            { rank: 2, suit: "HEARTS" },
+            { rank: 3, suit: "CLUBS" },
+            { rank: 12, suit: "DIAMONDS" },
+            { rank: 10, suit: "CLUBS" },
+        ]
+        expect(findPotentialStraight(cards)).toBe(3)
+    })
+
+    it("otherwise does not allow wraparound straights", () => {
+        const cards: Card[] = [
+            { rank: 0, suit: "CLUBS" },
+            { rank: 1, suit: "DIAMONDS" },
+            { rank: 2, suit: "HEARTS" },
+            { rank: 11, suit: "CLUBS" },
+            { rank: 12, suit: "DIAMONDS" },
+            { rank: 10, suit: "CLUBS" },
+        ]
+        expect(findPotentialStraight(cards)).toBeUndefined
     })
 })

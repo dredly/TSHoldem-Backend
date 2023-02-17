@@ -17,7 +17,7 @@
             - [x] Detect flushes
             - [x] Detect full house
             - [x] Detect 2 pairs
-            - [ ] Detect straight
+            - [x] Detect straight
             - [ ] Detect straight flush
             - [ ] Detect high card
         - [ ] Integrate into 1 hand checking function

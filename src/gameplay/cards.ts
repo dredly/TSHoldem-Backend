@@ -1,4 +1,5 @@
 import { Card, HandChecker, Suit } from "../types"
+import every from "lodash.every";
 
 export const rankNameMapping = new Map<number, String>([
     [0, "Two"],
@@ -80,6 +81,16 @@ export const findPotentialTwoPairs: HandChecker = (cards: Card[]): number | unde
             // Also should not need to worry about accidentally getting a 4 of a kind here, as that check will be done first
             return firstPairRank
         }
+    }
+}
+
+export const findPotentialStraight: HandChecker = (cards: Card[]): number | undefined => {
+    // TODO: Handle straight with low ace
+    const highestToLowestRank = [ ...cards.map(c => c.rank) ].sort((r1, r2) => r2 - r1)
+    for (const rank of highestToLowestRank) {
+        // --- rank === 3 ? 12 : rank - 4 --- Special case for straight with low ace
+        const fourBelow = [rank - 1, rank - 2, rank - 3, rank === 3 ? 12 : rank - 4]
+        if (every(fourBelow, r => highestToLowestRank.includes(r))) return rank
     }
 }
 
