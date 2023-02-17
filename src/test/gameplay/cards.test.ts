@@ -1,4 +1,19 @@
-import { compareHandEvaluations, findBestHand, findHighCard, findPotentialFlush, findPotentialFullHouse, findPotentialGroup, findPotentialStraight, findPotentialStraightFlush, findPotentialTwoPairs, getCardName, makeDeck, rankNameMapping } from "../../gameplay/cards"
+import { 
+    compareHandEvaluations, 
+    findBestHand, 
+    findHighCard, 
+    findPotentialFlush, 
+    findPotentialFullHouse, 
+    findPotentialGroup, 
+    findPotentialStraight, 
+    findPotentialStraightFlush, 
+    findPotentialTwoPairs, 
+    getCardName, 
+    getLeftoversFromCompondValue, 
+    getLeftoversFromValue, 
+    makeDeck, 
+    rankNameMapping 
+} from "../../gameplay/cards"
 import { Card, HandChecker, HandEvaluation } from "../../types"
 
 describe("getCardName function", () => {
@@ -479,5 +494,51 @@ describe("compareHandEvaluations function", () => {
             { handRank: 3, handValue: 4 } 
         ]
         expect(compareHandEvaluations(evaluations[0], evaluations[1])).toBe(0) 
+    })
+})
+
+describe("getLeftoversFromValue function", () => {
+    it("returns the expected leftover cards for 3 of a kind", () => {
+        const cards: Card[] = [
+            { rank: 2, suit: "CLUBS" },
+            { rank: 2, suit: "DIAMONDS" },
+            { rank: 2, suit: "HEARTS" },
+            { rank: 1, suit: "CLUBS" },
+            { rank: 9, suit: "SPADES" }
+        ]
+        const expectedLeftovers: Card[] = [
+            { rank: 1, suit: "CLUBS" },
+            { rank: 9, suit: "SPADES" }
+        ]
+        expect(getLeftoversFromValue(cards, 2)).toEqual(expectedLeftovers)
+    })
+
+    it("returns the expected leftover cards for a high card", () => {
+        const cards: Card[] = [
+            { rank: 2, suit: "HEARTS" },
+            { rank: 1, suit: "CLUBS" },
+            { rank: 9, suit: "SPADES" }
+        ]
+        const expectedLeftovers: Card[] = [
+            { rank: 2, suit: "HEARTS" },
+            { rank: 1, suit: "CLUBS" },
+        ]
+        expect(getLeftoversFromValue(cards, 9)).toEqual(expectedLeftovers)
+    })
+})
+
+describe("getLeftoversFromCompoundValue function", () => {
+    it("returns the expected leftover cards for 2 pairs", () => {
+        const cards: Card[] = [
+            { rank: 7, suit: "HEARTS" },
+            { rank: 4, suit: "CLUBS" },
+            { rank: 7, suit: "DIAMONDS" },
+            { rank: 3, suit: "HEARTS" },
+            { rank: 3, suit: "SPADES" },
+        ]
+        const expectedLeftovers: Card[] = [
+            { rank: 4, suit: "CLUBS" }
+        ]
+        expect(getLeftoversFromCompondValue(cards, 7.03)).toEqual(expectedLeftovers)
     })
 })

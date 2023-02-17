@@ -131,3 +131,18 @@ export const compareHandEvaluations = (evaluation1: HandEvaluation, evaluation2:
     }
     return evaluation1.handRank < evaluation2.handRank ? 1 : -1
 }
+
+export const getLeftoversFromValue = (cards: Card[], handValue: number): Card[] => {
+    return cards.filter(c => c.rank !== handValue)
+}
+
+export const getLeftoversFromCompondValue = (cards: Card[], handValue: number): Card[] => {
+    const majorValue = Math.floor(handValue)
+    const minorValue = Math.floor((handValue - Math.floor(handValue)) * 100) 
+    return cards.filter(c => ![majorValue, minorValue].includes(c.rank))
+}
+
+export const compareHands = (hand1: Card[], hand2: Card[]): number => {
+    // NOT IMPLEMENTED
+    return 2
+}
