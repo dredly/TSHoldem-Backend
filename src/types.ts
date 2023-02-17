@@ -30,6 +30,8 @@ export interface Player {
 export interface Game {
     id: String,
     players: Player[],
+    deck: Card[],
+    cardsOnTable: Card[]
     pot: number
 }
 

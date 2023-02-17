@@ -44,6 +44,8 @@ describe("makeBet function", () => {
         const game: Game = {
             id: "1",
             players: [player1, player2],
+            deck: [],
+            cardsOnTable: [],
             pot: 600
         }
         const updatedGame = makeBet(game, player2, 80)
@@ -56,6 +58,8 @@ describe("makeBet function", () => {
         const game: Game = {
             id: "1",
             players: [player1, player2],
+            deck: [],
+            cardsOnTable: [],
             pot: 600
         }
         expect(() => { makeBet(game, player2, 800) }).toThrowError("Player does not have enough money")
@@ -69,6 +73,8 @@ describe("winPot function", () => {
         const game: Game = {
             id: "1",
             players: [player1, player2],
+            deck: [],
+            cardsOnTable: [],
             pot: 600
         }
         const updatedGame = winPot(game, [player1])
@@ -81,6 +87,8 @@ describe("winPot function", () => {
         const game: Game = {
             id: "1",
             players: [player1, player2],
+            deck: [],
+            cardsOnTable: [],
             pot: 600
         }
         const updatedGame = winPot(game, [player1, player2])

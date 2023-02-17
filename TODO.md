@@ -28,7 +28,7 @@
                 - [x] Compare high cards recursively
                 - [x] Split up cards.ts
                 - [x] Full hand compare functionality
-        - [ ] Find winner function
+        - [ ] Find winners function
 - [ ] Better typechecking
     - [ ] Check that properties are actually strings and not just that they are not undefined
 - [ ] Niceties

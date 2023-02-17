@@ -15,6 +15,8 @@ export const createGame = (player: Player): Game => {
     return {
         id: randomUUID(),
         players: [player],
+        deck: [], // PLACEHOLDER UNTIL PROPER SHUFFLING etc
+        cardsOnTable: [],
         pot: 0
     }
 }

@@ -39,6 +39,8 @@ describe("leaveGame function", () => {
         const game: Game = {
             id: "1",
             players,
+            deck: [],
+            cardsOnTable: [],
             pot: 0
         }
         const updatedGame = leaveGame(game, players[2])
@@ -49,6 +51,8 @@ describe("leaveGame function", () => {
         const game: Game = {
             id: "1",
             players: [createPlayer("Miguel")],
+            deck: [],
+            cardsOnTable: [],
             pot: 0
         }
         const playerNotInGame = createPlayer("Outsider Joe")
