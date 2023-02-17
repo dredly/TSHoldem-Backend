@@ -1,5 +1,5 @@
-import { findHighCard, findPotentialFlush, findPotentialFullHouse, findPotentialGroup, findPotentialStraight, findPotentialStraightFlush, findPotentialTwoPairs, getCardName, makeDeck, rankNameMapping } from "../../gameplay/cards"
-import { Card } from "../../types"
+import { findBestHand, findHighCard, findPotentialFlush, findPotentialFullHouse, findPotentialGroup, findPotentialStraight, findPotentialStraightFlush, findPotentialTwoPairs, getCardName, makeDeck, rankNameMapping } from "../../gameplay/cards"
+import { Card, HandChecker, HandEvaluation } from "../../types"
 
 describe("getCardName function", () => {
     it("returns the expected name of a valid card", () => {
@@ -142,7 +142,7 @@ describe("findPotentialFullHouse function", () => {
 })
 
 describe("findPotentialTwoPairs function", () => {
-    it("finds two pairs and returns the rank of the higher pair", () => {
+    it("finds two pairs and returns the rank as expected", () => {
         const cards: Card[] = [
             { rank: 2, suit: "CLUBS" },
             { rank: 3, suit: "DIAMONDS" },
@@ -150,7 +150,7 @@ describe("findPotentialTwoPairs function", () => {
             { rank: 1, suit: "CLUBS" },
             { rank: 3, suit: "CLUBS" }
         ]
-        expect(findPotentialTwoPairs(cards)).toBe(3)
+        expect(findPotentialTwoPairs(cards)).toBe(3.02)
     })
 
     it("returns undefined when only one pair found", () => {
@@ -303,5 +303,155 @@ describe("findHighCard function", () => {
             { rank: 10, suit: "CLUBS" },
         ]
         expect(findHighCard(cards)).toBe(10)
+    })
+})
+
+describe("findBestHand function", () => {
+    const handCheckers: HandChecker[] = [
+        findPotentialStraightFlush,
+        (cards: Card[] ) => findPotentialGroup(cards, 4),
+        findPotentialFullHouse,
+        findPotentialFlush,
+        findPotentialStraight,
+        (cards: Card[] ) => findPotentialGroup(cards, 3),
+        findPotentialTwoPairs,
+        (cards: Card[] ) => findPotentialGroup(cards, 2),
+        findHighCard
+    ]
+    it("finds a high card", () => {
+        const cards: Card[] = [
+            { rank: 4, suit: "CLUBS" },
+            { rank: 7, suit: "DIAMONDS" },
+            { rank: 3, suit: "HEARTS" },
+        ]
+        const expectedEvaluation: HandEvaluation = {
+            handRank: 8,
+            handValue: 7
+        }
+        expect(findBestHand(cards, handCheckers)).toEqual(expectedEvaluation)
+    })
+
+    it("finds a pair", () => {
+        const cards: Card[] = [
+            { rank: 4, suit: "CLUBS" },
+            { rank: 7, suit: "DIAMONDS" },
+            { rank: 3, suit: "HEARTS" },
+            { rank: 3, suit: "SPADES" },
+        ]
+        const expectedEvaluation: HandEvaluation = {
+            handRank: 7,
+            handValue: 3
+        }
+        expect(findBestHand(cards, handCheckers)).toEqual(expectedEvaluation)
+    })
+
+    it("finds 2 pairs", () => {
+        const cards: Card[] = [
+            { rank: 7, suit: "HEARTS" },
+            { rank: 4, suit: "CLUBS" },
+            { rank: 7, suit: "DIAMONDS" },
+            { rank: 3, suit: "HEARTS" },
+            { rank: 3, suit: "SPADES" },
+        ]
+        const expectedEvaluation: HandEvaluation = {
+            handRank: 6,
+            handValue: 7.03
+        }
+        expect(findBestHand(cards, handCheckers)).toEqual(expectedEvaluation)
+    })
+
+    it("finds 3 of a kind", () => {
+        const cards: Card[] = [
+            { rank: 7, suit: "HEARTS" },
+            { rank: 4, suit: "CLUBS" },
+            { rank: 7, suit: "DIAMONDS" },
+            { rank: 3, suit: "HEARTS" },
+            { rank: 7, suit: "SPADES" },
+        ]
+        const expectedEvaluation: HandEvaluation = {
+            handRank: 5,
+            handValue: 7
+        }
+        expect(findBestHand(cards, handCheckers)).toEqual(expectedEvaluation)
+    })
+
+    it("finds straight", () => {
+        const cards: Card[] = [
+            { rank: 7, suit: "HEARTS" },
+            { rank: 3, suit: "HEARTS" },
+            { rank: 4, suit: "CLUBS" },
+            { rank: 5, suit: "DIAMONDS" },
+            { rank: 5, suit: "HEARTS" },
+            { rank: 6, suit: "SPADES" },
+        ]
+        const expectedEvaluation: HandEvaluation = {
+            handRank: 4,
+            handValue: 7
+        }
+        expect(findBestHand(cards, handCheckers)).toEqual(expectedEvaluation)
+    })
+
+    it("finds flush", () => {
+        const cards: Card[] = [
+            { rank: 2, suit: "SPADES" },
+            { rank: 3, suit: "SPADES" },
+            { rank: 5, suit: "SPADES" },
+            { rank: 0, suit: "CLUBS" },
+            { rank: 6, suit: "SPADES" },
+            { rank: 8, suit: "SPADES" },
+            { rank: 10, suit: "SPADES" },
+        ]
+        const expectedEvaluation: HandEvaluation = {
+            handRank: 3,
+            handValue: 10
+        }
+        expect(findBestHand(cards, handCheckers)).toEqual(expectedEvaluation)
+    })
+
+    it("finds full house", () => {
+        const cards: Card[] = [
+            { rank: 4, suit: "SPADES" },
+            { rank: 4, suit: "HEARTS" },
+            { rank: 2, suit: "SPADES" },
+            { rank: 2, suit: "CLUBS" },
+            { rank: 6, suit: "SPADES" },
+            { rank: 4, suit: "DIAMONDS" },
+        ]
+        const expectedEvaluation: HandEvaluation = {
+            handRank: 2,
+            handValue: 4.02
+        }
+        expect(findBestHand(cards, handCheckers)).toEqual(expectedEvaluation)
+    })
+
+    it("finds 4 of a kind", () => {
+        const cards: Card[] = [
+            { rank: 2, suit: "CLUBS" },
+            { rank: 2, suit: "DIAMONDS" },
+            { rank: 2, suit: "HEARTS" },
+            { rank: 1, suit: "CLUBS" },
+            { rank: 2, suit: "SPADES" }
+        ]
+        const expectedEvaluation: HandEvaluation = {
+            handRank: 1,
+            handValue: 2
+        }
+        expect(findBestHand(cards, handCheckers)).toEqual(expectedEvaluation)
+    })
+
+    it("finds straight flush", () => {
+        const cards: Card[] = [
+            { rank: 0, suit: "CLUBS" },
+            { rank: 1, suit: "CLUBS" },
+            { rank: 2, suit: "CLUBS" },
+            { rank: 3, suit: "CLUBS" },
+            { rank: 4, suit: "CLUBS" },
+            { rank: 10, suit: "CLUBS" },
+        ]
+        const expectedEvaluation: HandEvaluation = {
+            handRank: 0,
+            handValue: 4
+        }
+        expect(findBestHand(cards, handCheckers)).toEqual(expectedEvaluation)
     })
 })

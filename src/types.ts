@@ -8,6 +8,13 @@ export interface HandChecker {
     (cards: Card[]): number | undefined
 }
 
+export interface HandEvaluation {
+    // handRank refers to the ranking of the type of hand, e.g. straight flush: 0, four of a kind: 1 etc
+    handRank: number
+    // handValue refers to the value within a hand, e.g. pair of 4s: 4, pair of 3s: 3
+    handValue: number
+}
+
 export interface Card {
     rank: number,
     suit: Suit

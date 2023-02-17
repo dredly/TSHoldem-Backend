@@ -12,7 +12,7 @@
         - [x] Function to display card name
         - [x] Function to generate the deck
         - [x] Functional interface for checking hands
-        - [ ] HandCheckers
+        - [x] HandCheckers
             - [x] Card counting function to detect groups
             - [x] Detect flushes
             - [x] Detect full house
@@ -20,8 +20,9 @@
             - [x] Detect straight
             - [x] Detect straight flush
             - [x] Detect high card
-        - [ ] Integrate into 1 hand checking function
-        - [ ] Add ability to check for multiple hand types, i.e. pair + high card(s)
+            - [x] Rank 2 pairs based on first and second pair (like for full house)
+        - [x] Integrate into 1 hand checking function
+        - [ ] Add ability to check for multiple hand types, i.e. pair + high card(s) -> probably as part of hand comparison function
 - [ ] Better typechecking
     - [ ] Check that properties are actually strings and not just that they are not undefined
 - [ ] Niceties

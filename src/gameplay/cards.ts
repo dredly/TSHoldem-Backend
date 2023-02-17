@@ -1,4 +1,4 @@
-import { Card, HandChecker, Suit } from "../types"
+import { Card, HandChecker, HandEvaluation, Suit } from "../types"
 import every from "lodash.every";
 
 export const rankNameMapping = new Map<number, String>([
@@ -46,11 +46,6 @@ export const findPotentialGroup = (cards: Card[], groupSize: number): number | u
         .find(r => countCardsOfRank(r, cards) === groupSize)
 }
 
-// Probably temporary just to test out my fancy functional interface
-export const findPotentialFourOfAKind: HandChecker = (cards: Card[]): number | undefined => {
-    return findPotentialGroup(cards, 4)
-}
-
 export const findPotentialFlush: HandChecker = (cards: Card[]): number | undefined => {
     const numForFlush = 5
     return [ ...cards ]
@@ -79,7 +74,7 @@ export const findPotentialTwoPairs: HandChecker = (cards: Card[]): number | unde
         if (secondPairRank) {
             // Because of the sorting done in findPotentialGroup, firstPairRank should alway be higher
             // Also should not need to worry about accidentally getting a 4 of a kind here, as that check will be done first
-            return firstPairRank
+            return firstPairRank + secondPairRank * 0.01
         }
     }
 }
@@ -115,6 +110,14 @@ export const findHighCard: HandChecker = (cards: Card[]): number => {
     return Math.max(...cards.map(c => c.rank))
 }
 
-export const findBestHand = (cards: Card[], handCheckers: HandChecker[]) => {
-    // NOT IMPLEMENTED
+export const findBestHand = (cards: Card[], handCheckers: HandChecker[]): HandEvaluation => {
+    const succesfulChecker = handCheckers.find(hc => hc(cards))
+    if (!succesfulChecker) {
+        throw new Error("Error evaluating hand")
+    }
+    const handValue = succesfulChecker(cards) as number
+    return {
+        handRank: handCheckers.indexOf(succesfulChecker),
+        handValue
+    }
 }
