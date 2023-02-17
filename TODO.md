@@ -26,7 +26,7 @@
             - [x] Compare 2 hand evaluations
             - [ ] Compare 2 hands
                 - [x] Compare high cards recursively
-                - [ ] Split up cards.ts
+                - [x] Split up cards.ts
                 - [ ] Full hand compare functionality
             - [ ] Extend to be able to find winner from more than 2 players
 - [ ] Better typechecking

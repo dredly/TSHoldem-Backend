@@ -1,43 +1,6 @@
-import { Card, HandChecker, HandEvaluation, Suit } from "../types"
-import every from "lodash.every";
-
-export const rankNameMapping = new Map<number, String>([
-    [0, "Two"],
-    [1, "Three"],
-    [2, "Four"],
-    [3, "Five"],
-    [4, "Six"],
-    [5, "Seven"],
-    [6, "Eight"],
-    [7, "Nine"],
-    [8, "Ten"],
-    [9, "Jack"],
-    [10, "Queen"],
-    [11, "King"],
-    [12, "Ace"],
-])
-
-export const getRankName = (rank: number, mapping: Map<number, String>): String => {
-    const rankName = mapping.get(rank)
-    if (!rankName) throw new Error("No name for that rank")
-    return rankName
-}
-
-export const getCardName = (card: Card, mapping: Map<number, String>): String => {
-    return getRankName(card.rank, mapping) + " of " + card.suit.substring(0, 1) + card.suit.substring(1).toLowerCase()
-}
-
-export const makeDeck = (ranks: number[], suits: Suit[]): Card[] => {
-    return ranks.flatMap(rank => suits.map(suit => ({ rank, suit })))
-}
-
-export const countCardsOfRank = (rank: number, cards: Card[]): number => {
-    return cards.filter(c => c.rank === rank).length
-}
-
-export const countCardsOfSuit = (suit: Suit, cards: Card[]): number => {
-    return cards.filter(c => c.suit === suit).length
-}
+import every from "lodash.every"
+import { Card, HandChecker, HandEvaluation } from "../../types"
+import { countCardsOfRank, countCardsOfSuit } from "./cardUtils"
 
 export const findPotentialGroup = (cards: Card[], groupSize: number): number | undefined => {
     // If group(s) found, return the rank of the highest ranking group, otherwise return undefined
@@ -120,44 +83,4 @@ export const findBestHand = (cards: Card[], handCheckers: HandChecker[]): HandEv
         handRank: handCheckers.indexOf(succesfulChecker),
         handValue
     }
-}
-
-export const compareHandEvaluations = (evaluation1: HandEvaluation, evaluation2: HandEvaluation): number => {
-    if (evaluation1.handRank === evaluation2.handRank) {
-        if (evaluation1.handValue === evaluation2.handValue) {
-            return 0
-        }
-        return evaluation1.handValue > evaluation2.handValue ? 1 : -1
-    }
-    return evaluation1.handRank < evaluation2.handRank ? 1 : -1
-}
-
-export const getLeftoversFromValue = (cards: Card[], handValue: number): Card[] => {
-    return cards.filter(c => c.rank !== handValue)
-}
-
-export const getLeftoversFromCompondValue = (cards: Card[], handValue: number): Card[] => {
-    const majorValue = Math.floor(handValue)
-    const minorValue = Math.floor((handValue - Math.floor(handValue)) * 100) 
-    return cards.filter(c => ![majorValue, minorValue].includes(c.rank))
-}
-
-export const compareByHighCards = (hand1: Card[], hand2: Card[]): number => {
-    // Generally would expect length of the hands to be same, so optimise by only checking length of hand1
-    if (!hand1.length) {
-        return 0
-    }
-    const evaluations = [hand1, hand2].map(h => findBestHand(h, [findHighCard]))
-    const comparisonResult = compareHandEvaluations(evaluations[0], evaluations[1])
-    if (comparisonResult) {
-        return comparisonResult
-    }
-    // Here we expect handEvaluations to have the same handValue
-    const handValue = evaluations[0].handValue
-    return compareByHighCards(getLeftoversFromValue(hand1, handValue), getLeftoversFromValue(hand2, handValue))
-}
-
-export const compareHands = (hand1: Card[], hand2: Card[]): number => {
-    // NOT IMPLEMENTED
-    return 2
 }
