@@ -1,4 +1,4 @@
-import { findBestHand, findHighCard, findPotentialFlush, findPotentialFullHouse, findPotentialGroup, findPotentialStraight, findPotentialStraightFlush, findPotentialTwoPairs, getCardName, makeDeck, rankNameMapping } from "../../gameplay/cards"
+import { compareHandEvaluations, findBestHand, findHighCard, findPotentialFlush, findPotentialFullHouse, findPotentialGroup, findPotentialStraight, findPotentialStraightFlush, findPotentialTwoPairs, getCardName, makeDeck, rankNameMapping } from "../../gameplay/cards"
 import { Card, HandChecker, HandEvaluation } from "../../types"
 
 describe("getCardName function", () => {
@@ -453,5 +453,31 @@ describe("findBestHand function", () => {
             handValue: 4
         }
         expect(findBestHand(cards, handCheckers)).toEqual(expectedEvaluation)
+    })
+})
+
+describe("compareHandEvaluations function", () => {
+    it("returns 1 when the first evaluation is 'better' based on handRank", () => {
+        const evaluations: HandEvaluation[] = [
+            { handRank: 3, handValue: 4 },
+            { handRank: 5, handValue: 6 } 
+        ]
+        expect(compareHandEvaluations(evaluations[0], evaluations[1])).toBe(1) 
+    })
+
+    it("returns -1 when the first evaluation is 'worse' based on handValue", () => {
+        const evaluations: HandEvaluation[] = [
+            { handRank: 3, handValue: 4 },
+            { handRank: 3, handValue: 6 } 
+        ]
+        expect(compareHandEvaluations(evaluations[0], evaluations[1])).toBe(-1) 
+    })
+
+    it("returns 0 when the evaluations are the same", () => {
+        const evaluations: HandEvaluation[] = [
+            { handRank: 3, handValue: 4 },
+            { handRank: 3, handValue: 4 } 
+        ]
+        expect(compareHandEvaluations(evaluations[0], evaluations[1])).toBe(0) 
     })
 })

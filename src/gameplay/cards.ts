@@ -121,3 +121,13 @@ export const findBestHand = (cards: Card[], handCheckers: HandChecker[]): HandEv
         handValue
     }
 }
+
+export const compareHandEvaluations = (evaluation1: HandEvaluation, evaluation2: HandEvaluation): number => {
+    if (evaluation1.handRank === evaluation2.handRank) {
+        if (evaluation1.handValue === evaluation2.handValue) {
+            return 0
+        }
+        return evaluation1.handValue > evaluation2.handValue ? 1 : -1
+    }
+    return evaluation1.handRank < evaluation2.handRank ? 1 : -1
+}

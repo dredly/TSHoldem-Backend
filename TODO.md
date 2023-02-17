@@ -23,6 +23,9 @@
             - [x] Rank 2 pairs based on first and second pair (like for full house)
         - [x] Integrate into 1 hand checking function
         - [ ] Add ability to check for multiple hand types, i.e. pair + high card(s) -> probably as part of hand comparison function
+            - [x] Compare 2 hand evaluations
+            - [ ] Compare 2 hands
+            - [ ] Extend to be able to find winner from more than 2 players
 - [ ] Better typechecking
     - [ ] Check that properties are actually strings and not just that they are not undefined
 - [ ] Niceties
