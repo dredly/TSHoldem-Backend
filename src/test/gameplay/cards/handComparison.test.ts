@@ -1,4 +1,4 @@
-import { compareHandEvaluations, getLeftoversFromValue, getLeftoversFromCompondValue, compareByHighCards } from "../../../gameplay/cards/handComparison"
+import { compareHandEvaluations, getLeftoversFromValue, getLeftoversFromCompondValue, compareByHighCards, compareHands } from "../../../gameplay/cards/handComparison"
 import { HandEvaluation, Card } from "../../../types"
 
 describe("compareHandEvaluations function", () => {
@@ -114,5 +114,137 @@ describe("compareByHighCards function", () => {
             { rank: 2, suit: "SPADES" },
         ]
         expect(compareByHighCards(hand1, hand2)).toBe(1)
+    })
+})
+
+describe("compareHands function", () => {
+    it("works as expected for 2 hands of different rank", () => {
+        const hand1: Card[] = [
+            { rank: 4, suit: "CLUBS" },
+            { rank: 7, suit: "SPADES" },
+            { rank: 0, suit: "HEARTS" },
+            { rank: 7, suit: "DIAMONDS" },
+            { rank: 3, suit: "HEARTS" },
+            { rank: 7, suit: "HEARTS" },
+            { rank: 5, suit: "HEARTS" },
+        ]
+        const hand2: Card[] = [
+            { rank: 4, suit: "CLUBS" },
+            { rank: 7, suit: "SPADES" },
+            { rank: 0, suit: "HEARTS" },
+            { rank: 6, suit: "DIAMONDS" },
+            { rank: 3, suit: "HEARTS" },
+            { rank: 9, suit: "CLUBS" },
+            { rank: 5, suit: "HEARTS" },
+        ]
+        expect(compareHands(hand1, hand2)).toBe(-1)
+    })
+
+    it("works as expected for 2 hands of same rank but different value", () => {
+        const hand1: Card[] = [
+            { rank: 4, suit: "CLUBS" },
+            { rank: 0, suit: "HEARTS" },
+            { rank: 7, suit: "DIAMONDS" },
+            { rank: 3, suit: "HEARTS" },
+            { rank: 7, suit: "HEARTS" },
+            { rank: 5, suit: "HEARTS" },
+        ]
+        const hand2: Card[] = [
+            { rank: 4, suit: "CLUBS" },
+            { rank: 0, suit: "HEARTS" },
+            { rank: 4, suit: "DIAMONDS" },
+            { rank: 3, suit: "HEARTS" },
+            { rank: 7, suit: "HEARTS" },
+            { rank: 5, suit: "HEARTS" },
+        ]
+        expect(compareHands(hand1, hand2)).toBe(1)
+    })
+
+    it("returns 0 for 2 equivalent hands of lenght 5, even if there are different high cards outside of this", () => {
+        const hand1: Card[] = [
+            { rank: 2, suit: "CLUBS" },
+            { rank: 3, suit: "SPADES" },
+            { rank: 4, suit: "HEARTS" },
+            { rank: 5, suit: "DIAMONDS" },
+            { rank: 6, suit: "HEARTS" },
+            { rank: 9, suit: "HEARTS" },
+            { rank: 10, suit: "HEARTS" },
+        ]
+        const hand2: Card[] = [
+            { rank: 2, suit: "CLUBS" },
+            { rank: 3, suit: "SPADES" },
+            { rank: 4, suit: "HEARTS" },
+            { rank: 5, suit: "DIAMONDS" },
+            { rank: 6, suit: "HEARTS" },
+            { rank: 9, suit: "HEARTS" },
+            { rank: 12, suit: "HEARTS" },
+        ]
+        expect(compareHands(hand1, hand2)).toBe(0)
+    })
+
+    it("returns 0 for 2 equivalent 3 of a kinds if the next 2 high cards are also the same", () => {
+        const hand1: Card[] = [
+            { rank: 2, suit: "CLUBS" },
+            { rank: 2, suit: "SPADES" },
+            { rank: 2, suit: "HEARTS" },
+            { rank: 5, suit: "DIAMONDS" },
+            { rank: 6, suit: "HEARTS" },
+            { rank: 9, suit: "HEARTS" },
+            { rank: 10, suit: "HEARTS" },
+        ]
+        const hand2: Card[] = [
+            { rank: 2, suit: "CLUBS" },
+            { rank: 2, suit: "SPADES" },
+            { rank: 2, suit: "HEARTS" },
+            { rank: 5, suit: "DIAMONDS" },
+            { rank: 7, suit: "HEARTS" },
+            { rank: 9, suit: "HEARTS" },
+            { rank: 10, suit: "HEARTS" },
+        ]
+        expect(compareHands(hand1, hand2)).toBe(0)
+    })
+
+    it("resolves a tie between 2 pairs by high card", () => {
+        const hand1: Card[] = [
+            { rank: 2, suit: "CLUBS" },
+            { rank: 2, suit: "SPADES" },
+            { rank: 4, suit: "HEARTS" },
+            { rank: 5, suit: "DIAMONDS" },
+            { rank: 6, suit: "HEARTS" },
+            { rank: 8, suit: "HEARTS" },
+            { rank: 10, suit: "HEARTS" },
+        ]
+        const hand2: Card[] = [
+            { rank: 2, suit: "CLUBS" },
+            { rank: 2, suit: "SPADES" },
+            { rank: 0, suit: "HEARTS" },
+            { rank: 5, suit: "DIAMONDS" },
+            { rank: 7, suit: "HEARTS" },
+            { rank: 9, suit: "HEARTS" },
+            { rank: 10, suit: "HEARTS" },
+        ]
+        expect(compareHands(hand1, hand2)).toBe(-1)
+    })
+
+    it("resolves a tie between 2 equivalent 2 pair by high card", () => {
+        const hand1: Card[] = [
+            { rank: 2, suit: "CLUBS" },
+            { rank: 2, suit: "SPADES" },
+            { rank: 4, suit: "HEARTS" },
+            { rank: 4, suit: "DIAMONDS" },
+            { rank: 6, suit: "HEARTS" },
+            { rank: 8, suit: "HEARTS" },
+            { rank: 10, suit: "HEARTS" },
+        ]
+        const hand2: Card[] = [
+            { rank: 2, suit: "CLUBS" },
+            { rank: 2, suit: "SPADES" },
+            { rank: 4, suit: "HEARTS" },
+            { rank: 4, suit: "DIAMONDS" },
+            { rank: 7, suit: "HEARTS" },
+            { rank: 9, suit: "HEARTS" },
+            { rank: 11, suit: "HEARTS" },
+        ]
+        expect(compareHands(hand1, hand2)).toBe(-1)
     })
 })

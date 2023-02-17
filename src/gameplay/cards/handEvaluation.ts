@@ -84,3 +84,19 @@ export const findBestHand = (cards: Card[], handCheckers: HandChecker[]): HandEv
         handValue
     }
 }
+
+export const allHandCheckers = [
+    findPotentialStraightFlush,
+    (cards: Card[] ) => findPotentialGroup(cards, 4),
+    findPotentialFullHouse,
+    findPotentialFlush,
+    findPotentialStraight,
+    (cards: Card[] ) => findPotentialGroup(cards, 3),
+    findPotentialTwoPairs,
+    (cards: Card[] ) => findPotentialGroup(cards, 2),
+    findHighCard   
+]
+
+export const indicesWithoutLeftovers = [0, 2, 3, 4]
+export const fourOfAKindIndex = 1
+export const twoPairsIndex = 6
