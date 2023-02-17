@@ -1,4 +1,4 @@
-import { findHighCard, findPotentialFlush, findPotentialFullHouse, findPotentialGroup, findPotentialStraight, findPotentialTwoPairs, getCardName, makeDeck, rankNameMapping } from "../../gameplay/cards"
+import { findHighCard, findPotentialFlush, findPotentialFullHouse, findPotentialGroup, findPotentialStraight, findPotentialStraightFlush, findPotentialTwoPairs, getCardName, makeDeck, rankNameMapping } from "../../gameplay/cards"
 import { Card } from "../../types"
 
 describe("getCardName function", () => {
@@ -51,7 +51,7 @@ describe("findPotentialGroup function", () => {
             { rank: 2, suit: "HEARTS" },
             { rank: 1, suit: "CLUBS"}
         ]
-        expect(findPotentialGroup(cards, 3)).toBeUndefined
+        expect(findPotentialGroup(cards, 3)).toBeUndefined()
     })
 
     it("returns the rank of the higher group when multiple groups found", () => {
@@ -87,7 +87,7 @@ describe("findPotentialFlush function", () => {
             { rank: 1, suit: "CLUBS" },
             { rank: 3, suit: "SPADES" }
         ]
-        expect(findPotentialFlush(cards)).toBeUndefined
+        expect(findPotentialFlush(cards)).toBeUndefined()
     })
 
     it("finds the rank of the highest possible flush when there are more than 5 of a suit", () => {
@@ -137,7 +137,7 @@ describe("findPotentialFullHouse function", () => {
             { rank: 2, suit: "HEARTS" },
             { rank: 1, suit: "CLUBS" }
         ]
-        expect(findPotentialFullHouse(cards)).toBeUndefined
+        expect(findPotentialFullHouse(cards)).toBeUndefined()
     })
 })
 
@@ -160,7 +160,7 @@ describe("findPotentialTwoPairs function", () => {
             { rank: 2, suit: "HEARTS" },
             { rank: 1, suit: "CLUBS" }
         ]
-        expect(findPotentialTwoPairs(cards)).toBeUndefined
+        expect(findPotentialTwoPairs(cards)).toBeUndefined()
     })
 
     it("returns undefined when no pairs found", () => {
@@ -168,7 +168,7 @@ describe("findPotentialTwoPairs function", () => {
             { rank: 2, suit: "CLUBS" },
             { rank: 3, suit: "DIAMONDS" },
         ]
-        expect(findPotentialTwoPairs(cards)).toBeUndefined
+        expect(findPotentialTwoPairs(cards)).toBeUndefined()
     })
 })
 
@@ -209,7 +209,7 @@ describe("findPotentialStraight function", () => {
             { rank: 5, suit: "DIAMONDS" },
             { rank: 10, suit: "CLUBS" },
         ]
-        expect(findPotentialStraight(cards)).toBeUndefined
+        expect(findPotentialStraight(cards)).toBeUndefined()
     })
 
     it("detects a straight where the ace is low", () => {
@@ -233,12 +233,63 @@ describe("findPotentialStraight function", () => {
             { rank: 12, suit: "DIAMONDS" },
             { rank: 10, suit: "CLUBS" },
         ]
-        expect(findPotentialStraight(cards)).toBeUndefined
+        expect(findPotentialStraight(cards)).toBeUndefined()
     })
 })
 
 describe("findPotentialStraighFlush function", () => {
-    // TODO
+    it("returns the rank of the highest card present in the straight of the straight flush", () => {
+        const cards: Card[] = [
+            { rank: 0, suit: "CLUBS" },
+            { rank: 1, suit: "CLUBS" },
+            { rank: 2, suit: "CLUBS" },
+            { rank: 3, suit: "CLUBS" },
+            { rank: 4, suit: "CLUBS" },
+            { rank: 10, suit: "CLUBS" },
+        ]
+        expect(findPotentialStraightFlush(cards)).toBe(4)
+    })
+
+    it("returns undefined when there is a straight and a flush but not a straight flush", () => {
+        const cards: Card[] = [
+            { rank: 0, suit: "CLUBS" },
+            { rank: 1, suit: "CLUBS" },
+            { rank: 2, suit: "DIAMONDS" },
+            { rank: 3, suit: "CLUBS" },
+            { rank: 4, suit: "CLUBS" },
+            { rank: 8, suit: "CLUBS" },
+        ]
+        expect(findPotentialStraightFlush(cards)).toBeUndefined()
+    })
+
+    it("returns undefined when there is a straight but no flush", () => {
+        const cards: Card[] = [
+            { rank: 0, suit: "CLUBS" },
+            { rank: 1, suit: "HEARTS" },
+            { rank: 2, suit: "DIAMONDS" },
+            { rank: 3, suit: "CLUBS" },
+            { rank: 4, suit: "CLUBS" },
+        ]
+        expect(findPotentialStraightFlush(cards)).toBeUndefined()
+    })
+
+    it("returns undefined when there is a flush but no straight", () => {
+        const cards: Card[] = [
+            { rank: 0, suit: "CLUBS" },
+            { rank: 1, suit: "CLUBS" },
+            { rank: 5, suit: "CLUBS" },
+            { rank: 8, suit: "CLUBS" },
+            { rank: 11, suit: "CLUBS" }
+        ]
+        expect(findPotentialStraightFlush(cards)).toBeUndefined()
+    })
+
+    it("returns undefined when there is neither a flush nor a straight", () => {
+        const cards: Card[] = [
+            { rank: 4, suit: "CLUBS" }
+        ]
+        expect(findPotentialStraightFlush(cards)).toBeUndefined()
+    })
 })
 
 describe("findHighCard function", () => {
