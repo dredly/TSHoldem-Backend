@@ -94,16 +94,26 @@ export const findPotentialStraight: HandChecker = (cards: Card[]): number | unde
 }
 
 export const findPotentialStraightFlush: HandChecker = (cards: Card[]): number | undefined => {
-    const straightRank = findPotentialStraight(cards)
-    if (straightRank && findPotentialFlush(cards)) {
-        return straightRank
+    const highestToLowest = [ ...cards ].sort((c1, c2) => c2.rank - c1.rank)
+    for (const card of highestToLowest) {
+        const potentialStraightRanks = [
+            card.rank,
+            card.rank - 1,
+            card.rank - 2,
+            card.rank - 3,
+            card.rank === 3 ? 12 : card.rank - 4
+        ]
+        // Make sure we only look for a flush in a sequence of cards
+        if (every(potentialStraightRanks, r => highestToLowest.find(c => c.rank === r))) {
+            const sequentialCards = highestToLowest.filter(c => potentialStraightRanks.includes(c.rank))
+            return findPotentialFlush(sequentialCards)
+        }
     }
 }
 
 export const findHighCard: HandChecker = (cards: Card[]): number => {
     return Math.max(...cards.map(c => c.rank))
 }
-
 
 export const findBestHand = (cards: Card[], handCheckers: HandChecker[]) => {
     // NOT IMPLEMENTED
