@@ -4,6 +4,10 @@ export type Suit = 'SPADES' | 'HEARTS' | 'DIAMONDS' | 'CLUBS'
 
 export type Hand = 'PAIR' | 'THREE OF A KIND' | 'FOUR OF A KIND' | 'STRAIGHT' | 'FLUSH' | 'HIGH CARD'
 
+export interface HandChecker {
+    (cards: Card[]): number | undefined
+}
+
 export interface Card {
     rank: number,
     suit: Suit

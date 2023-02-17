@@ -1,4 +1,4 @@
-import { Card, Suit } from "../types"
+import { Card, HandChecker, Suit } from "../types"
 
 export const rankNameMapping = new Map<number, String>([
     [0, "Two"],
@@ -34,9 +34,56 @@ export const countCardsOfRank = (rank: number, cards: Card[]): number => {
     return cards.filter(c => c.rank === rank).length
 }
 
+export const countCardsOfSuit = (suit: Suit, cards: Card[]): number => {
+    return cards.filter(c => c.suit === suit).length
+}
+
 export const findPotentialGroup = (cards: Card[], groupSize: number): number | undefined => {
     // If group(s) found, return the rank of the highest ranking group, otherwise return undefined
     return [ ...cards.map(c => c.rank) ]
         .sort((r1, r2) => r2 - r1)
         .find(r => countCardsOfRank(r, cards) === groupSize)
+}
+
+// Probably temporary just to test out my fancy functional interface
+export const findPotentialFourOfAKind: HandChecker = (cards: Card[]): number | undefined => {
+    return findPotentialGroup(cards, 4)
+}
+
+export const findPotentialFlush: HandChecker = (cards: Card[]): number | undefined => {
+    const numForFlush = 5
+    return [ ...cards ]
+        .sort((c1, c2) => c2.rank - c1.rank)
+        .find(c => countCardsOfSuit(c.suit, cards) >= numForFlush)?.rank
+}
+
+export const findPotentialFullHouse: HandChecker = (cards: Card[]): number | undefined => {
+    const threeOfAKindRank = findPotentialGroup(cards, 3)
+    if (threeOfAKindRank) {
+        const remainingCards = cards.filter(c => c.rank !== threeOfAKindRank)
+        // there could potentially be a second group of 3, but we would still just take 2 from it and consider it a full house
+        const pairRank = findPotentialGroup(remainingCards, 2) || findPotentialGroup(remainingCards, 3)
+        if (pairRank) {
+            // this ensures that the pairRank will only matter in comparisons when threeOfAKindRank is equal
+            return threeOfAKindRank + pairRank * 0.01
+        }
+    }
+}
+
+export const findPotentialTwoPairs: HandChecker = (cards: Card[]): number | undefined => {
+    const firstPairRank = findPotentialGroup(cards, 2)
+    if (firstPairRank) {
+        const remainingCards = cards.filter(c => c.rank !== firstPairRank)
+        const secondPairRank = findPotentialGroup(remainingCards, 2)
+        if (secondPairRank) {
+            // Because of the sorting done in findPotentialGroup, firstPairRank should alway be higher
+            // Also should not need to worry about accidentally getting a 4 of a kind here, as that check will be done first
+            return firstPairRank
+        }
+    }
+}
+
+
+export const findBestHand = (cards: Card[], handCheckers: HandChecker[]) => {
+    // NOT IMPLEMENTED
 }

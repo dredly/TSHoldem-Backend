@@ -11,10 +11,21 @@
     - [ ] Implement cards
         - [x] Function to display card name
         - [x] Function to generate the deck
-        - [x] Card counting function to detect groups
+        - [x] Functional interface for checking hands
+        - [ ] HandCheckers
+            - [x] Card counting function to detect groups
+            - [x] Detect flushes
+            - [x] Detect full house
+            - [x] Detect 2 pairs
+            - [ ] Detect straight
+            - [ ] Detect straight flush
+            - [ ] Detect high card
+        - [ ] Integrate into 1 hand checking function
 - [ ] Better typechecking
     - [ ] Check that properties are actually strings and not just that they are not undefined
 - [ ] Niceties
     - [ ] TestUtils to eliminate repetition with test data
     - [ ] Eslint
     - [ ] Code coverage
+- [ ] Optimisations
+    - [ ] Optimise order of hand checking, e.g. check for pairs before checking for 3s and 4s
