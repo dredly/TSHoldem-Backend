@@ -24,6 +24,7 @@ export interface Player {
     id: String,
     name: String,
     role: Role,
+    cards: Card[]
     money: number
 }
 

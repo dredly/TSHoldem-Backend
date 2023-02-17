@@ -14,6 +14,7 @@ describe("createGame function", () => {
             id: "1",
             name: "Miguel",
             role: "OTHER",
+            cards: [],
             money: 42069
         }
         const newGame = createGame(testPlayer)

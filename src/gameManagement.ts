@@ -7,6 +7,7 @@ export const createPlayer = (name: String): Player => {
         id: randomUUID(),
         name,
         role: "OTHER",
+        cards: [],
         money: gameConfig.startingMoney
     }
 }
