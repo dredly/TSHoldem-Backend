@@ -25,6 +25,9 @@
         - [ ] Add ability to check for multiple hand types, i.e. pair + high card(s) -> probably as part of hand comparison function
             - [x] Compare 2 hand evaluations
             - [ ] Compare 2 hands
+                - [x] Compare high cards recursively
+                - [ ] Split up cards.ts
+                - [ ] Full hand compare functionality
             - [ ] Extend to be able to find winner from more than 2 players
 - [ ] Better typechecking
     - [ ] Check that properties are actually strings and not just that they are not undefined

@@ -1,4 +1,5 @@
 import { 
+    compareByHighCards,
     compareHandEvaluations, 
     findBestHand, 
     findHighCard, 
@@ -540,5 +541,49 @@ describe("getLeftoversFromCompoundValue function", () => {
             { rank: 4, suit: "CLUBS" }
         ]
         expect(getLeftoversFromCompondValue(cards, 7.03)).toEqual(expectedLeftovers)
+    })
+})
+
+describe("compareByHighCards function", () => {
+    it("returns 0 when both hands have same high cards", () => {
+        const hand1: Card[] = [
+            { rank: 4, suit: "CLUBS" },
+            { rank: 7, suit: "DIAMONDS" },
+            { rank: 3, suit: "HEARTS" },
+        ]
+        const hand2: Card[] = [
+            { rank: 4, suit: "HEARTS" },
+            { rank: 7, suit: "DIAMONDS" },
+            { rank: 3, suit: "SPADES" },
+        ]
+        expect(compareByHighCards(hand1, hand2)).toBe(0)
+    })
+
+    it("works when highest card is different", () => {
+        const hand1: Card[] = [
+            { rank: 4, suit: "CLUBS" },
+            { rank: 7, suit: "DIAMONDS" },
+            { rank: 3, suit: "HEARTS" },
+        ]
+        const hand2: Card[] = [
+            { rank: 4, suit: "HEARTS" },
+            { rank: 8, suit: "DIAMONDS" },
+            { rank: 3, suit: "SPADES" },
+        ]
+        expect(compareByHighCards(hand1, hand2)).toBe(-1)
+    })
+
+    it("works when lowest card is different", () => {
+        const hand1: Card[] = [
+            { rank: 4, suit: "CLUBS" },
+            { rank: 7, suit: "DIAMONDS" },
+            { rank: 3, suit: "HEARTS" },
+        ]
+        const hand2: Card[] = [
+            { rank: 4, suit: "HEARTS" },
+            { rank: 7, suit: "DIAMONDS" },
+            { rank: 2, suit: "SPADES" },
+        ]
+        expect(compareByHighCards(hand1, hand2)).toBe(1)
     })
 })

@@ -142,6 +142,21 @@ export const getLeftoversFromCompondValue = (cards: Card[], handValue: number): 
     return cards.filter(c => ![majorValue, minorValue].includes(c.rank))
 }
 
+export const compareByHighCards = (hand1: Card[], hand2: Card[]): number => {
+    // Generally would expect length of the hands to be same, so optimise by only checking length of hand1
+    if (!hand1.length) {
+        return 0
+    }
+    const evaluations = [hand1, hand2].map(h => findBestHand(h, [findHighCard]))
+    const comparisonResult = compareHandEvaluations(evaluations[0], evaluations[1])
+    if (comparisonResult) {
+        return comparisonResult
+    }
+    // Here we expect handEvaluations to have the same handValue
+    const handValue = evaluations[0].handValue
+    return compareByHighCards(getLeftoversFromValue(hand1, handValue), getLeftoversFromValue(hand2, handValue))
+}
+
 export const compareHands = (hand1: Card[], hand2: Card[]): number => {
     // NOT IMPLEMENTED
     return 2
