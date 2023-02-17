@@ -19,11 +19,13 @@
             - [x] Detect 2 pairs
             - [x] Detect straight
             - [ ] Detect straight flush
-            - [ ] Detect high card
+            - [x] Detect high card
         - [ ] Integrate into 1 hand checking function
+        - [ ] Add ability to check for multiple hand types, i.e. pair + high card(s)
 - [ ] Better typechecking
     - [ ] Check that properties are actually strings and not just that they are not undefined
 - [ ] Niceties
+    - [ ] Move hand checking functions into their own file
     - [ ] TestUtils to eliminate repetition with test data
     - [ ] Eslint
     - [ ] Code coverage

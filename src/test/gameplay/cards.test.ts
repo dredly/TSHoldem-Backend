@@ -1,4 +1,4 @@
-import { findPotentialFlush, findPotentialFullHouse, findPotentialGroup, findPotentialStraight, findPotentialTwoPairs, getCardName, makeDeck, rankNameMapping } from "../../gameplay/cards"
+import { findHighCard, findPotentialFlush, findPotentialFullHouse, findPotentialGroup, findPotentialStraight, findPotentialTwoPairs, getCardName, makeDeck, rankNameMapping } from "../../gameplay/cards"
 import { Card } from "../../types"
 
 describe("getCardName function", () => {
@@ -234,5 +234,23 @@ describe("findPotentialStraight function", () => {
             { rank: 10, suit: "CLUBS" },
         ]
         expect(findPotentialStraight(cards)).toBeUndefined
+    })
+})
+
+describe("findPotentialStraighFlush function", () => {
+    // TODO
+})
+
+describe("findHighCard function", () => {
+    it("returns the rank of the highest card present", () => {
+        const cards: Card[] = [
+            { rank: 4, suit: "CLUBS" },
+            { rank: 2, suit: "DIAMONDS" },
+            { rank: 3, suit: "HEARTS" },
+            { rank: 5, suit: "CLUBS" },
+            { rank: 5, suit: "DIAMONDS" },
+            { rank: 10, suit: "CLUBS" },
+        ]
+        expect(findHighCard(cards)).toBe(10)
     })
 })

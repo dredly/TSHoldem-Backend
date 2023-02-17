@@ -23,7 +23,6 @@
   },
   "dependencies": {
     "lodash.every": "^4.6.0",
-    "ts-pattern": "^4.1.4",
     "ws": "^8.12.1"
   }
 }
