@@ -37,7 +37,7 @@
     - [ ] Playing rounds
         - [x] Prepare for round function
         - [x] blindsRound function
-        - [ ] round reset type function
+        - [x] round reset type function
         - [ ] flop
         - [ ] turn
         - [ ] river

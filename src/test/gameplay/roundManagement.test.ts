@@ -1,5 +1,5 @@
 import { makeDeckDefault } from "../../gameplay/cards/cardUtils"
-import { blindsRound, getWinners, prepareForRound, sortPlayersByScore, switchRoles } from "../../gameplay/roundManagement"
+import { blindsRound, getWinners, prepareForRound, resetAfterRound, sortPlayersByScore, switchRoles } from "../../gameplay/roundManagement"
 import { Card, Game, Player } from "../../types"
 
 describe("switchRoles function", () => {
@@ -272,5 +272,52 @@ describe("blindsRound function", () => {
 })
 
 describe("resetAfterRound function", () => {
-    
+    it("resets the game back to a clean state", () => {
+        const p1Cards: Card[] = [
+            { rank: 12, suit: "CLUBS" },
+            { rank: 1, suit: "HEARTS" },
+        ]
+        const p2Cards: Card[] = [
+            { rank: 3, suit: "CLUBS" },
+            { rank: 4, suit: "SPADES" },
+        ]
+        const game: Game = {
+            id: "5",
+            deck: [
+                { rank: 4, suit: "CLUBS" },
+                { rank: 2, suit: "DIAMONDS" },
+                { rank: 2, suit: "HEARTS" },
+                { rank: 1, suit: "CLUBS" },
+                { rank: 9, suit: "SPADES" },
+                { rank: 11, suit: "DIAMONDS"},
+                { rank: 8, suit: "SPADES" },
+            ],
+            cardsOnTable: [
+                { rank: 8, suit: "CLUBS" },
+                { rank: 1, suit: "DIAMONDS" },
+                { rank: 5, suit: "HEARTS" },
+                { rank: 6, suit: "DIAMONDS" },
+                { rank: 9, suit: "CLUBS" },
+            ],
+            pot: 60,
+            players: [
+                {id: "1", name: "player1", role: "SMALL_BLIND", cards: p1Cards, money: 50 },
+                {id: "2", name: "player2", role: "BIG_BLIND", cards: p2Cards, money: 90 },
+            ]
+        }
+
+        const expectedResetGame: Game = {
+            id: "5",
+            deck: makeDeckDefault(),
+            cardsOnTable: [],
+            pot: 0,
+            players: [
+                {id: "1", name: "player1", role: "BIG_BLIND", cards: [], money: 50 },
+                {id: "2", name: "player2", role: "SMALL_BLIND", cards: [], money: 90 },
+            ]
+        }
+
+        const resetGame = resetAfterRound(game)
+        expect(resetGame).toEqual(expectedResetGame)
+    })
 })
