@@ -1,4 +1,4 @@
-- [ ] Basic gameplay
+- [x] Basic gameplay
     - [x] Function to initialise roles for players
     - [x] Function to switch roles at end of round
     - [x] Implement money (basic)
@@ -8,7 +8,7 @@
         - [x] Function to find betting order
         - [x] Function to bet money
         - [x] Function for winning pot (with possibility of splitting) (dont consider partial takings for all in yet)
-    - [ ] Implement cards
+    - [x] Implement cards
         - [x] Function to display card name
         - [x] Function to generate the deck
         - [x] Functional interface for checking hands
@@ -31,7 +31,14 @@
         - [x] Find winners function
 - [ ] More Gameplay
     - [ ] Dealing cards
+        - [x] Dealing to players
+        - [ ] Showing cards
     - [ ] Proper betting
+    - [ ] Shuffling cards
+- [ ] Advanced gameplay
+    - [ ] Increasing blinds
+    - [ ] Elimination
+    - [ ] All ins (maybe will be handled by proper betting)
 - [ ] Better typechecking
     - [ ] Check that properties are actually strings and not just that they are not undefined
 - [ ] Niceties
