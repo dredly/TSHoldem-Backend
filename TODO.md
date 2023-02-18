@@ -33,8 +33,14 @@
     - [x] Dealing cards
         - [x] Dealing to players
         - [x] Showing cards
-    - [ ] Shuffling cards
-    - [ ] Proper betting
+    - [x] Shuffling cards
+    - [ ] Playing rounds
+        - [x] Prepare for round function
+        - [ ] blindsRound function
+        - [ ] round reset type function
+        - [ ] flop
+        - [ ] turn
+        - [ ] river
 - [ ] Advanced gameplay
     - [ ] Increasing blinds
     - [ ] Elimination

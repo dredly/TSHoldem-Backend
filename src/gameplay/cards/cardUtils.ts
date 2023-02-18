@@ -16,6 +16,9 @@ export const rankNameMapping = new Map<number, String>([
     [12, "Ace"],
 ])
 
+export const defaultRanks: number[] = [ ...rankNameMapping.keys() ]
+export const defaultSuits: Suit[] = ["SPADES", "DIAMONDS", "CLUBS", "HEARTS"]
+
 export const getRankName = (rank: number, mapping: Map<number, String>): String => {
     const rankName = mapping.get(rank)
     if (!rankName) throw new Error("No name for that rank")
@@ -28,6 +31,10 @@ export const getCardName = (card: Card, mapping: Map<number, String>): String =>
 
 export const makeDeck = (ranks: number[], suits: Suit[]): Card[] => {
     return ranks.flatMap(rank => suits.map(suit => ({ rank, suit })))
+}
+
+export const makeDeckDefault = () => {
+    return makeDeck(defaultRanks, defaultSuits)
 }
 
 export const countCardsOfRank = (rank: number, cards: Card[]): number => {
