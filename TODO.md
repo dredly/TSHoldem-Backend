@@ -28,11 +28,13 @@
                 - [x] Compare high cards recursively
                 - [x] Split up cards.ts
                 - [x] Full hand compare functionality
-        - [ ] Find winners function
+        - [x] Find winners function
+- [ ] More Gameplay
+    - [ ] Dealing cards
+    - [ ] Proper betting
 - [ ] Better typechecking
     - [ ] Check that properties are actually strings and not just that they are not undefined
 - [ ] Niceties
-    - [ ] Move hand checking functions into their own file
     - [ ] TestUtils to eliminate repetition with test data
     - [ ] Eslint
     - [ ] Code coverage
