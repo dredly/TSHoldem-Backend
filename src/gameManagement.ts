@@ -1,5 +1,6 @@
 import { randomUUID } from "crypto";
 import { gameConfig } from "./gameConfig";
+import { makeDeckDefault } from "./gameplay/cards/cardUtils";
 import { Game, Player } from "./types";
 
 export const createPlayer = (name: String): Player => {
@@ -18,7 +19,8 @@ export const createGame = (player: Player): Game => {
     return {
         id: randomUUID(),
         players: [player],
-        deck: [], // PLACEHOLDER UNTIL PROPER SHUFFLING etc
+        turnToBet: 0,
+        deck: makeDeckDefault(),
         cardsOnTable: [],
         pot: 0,
         betAmount: 0

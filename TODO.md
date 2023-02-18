@@ -40,7 +40,8 @@
         - [x] round reset type function
         - [ ] Keep track of betting
             - [x] Update types
-            - [ ] Functionality
+            - [x] Add types for keeping track of whos turn it is to bet
+            - [ ] Basic betting functionality and tests
         - [ ] preflop bets
         - [ ] flop
         - [ ] preturn bets

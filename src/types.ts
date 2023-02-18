@@ -33,6 +33,7 @@ export interface Player {
 export interface Game {
     id: String,
     players: Player[],
+    turnToBet: number,
     deck: Card[],
     cardsOnTable: Card[]
     pot: number,

@@ -1,8 +1,8 @@
 import shuffle from "lodash.shuffle";
 import { gameConfig } from "../gameConfig";
 import { Card, Game, Player } from "../types";
-import { getBettingOrder, makeBet } from "./betting";
-import { makeDeck, makeDeckDefault } from "./cards/cardUtils";
+import { getBettingOrder, updateGameWithBet } from "./betting";
+import { makeDeckDefault } from "./cards/cardUtils";
 import { dealRound } from "./cards/dealing";
 import { compareHands } from "./cards/handComparison";
 
@@ -49,8 +49,8 @@ export const blindsRound = (game: Game): Game => {
     const [ smallBlindAmount, bigBlindAmount ] = [Math.floor(gameConfig.startingBlind * 0.5), gameConfig.startingBlind]
     const gameAfterDealing = dealRound(game)
     // Assume the player are in order small blind, big blind, rest
-    const gameAfterSmallBlind = makeBet(gameAfterDealing, gameAfterDealing.players[0], smallBlindAmount)
-    const gameAfterBigBlind = makeBet(gameAfterSmallBlind, gameAfterSmallBlind.players[1], bigBlindAmount)
+    const gameAfterSmallBlind = updateGameWithBet(gameAfterDealing, gameAfterDealing.players[0], smallBlindAmount)
+    const gameAfterBigBlind = updateGameWithBet(gameAfterSmallBlind, gameAfterSmallBlind.players[1], bigBlindAmount)
     return gameAfterBigBlind
 }
 

@@ -153,6 +153,7 @@ describe("getWinners function", () => {
             players,
             cardsOnTable,
             pot: 1000,
+            turnToBet: 0,
             betAmount: 0,
             deck: []
         }
@@ -212,6 +213,7 @@ describe("getWinners function", () => {
             players,
             cardsOnTable,
             pot: 1000,
+            turnToBet: 0,
             deck: [],
             betAmount: 0
         }
@@ -231,6 +233,7 @@ describe("prepareForRound function", () => {
             cardsOnTable: [],
             pot: 0,
             betAmount: 0,
+            turnToBet: 0,
             players: [
                 {id: "1", name: "player1", role: "OTHER", cards: [], money: 42069, moneyInPot: 0, inPlay: true },
                 {id: "2", name: "player2", role: "OTHER", cards: [], money: 42069, moneyInPot: 0, inPlay: true },
@@ -267,11 +270,13 @@ describe("blindsRound function", () => {
                 {id: "1", name: "player4", role: "OTHER", cards: [], money: 50, moneyInPot: 0, inPlay: true }
             ],
             pot: 0,
+            turnToBet: 0,
             betAmount: 0
         }
         const updatedGame = blindsRound(game)
         expect(updatedGame.players.map(p => p.money)).toEqual([49, 48, 50])
         expect(updatedGame.pot).toBe(3)
+        expect(updatedGame.betAmount).toBe(2)
         expect(updatedGame.deck).toEqual([
             { rank: 8, suit: "SPADES" },
             { rank: 1, suit: "HEARTS"}
@@ -323,6 +328,7 @@ describe("resetAfterRound function", () => {
             ],
             pot: 60,
             betAmount: 20,
+            turnToBet: 0,
             players: [
                 {id: "1", name: "player1", role: "SMALL_BLIND", cards: p1Cards, money: 50, moneyInPot: 0, inPlay: true },
                 {id: "2", name: "player2", role: "BIG_BLIND", cards: p2Cards, money: 90, moneyInPot: 0, inPlay: true },
@@ -335,6 +341,7 @@ describe("resetAfterRound function", () => {
             cardsOnTable: [],
             pot: 0,
             betAmount: 0,
+            turnToBet: 0,
             players: [
                 {id: "1", name: "player1", role: "BIG_BLIND", cards: [], money: 50, moneyInPot: 0, inPlay: true },
                 {id: "2", name: "player2", role: "SMALL_BLIND", cards: [], money: 90, moneyInPot: 0, inPlay: true },

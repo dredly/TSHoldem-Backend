@@ -12,24 +12,45 @@ export const betAmount = (player: Player, amount: number): Player => {
     if (amount > player.money) {
         throw new Error("Player does not have enough money")
     }
-    return { ...player, money: player.money - amount }
+    return { ...player, money: player.money - amount, moneyInPot: player.moneyInPot + amount }
 }
 
-export const callBet = (player: Player, amountToBet: number, amountInPotAlready: number): Player => {
-    return betAmount(player, amountToBet - amountInPotAlready)
+export const fold = (player: Player): Player => {
+    return { ...player, inPlay: false }
 }
 
-export const raiseBet = (player: Player, amountInPotAlready: number, raiseTo: number): Player => {
-    return betAmount(player, raiseTo - amountInPotAlready)
-}
-
-export const makeBet = (game: Game, player: Player, amount: number): Game => {
+export const updateGameWithBet = (game: Game, player: Player, amount: number): Game => {
     const updatedPlayer = betAmount(player, amount)
     return { 
         ...game, 
         pot: game.pot + amount,
+        betAmount: Math.max(game.betAmount, updatedPlayer.moneyInPot),
         players: game.players.map(p => p.id === player.id ? updatedPlayer : p)
     }
+}
+
+export const updateGameWithCall = (game: Game, player: Player): Game => {
+    const amountToCall = game.betAmount - player.moneyInPot
+    return updateGameWithBet(game, player, amountToCall)
+}
+
+export const updateGameWithRaise = (game: Game, player: Player, raiseBy: number): Game => {
+    const amountToRaise = (game.betAmount + raiseBy) - player.moneyInPot
+    return updateGameWithBet(game, player, amountToRaise)
+}
+
+export const updateGameWithFold = (game: Game, player: Player): Game => {
+    return {
+        ...game,
+        players: game.players.map(p => p.id === player.id ? fold(p) : p)
+    }
+}
+
+export const checkForOutstandingBets = (game: Game): boolean => {
+    // Function to be called at end of round of betting to see if there are players who still need to respond to a raise
+    return game.players
+        .filter(p => p.inPlay)
+        .some(p => p.moneyInPot < game.betAmount)
 }
 
 export const winPot = (game: Game, winners: Player[]): Game => {
