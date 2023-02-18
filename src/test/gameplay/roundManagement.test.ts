@@ -1,5 +1,5 @@
 import { makeDeckDefault } from "../../gameplay/cards/cardUtils"
-import { getWinners, prepareForRound, sortPlayersByScore, switchRoles } from "../../gameplay/roundManagement"
+import { blindsRound, getWinners, prepareForRound, sortPlayersByScore, switchRoles } from "../../gameplay/roundManagement"
 import { Card, Game, Player } from "../../types"
 
 describe("switchRoles function", () => {
@@ -226,7 +226,49 @@ describe("prepareForRound function", () => {
 })
 
 describe("blindsRound function", () => {
-
+    it("handles the bets and deals out cards as expected", () => {
+        const game: Game = {
+            id: "1",
+            deck: [
+                { rank: 4, suit: "CLUBS" },
+                { rank: 2, suit: "DIAMONDS" },
+                { rank: 2, suit: "HEARTS" },
+                { rank: 1, suit: "CLUBS" },
+                { rank: 9, suit: "SPADES" },
+                { rank: 11, suit: "DIAMONDS"},
+                { rank: 8, suit: "SPADES" },
+                { rank: 1, suit: "HEARTS"}
+            ],
+            cardsOnTable: [],
+            players: [
+                {id: "2", name: "player2", role: "SMALL_BLIND", cards: [], money: 50},
+                {id: "3", name: "player3", role: "BIG_BLIND", cards: [], money: 50},
+                {id: "1", name: "player4", role: "OTHER", cards: [], money: 50}
+            ],
+            pot: 0
+        }
+        const updatedGame = blindsRound(game)
+        expect(updatedGame.players.map(p => p.money)).toEqual([49, 48, 50])
+        expect(updatedGame.pot).toBe(3)
+        expect(updatedGame.deck).toEqual([
+            { rank: 8, suit: "SPADES" },
+            { rank: 1, suit: "HEARTS"}
+        ])
+        expect(updatedGame.players.map(p => p.cards)).toEqual([
+            [
+                { rank: 4, suit: "CLUBS" },
+                { rank: 2, suit: "DIAMONDS" },
+            ],
+            [
+                { rank: 2, suit: "HEARTS" },
+                { rank: 1, suit: "CLUBS" },
+            ],
+            [
+                { rank: 9, suit: "SPADES" },
+                { rank: 11, suit: "DIAMONDS"},
+            ]
+        ])
+    })
 })
 
 describe("resetAfterRound function", () => {

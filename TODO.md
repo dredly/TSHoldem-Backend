@@ -36,7 +36,7 @@
     - [x] Shuffling cards
     - [ ] Playing rounds
         - [x] Prepare for round function
-        - [ ] blindsRound function
+        - [x] blindsRound function
         - [ ] round reset type function
         - [ ] flop
         - [ ] turn
