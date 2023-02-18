@@ -30,11 +30,11 @@
                 - [x] Full hand compare functionality
         - [x] Find winners function
 - [ ] More Gameplay
-    - [ ] Dealing cards
+    - [x] Dealing cards
         - [x] Dealing to players
-        - [ ] Showing cards
-    - [ ] Proper betting
+        - [x] Showing cards
     - [ ] Shuffling cards
+    - [ ] Proper betting
 - [ ] Advanced gameplay
     - [ ] Increasing blinds
     - [ ] Elimination

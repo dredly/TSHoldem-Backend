@@ -22,3 +22,12 @@ export const dealRound = (game: Game): Game => {
         players: dealToPlayers(cardsTaken, game.players)
     }
 }
+
+export const revealCards = (game: Game, numCards: number): Game => {
+    const { updatedDeck, cardsTaken } = takeCardsFromDeck(game.deck, numCards)
+    return {
+        ...game,
+        deck: updatedDeck,
+        cardsOnTable: game.cardsOnTable.concat(cardsTaken)
+    }
+}
