@@ -25,7 +25,9 @@ export interface Player {
     name: String,
     role: Role,
     cards: Card[]
-    money: number
+    money: number,
+    moneyInPot: number,
+    inPlay: boolean
 }
 
 export interface Game {
@@ -33,7 +35,8 @@ export interface Game {
     players: Player[],
     deck: Card[],
     cardsOnTable: Card[]
-    pot: number
+    pot: number,
+    betAmount: number
 }
 
 export interface ApplicationState {

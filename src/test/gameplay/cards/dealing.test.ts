@@ -7,6 +7,7 @@ describe("dealRound function", () => {
         const game: Game = {
             id: "1",
             pot: 322,
+            betAmount: 0,
             deck: [
                 { rank: 4, suit: "CLUBS" },
                 { rank: 3, suit: "SPADES"},
@@ -51,6 +52,7 @@ describe("revealCards function", () => {
         const game: Game = {
             id: "1",
             pot: 322,
+            betAmount: 0,
             deck: [
                 { rank: 4, suit: "CLUBS" },
                 { rank: 3, suit: "SPADES"},
@@ -69,6 +71,7 @@ describe("revealCards function", () => {
         expect(gameAfterFlop).toEqual({
             id: "1",
             pot: 322,
+            betAmount: 0,
             deck: [
                 { rank: 8, suit: "SPADES"},
                 { rank: 9, suit: "CLUBS" },
@@ -88,6 +91,7 @@ describe("revealCards function", () => {
         expect(gameAfterTurn).toEqual({
             id: "1",
             pot: 322,
+            betAmount: 0,
             deck: [
                 { rank: 9, suit: "CLUBS" },
                 { rank: 10, suit: "SPADES"},

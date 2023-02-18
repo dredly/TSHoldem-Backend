@@ -8,7 +8,9 @@ export const createPlayer = (name: String): Player => {
         name,
         role: "OTHER",
         cards: [],
-        money: gameConfig.startingMoney
+        money: gameConfig.startingMoney,
+        inPlay: true,
+        moneyInPot: 0
     }
 }
 
@@ -18,7 +20,8 @@ export const createGame = (player: Player): Game => {
         players: [player],
         deck: [], // PLACEHOLDER UNTIL PROPER SHUFFLING etc
         cardsOnTable: [],
-        pot: 0
+        pot: 0,
+        betAmount: 0
     }
 }
 

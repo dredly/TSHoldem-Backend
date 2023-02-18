@@ -15,7 +15,9 @@ describe("createGame function", () => {
             name: "Miguel",
             role: "OTHER",
             cards: [],
-            money: 42069
+            money: 42069,
+            moneyInPot: 0,
+            inPlay: true
         }
         const newGame = createGame(testPlayer)
         expect(newGame.players).toHaveLength(1)
@@ -42,7 +44,8 @@ describe("leaveGame function", () => {
             players,
             deck: [],
             cardsOnTable: [],
-            pot: 0
+            pot: 0,
+            betAmount: 0
         }
         const updatedGame = leaveGame(game, players[2])
         expect(updatedGame.players).toHaveLength(2)
@@ -54,7 +57,8 @@ describe("leaveGame function", () => {
             players: [createPlayer("Miguel")],
             deck: [],
             cardsOnTable: [],
-            pot: 0
+            pot: 0,
+            betAmount: 0
         }
         const playerNotInGame = createPlayer("Outsider Joe")
         expect(() => {leaveGame(game, playerNotInGame)}).toThrowError("Tried to leave game but player not in it")

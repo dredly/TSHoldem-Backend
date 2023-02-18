@@ -15,6 +15,14 @@ export const betAmount = (player: Player, amount: number): Player => {
     return { ...player, money: player.money - amount }
 }
 
+export const callBet = (player: Player, amountToBet: number, amountInPotAlready: number): Player => {
+    return betAmount(player, amountToBet - amountInPotAlready)
+}
+
+export const raiseBet = (player: Player, amountInPotAlready: number, raiseTo: number): Player => {
+    return betAmount(player, raiseTo - amountInPotAlready)
+}
+
 export const makeBet = (game: Game, player: Player, amount: number): Game => {
     const updatedPlayer = betAmount(player, amount)
     return { 

@@ -5,45 +5,45 @@ import { Card, Game, Player } from "../../types"
 describe("switchRoles function", () => {
     it("works for 2 players", () => {
         const before: Player[] = [
-            {id: "1", name: "player1", role: "SMALL_BLIND", cards: [], money: 42069},
-            {id: "2", name: "player2", role: "BIG_BLIND", cards: [], money: 42069}
+            {id: "1", name: "player1", role: "SMALL_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
+            {id: "2", name: "player2", role: "BIG_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true}
         ]
         const after = switchRoles(before)
         expect(after).toEqual([
-            {id: "1", name: "player1", role: "BIG_BLIND", cards: [], money: 42069},
-            {id: "2", name: "player2", role: "SMALL_BLIND", cards: [], money: 42069}
+            {id: "1", name: "player1", role: "BIG_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
+            {id: "2", name: "player2", role: "SMALL_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true}
         ])
     })
 
     it("works for more players with no overshoot", () => {
         const before: Player[] = [
-            {id: "1", name: "player1", role: "OTHER", cards: [], money: 42069},
-            {id: "2", name: "player2", role: "SMALL_BLIND", cards: [], money: 42069},
-            {id: "3", name: "player3", role: "BIG_BLIND", cards: [], money: 42069},
-            {id: "4", name: "player4", role: "OTHER", cards: [], money: 42069}
+            {id: "1", name: "player1", role: "OTHER", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
+            {id: "2", name: "player2", role: "SMALL_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
+            {id: "3", name: "player3", role: "BIG_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
+            {id: "4", name: "player4", role: "OTHER", cards: [], money: 42069, moneyInPot: 0, inPlay: true}
         ]
         const after = switchRoles(before)
         expect(after).toEqual([
-            {id: "1", name: "player1", role: "OTHER", cards: [], money: 42069},
-            {id: "2", name: "player2", role: "OTHER", cards: [], money: 42069},
-            {id: "3", name: "player3", role: "SMALL_BLIND", cards: [], money: 42069},
-            {id: "4", name: "player4", role: "BIG_BLIND", cards: [], money: 42069}
+            {id: "1", name: "player1", role: "OTHER", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
+            {id: "2", name: "player2", role: "OTHER", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
+            {id: "3", name: "player3", role: "SMALL_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
+            {id: "4", name: "player4", role: "BIG_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true}
         ])
     })
 
     it("works for more players with overshoot", () => {
         const before: Player[] = [
-            {id: "1", name: "player1", role: "OTHER", cards: [], money: 42069},
-            {id: "2", name: "player2", role: "OTHER", cards: [], money: 42069},
-            {id: "3", name: "player3", role: "SMALL_BLIND", cards: [], money: 42069},
-            {id: "4", name: "player4", role: "BIG_BLIND", cards: [], money: 42069}
+            {id: "1", name: "player1", role: "OTHER", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
+            {id: "2", name: "player2", role: "OTHER", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
+            {id: "3", name: "player3", role: "SMALL_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
+            {id: "4", name: "player4", role: "BIG_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true}
         ]
         const after = switchRoles(before)
         expect(after).toEqual([
-            {id: "1", name: "player1", role: "BIG_BLIND", cards: [], money: 42069},
-            {id: "2", name: "player2", role: "OTHER", cards: [], money: 42069},
-            {id: "3", name: "player3", role: "OTHER", cards: [], money: 42069},
-            {id: "4", name: "player4", role: "SMALL_BLIND", cards: [], money: 42069}
+            {id: "1", name: "player1", role: "BIG_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
+            {id: "2", name: "player2", role: "OTHER", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
+            {id: "3", name: "player3", role: "OTHER", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
+            {id: "4", name: "player4", role: "SMALL_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true}
         ])
     })
 })
@@ -66,7 +66,9 @@ describe("sortPlayersByScoreFunction", () => {
                     { rank: 3, suit: "DIAMONDS" },
                     { rank: 11, suit: "SPADES" }
                 ],
-                money: 12
+                money: 12, 
+                moneyInPot: 0, 
+                inPlay: true
             },
             {
                 id: "2",
@@ -76,7 +78,9 @@ describe("sortPlayersByScoreFunction", () => {
                     { rank: 2, suit: "SPADES" },
                     { rank: 12, suit: "SPADES" }
                 ],
-                money: 12
+                money: 12, 
+                moneyInPot: 0, 
+                inPlay: true
             },
             {
                 id: "3",
@@ -86,7 +90,9 @@ describe("sortPlayersByScoreFunction", () => {
                     { rank: 1, suit: "DIAMONDS" },
                     { rank: 8, suit: "HEARTS" }
                 ],
-                money: 12
+                money: 12, 
+                moneyInPot: 0, 
+                inPlay: true
             }
         ]
 
@@ -113,7 +119,9 @@ describe("getWinners function", () => {
                     { rank: 3, suit: "DIAMONDS" },
                     { rank: 11, suit: "SPADES" }
                 ],
-                money: 12
+                money: 12, 
+                moneyInPot: 0, 
+                inPlay: true
             },
             {
                 id: "2",
@@ -123,7 +131,9 @@ describe("getWinners function", () => {
                     { rank: 2, suit: "SPADES" },
                     { rank: 12, suit: "SPADES" }
                 ],
-                money: 12
+                money: 12, 
+                moneyInPot: 0, 
+                inPlay: true
             },
             {
                 id: "3",
@@ -133,7 +143,9 @@ describe("getWinners function", () => {
                     { rank: 1, suit: "DIAMONDS" },
                     { rank: 8, suit: "HEARTS" }
                 ],
-                money: 12
+                money: 12, 
+                moneyInPot: 0, 
+                inPlay: true
             }
         ]
         const game: Game = {
@@ -141,6 +153,7 @@ describe("getWinners function", () => {
             players,
             cardsOnTable,
             pot: 1000,
+            betAmount: 0,
             deck: []
         }
 
@@ -165,7 +178,9 @@ describe("getWinners function", () => {
                     { rank: 3, suit: "DIAMONDS" },
                     { rank: 11, suit: "SPADES" }
                 ],
-                money: 12
+                money: 12, 
+                moneyInPot: 0, 
+                inPlay: true
             },
             {
                 id: "2",
@@ -175,7 +190,9 @@ describe("getWinners function", () => {
                     { rank: 1, suit: "SPADES" },
                     { rank: 12, suit: "SPADES" }
                 ],
-                money: 12
+                money: 12, 
+                moneyInPot: 0, 
+                inPlay: true
             },
             {
                 id: "3",
@@ -185,7 +202,9 @@ describe("getWinners function", () => {
                     { rank: 1, suit: "DIAMONDS" },
                     { rank: 8, suit: "HEARTS" }
                 ],
-                money: 12
+                money: 12, 
+                moneyInPot: 0, 
+                inPlay: true
             }
         ]
         const game: Game = {
@@ -193,7 +212,8 @@ describe("getWinners function", () => {
             players,
             cardsOnTable,
             pot: 1000,
-            deck: []
+            deck: [],
+            betAmount: 0
         }
 
         const winnerNames = getWinners(game).map(w => w.name)
@@ -210,11 +230,12 @@ describe("prepareForRound function", () => {
             deck: makeDeckDefault(),
             cardsOnTable: [],
             pot: 0,
+            betAmount: 0,
             players: [
-                {id: "1", name: "player1", role: "OTHER", cards: [], money: 42069},
-                {id: "2", name: "player2", role: "OTHER", cards: [], money: 42069},
-                {id: "3", name: "player3", role: "SMALL_BLIND", cards: [], money: 42069},
-                {id: "4", name: "player4", role: "BIG_BLIND", cards: [], money: 42069}
+                {id: "1", name: "player1", role: "OTHER", cards: [], money: 42069, moneyInPot: 0, inPlay: true },
+                {id: "2", name: "player2", role: "OTHER", cards: [], money: 42069, moneyInPot: 0, inPlay: true },
+                {id: "3", name: "player3", role: "SMALL_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true },
+                {id: "4", name: "player4", role: "BIG_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true }
             ]
         }
         const preparedGame = prepareForRound(initialGame)
@@ -241,11 +262,12 @@ describe("blindsRound function", () => {
             ],
             cardsOnTable: [],
             players: [
-                {id: "2", name: "player2", role: "SMALL_BLIND", cards: [], money: 50},
-                {id: "3", name: "player3", role: "BIG_BLIND", cards: [], money: 50},
-                {id: "1", name: "player4", role: "OTHER", cards: [], money: 50}
+                {id: "2", name: "player2", role: "SMALL_BLIND", cards: [], money: 50, moneyInPot: 0, inPlay: true },
+                {id: "3", name: "player3", role: "BIG_BLIND", cards: [], money: 50, moneyInPot: 0, inPlay: true },
+                {id: "1", name: "player4", role: "OTHER", cards: [], money: 50, moneyInPot: 0, inPlay: true }
             ],
-            pot: 0
+            pot: 0,
+            betAmount: 0
         }
         const updatedGame = blindsRound(game)
         expect(updatedGame.players.map(p => p.money)).toEqual([49, 48, 50])
@@ -300,9 +322,10 @@ describe("resetAfterRound function", () => {
                 { rank: 9, suit: "CLUBS" },
             ],
             pot: 60,
+            betAmount: 20,
             players: [
-                {id: "1", name: "player1", role: "SMALL_BLIND", cards: p1Cards, money: 50 },
-                {id: "2", name: "player2", role: "BIG_BLIND", cards: p2Cards, money: 90 },
+                {id: "1", name: "player1", role: "SMALL_BLIND", cards: p1Cards, money: 50, moneyInPot: 0, inPlay: true },
+                {id: "2", name: "player2", role: "BIG_BLIND", cards: p2Cards, money: 90, moneyInPot: 0, inPlay: true },
             ]
         }
 
@@ -311,9 +334,10 @@ describe("resetAfterRound function", () => {
             deck: makeDeckDefault(),
             cardsOnTable: [],
             pot: 0,
+            betAmount: 0,
             players: [
-                {id: "1", name: "player1", role: "BIG_BLIND", cards: [], money: 50 },
-                {id: "2", name: "player2", role: "SMALL_BLIND", cards: [], money: 90 },
+                {id: "1", name: "player1", role: "BIG_BLIND", cards: [], money: 50, moneyInPot: 0, inPlay: true },
+                {id: "2", name: "player2", role: "SMALL_BLIND", cards: [], money: 90, moneyInPot: 0, inPlay: true },
             ]
         }
 

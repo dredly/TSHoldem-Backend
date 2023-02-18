@@ -38,8 +38,14 @@
         - [x] Prepare for round function
         - [x] blindsRound function
         - [x] round reset type function
+        - [ ] Keep track of betting
+            - [x] Update types
+            - [ ] Functionality
+        - [ ] preflop bets
         - [ ] flop
+        - [ ] preturn bets
         - [ ] turn
+        - [ ] preriver bets
         - [ ] river
 - [ ] Advanced gameplay
     - [ ] Increasing blinds

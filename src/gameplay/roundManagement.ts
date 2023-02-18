@@ -58,6 +58,7 @@ export const resetAfterRound = (game: Game): Game => {
     return {
         ...game,
         pot: 0,
+        betAmount: 0,
         deck: makeDeckDefault(),
         cardsOnTable: [],
         players: switchRoles(game.players.map(p => ( { ...p, cards: [] } ))) 
