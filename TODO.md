@@ -1,0 +1,42 @@
+- [ ] Basic gameplay
+    - [x] Function to initialise roles for players
+    - [x] Function to switch roles at end of round
+    - [x] Implement money (basic)
+        - [x] Gameplay rules/config file thing
+        - [x] Add money to player type
+        - [x] Add pot to game type
+        - [x] Function to find betting order
+        - [x] Function to bet money
+        - [x] Function for winning pot (with possibility of splitting) (dont consider partial takings for all in yet)
+    - [ ] Implement cards
+        - [x] Function to display card name
+        - [x] Function to generate the deck
+        - [x] Functional interface for checking hands
+        - [x] HandCheckers
+            - [x] Card counting function to detect groups
+            - [x] Detect flushes
+            - [x] Detect full house
+            - [x] Detect 2 pairs
+            - [x] Detect straight
+            - [x] Detect straight flush
+            - [x] Detect high card
+            - [x] Rank 2 pairs based on first and second pair (like for full house)
+        - [x] Integrate into 1 hand checking function
+        - [x] Add ability to check for multiple hand types, i.e. pair + high card(s) -> probably as part of hand comparison function
+            - [x] Compare 2 hand evaluations
+            - [x] Compare 2 hands
+                - [x] Compare high cards recursively
+                - [x] Split up cards.ts
+                - [x] Full hand compare functionality
+        - [x] Find winners function
+- [ ] More Gameplay
+    - [ ] Dealing cards
+    - [ ] Proper betting
+- [ ] Better typechecking
+    - [ ] Check that properties are actually strings and not just that they are not undefined
+- [ ] Niceties
+    - [ ] TestUtils to eliminate repetition with test data
+    - [ ] Eslint
+    - [ ] Code coverage
+- [ ] Optimisations
+    - [ ] Optimise order of hand checking, e.g. check for pairs before checking for 3s and 4s
