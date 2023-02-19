@@ -49,8 +49,10 @@ describe("handleJoin function", () => {
                     id: "1",
                     players: [host],
                     deck: [],
+                    turnToBet: host.id,
                     cardsOnTable: [],
-                    pot: 0
+                    pot: 0,
+                    betAmount: 0
                 }
             ]
         }
@@ -68,8 +70,10 @@ describe("handleJoin function", () => {
                     id: "1",
                     players: [createPlayer("bob")],
                     deck: [],
+                    turnToBet: "foo",
                     cardsOnTable: [],
-                    pot: 0
+                    pot: 0,
+                    betAmount: 0
                 }
             ]
         }
@@ -85,8 +89,10 @@ describe("handleJoin function", () => {
                     id: "1",
                     players: [createPlayer("bob")],
                     deck: [],
+                    turnToBet: "foo",
                     cardsOnTable: [],
-                    pot: 0
+                    pot: 0,
+                    betAmount: 0
                 }
             ]
         }

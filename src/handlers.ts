@@ -1,4 +1,5 @@
 import { debug } from "console"
+import { WebSocket } from "ws"
 import { createGame, createPlayer } from "./gameManagement"
 import { ApplicationState, CreateGameMessage, CreatePlayerMessage, JoinGameMessage } from "./types"
 

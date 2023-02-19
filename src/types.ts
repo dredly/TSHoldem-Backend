@@ -25,15 +25,19 @@ export interface Player {
     name: String,
     role: Role,
     cards: Card[]
-    money: number
+    money: number,
+    moneyInPot: number,
+    inPlay: boolean
 }
 
 export interface Game {
     id: String,
     players: Player[],
+    turnToBet: String, // the id of the player currently betting
     deck: Card[],
     cardsOnTable: Card[]
-    pot: number
+    pot: number,
+    betAmount: number
 }
 
 export interface ApplicationState {

@@ -1,5 +1,5 @@
 import { createPlayer } from "../../gameManagement"
-import { betAmount, getBettingOrder, makeBet, winPot } from "../../gameplay/betting"
+import { betAmount, getBettingOrder, updateGameWithBet, winPot } from "../../gameplay/betting"
 import { Player, Game } from "../../types"
 
 describe("getBettingOrder function", () => {
@@ -37,35 +37,6 @@ describe("betAmount function", () => {
     })
 })
 
-describe("makeBet function", () => {
-    it("correctly updates the game when a valid bet is made", () => {
-        const player1 =  { ...createPlayer("bob"), money: 100 }
-        const player2 = { ...createPlayer("bill"), money: 200 }
-        const game: Game = {
-            id: "1",
-            players: [player1, player2],
-            deck: [],
-            cardsOnTable: [],
-            pot: 600
-        }
-        const updatedGame = makeBet(game, player2, 80)
-        expect(updatedGame.pot).toBe(680)
-        expect(updatedGame.players[1].money).toBe(120)
-    })
-    it("throws an error if an invalid bet is attempted", () => {
-        const player1 =  { ...createPlayer("bob"), money: 100 }
-        const player2 = { ...createPlayer("bill"), money: 200 }
-        const game: Game = {
-            id: "1",
-            players: [player1, player2],
-            deck: [],
-            cardsOnTable: [],
-            pot: 600
-        }
-        expect(() => { makeBet(game, player2, 800) }).toThrowError("Player does not have enough money")
-    })
-})
-
 describe("winPot function", () => {
     it("works with a single winner", () => {
         const player1 =  { ...createPlayer("bob"), money: 100 }
@@ -75,7 +46,9 @@ describe("winPot function", () => {
             players: [player1, player2],
             deck: [],
             cardsOnTable: [],
-            pot: 600
+            pot: 600,
+            turnToBet: "foo",
+            betAmount: 0
         }
         const updatedGame = winPot(game, [player1])
         expect(updatedGame.pot).toBe(0)
@@ -89,7 +62,9 @@ describe("winPot function", () => {
             players: [player1, player2],
             deck: [],
             cardsOnTable: [],
-            pot: 600
+            pot: 600,
+            turnToBet: "foo",
+            betAmount: 0
         }
         const updatedGame = winPot(game, [player1, player2])
         expect(updatedGame.pot).toBe(0)

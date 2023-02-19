@@ -12,16 +12,48 @@ export const betAmount = (player: Player, amount: number): Player => {
     if (amount > player.money) {
         throw new Error("Player does not have enough money")
     }
-    return { ...player, money: player.money - amount }
+    return { ...player, money: player.money - amount, moneyInPot: player.moneyInPot + amount }
 }
 
-export const makeBet = (game: Game, player: Player, amount: number): Game => {
+export const fold = (player: Player): Player => {
+    return { ...player, inPlay: false }
+}
+
+export const updateGameWithBet = (game: Game, player: Player, amount: number): Game => {
     const updatedPlayer = betAmount(player, amount)
     return { 
         ...game, 
         pot: game.pot + amount,
+        betAmount: Math.max(game.betAmount, updatedPlayer.moneyInPot),
         players: game.players.map(p => p.id === player.id ? updatedPlayer : p)
     }
+}
+
+export const updateGameWithCall = (game: Game, player: Player): Game => {
+    const amountToCall = game.betAmount - player.moneyInPot
+    return updateGameWithBet(game, player, amountToCall)
+}
+
+export const updateGameWithRaise = (game: Game, player: Player, raiseBy: number): Game => {
+    const amountToRaise = (game.betAmount + raiseBy) - player.moneyInPot
+    return updateGameWithBet(game, player, amountToRaise)
+}
+
+export const updateGameWithFold = (game: Game, player: Player): Game => {
+    return {
+        ...game,
+        players: game.players.map(p => p.id === player.id ? fold(p) : p)
+    }
+}
+
+export const nextPlayerToBet = (game: Game): String | undefined => {
+    // Returns either the id of the next player to bet, or undefined if the round of betting is over
+    const playersInPlay = game.players.filter(p => p.inPlay)
+    const playerIdx = playersInPlay.findIndex(p => p.id === game.turnToBet)
+    if (playerIdx === playersInPlay.length - 1) {
+        return playersInPlay.find(p => p.moneyInPot < game.betAmount)?.id
+    }
+    return playersInPlay[playerIdx + 1].id
 }
 
 export const winPot = (game: Game, winners: Player[]): Game => {

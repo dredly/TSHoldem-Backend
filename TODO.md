@@ -1,4 +1,4 @@
-- [ ] Basic gameplay
+- [x] Basic gameplay
     - [x] Function to initialise roles for players
     - [x] Function to switch roles at end of round
     - [x] Implement money (basic)
@@ -8,7 +8,7 @@
         - [x] Function to find betting order
         - [x] Function to bet money
         - [x] Function for winning pot (with possibility of splitting) (dont consider partial takings for all in yet)
-    - [ ] Implement cards
+    - [x] Implement cards
         - [x] Function to display card name
         - [x] Function to generate the deck
         - [x] Functional interface for checking hands
@@ -29,9 +29,32 @@
                 - [x] Split up cards.ts
                 - [x] Full hand compare functionality
         - [x] Find winners function
-- [ ] More Gameplay
-    - [ ] Dealing cards
-    - [ ] Proper betting
+- [x] More Gameplay part 1
+    - [x] Dealing cards
+        - [x] Dealing to players
+        - [x] Showing cards
+    - [x] Shuffling cards
+    - [x] Playing rounds
+        - [x] Prepare for round function
+        - [x] blindsRound function
+        - [x] round reset type function
+        - [ ] Keep track of betting
+            - [x] Update types
+            - [x] Add types for keeping track of whos turn it is to bet
+- [ ] Integration of basic game management with frontend
+- [ ] More gameplay part 2
+    - [ ] Function for determining who bets next (with test)
+        - [ ] Basic betting functionality and tests    
+        - [ ] preflop bets
+        - [ ] flop
+        - [ ] preturn bets
+        - [ ] turn
+        - [ ] preriver bets
+        - [ ] river
+- [ ] Advanced gameplay
+    - [ ] Increasing blinds
+    - [ ] Elimination
+    - [ ] All ins (maybe will be handled by proper betting)
 - [ ] Better typechecking
     - [ ] Check that properties are actually strings and not just that they are not undefined
 - [ ] Niceties
