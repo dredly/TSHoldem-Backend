@@ -37,7 +37,8 @@ export interface Game {
     deck: Card[],
     cardsOnTable: Card[]
     pot: number,
-    betAmount: number
+    betAmount: number,
+    started: boolean
 }
 
 export interface ApplicationState {

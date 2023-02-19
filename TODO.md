@@ -47,8 +47,8 @@
     - [x] Publish event back to client for joining game
         - [x] Publish message to sender
         - [x] Broadcast to all players already in game
-    - [ ] Fix existing tests
-    - [ ] Add boolean property started to game
+    - [x] Fix existing tests
+    - [x] Add boolean property started to game
 - [ ] More gameplay part 2
     - [ ] Function for determining who bets next (with test)
         - [ ] Basic betting functionality and tests    

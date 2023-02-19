@@ -23,7 +23,8 @@ export const createGame = (player: Player): Game => {
         deck: makeDeckDefault(),
         cardsOnTable: [],
         pot: 0,
-        betAmount: 0
+        betAmount: 0,
+        started: false
     }
 }
 

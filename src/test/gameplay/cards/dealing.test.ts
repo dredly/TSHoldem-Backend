@@ -24,7 +24,8 @@ describe("dealRound function", () => {
                 createPlayer("John"),
                 createPlayer("Adam"),
                 createPlayer("Amy")
-            ]
+            ],
+            started: true
         }
         const updatedGame = dealRound(game)
         expect(updatedGame.deck).toEqual([
@@ -66,7 +67,8 @@ describe("revealCards function", () => {
                 { rank: 1, suit: "SPADES"},
             ],
             cardsOnTable: [],
-            players: []
+            players: [],
+            started: true
         }
 
         const gameAfterFlop = revealCards(game, 3)
@@ -87,7 +89,8 @@ describe("revealCards function", () => {
                 { rank: 3, suit: "SPADES"},
                 { rank: 5, suit: "CLUBS" }
             ],
-            players: []
+            players: [],
+            started: true
         })
 
         const gameAfterTurn = revealCards(gameAfterFlop, 1)
@@ -108,7 +111,8 @@ describe("revealCards function", () => {
                 { rank: 5, suit: "CLUBS" },
                 { rank: 8, suit: "SPADES"},
             ],
-            players: []
+            players: [],
+            started: true
         })
     })
 })
