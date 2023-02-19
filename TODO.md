@@ -44,9 +44,11 @@
 - [ ] Integration of basic game management with frontend
     - [x] Publish event back to client for creating player
     - [x] Publish event back to client for creating game
-    - [ ] Publish event back to client for joining game
+    - [x] Publish event back to client for joining game
         - [x] Publish message to sender
-        - [ ] Broadcast to all players already in game
+        - [x] Broadcast to all players already in game
+    - [ ] Fix existing tests
+    - [ ] Add boolean property started to game
 - [ ] More gameplay part 2
     - [ ] Function for determining who bets next (with test)
         - [ ] Basic betting functionality and tests    

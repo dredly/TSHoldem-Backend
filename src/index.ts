@@ -11,8 +11,8 @@ const applicationState: ApplicationState = {
     games: []
 }
 
-// Maps playerIds to their websockets
-const pubSubInfo = new Map<String, WebSocket[]>()
+// Maps playerIds to webSockets
+const pubSubInfo = new Map<String, WebSocket>()
 
 wss.on("connection", ws => {
     console.log("Someone connected")
@@ -23,13 +23,13 @@ wss.on("connection", ws => {
             try {
                 const clientMessage = parseClientMessage(obj)
                 if (isCreatePlayerMessage(clientMessage)) {
-                    handlePlayerCreation(clientMessage, applicationState, ws)
+                    handlePlayerCreation(clientMessage, applicationState, ws, pubSubInfo)
                 }
                 if (isCreateGameMessage(clientMessage)) {
                     handleGameCreation(clientMessage, applicationState, ws)
                 }
                 if (isJoinGameMessage(clientMessage)) {
-                    handleJoin(clientMessage, applicationState, ws)
+                    handleJoin(clientMessage, applicationState, pubSubInfo)
                 }
             } catch (err) {
                 if (err instanceof Error) {

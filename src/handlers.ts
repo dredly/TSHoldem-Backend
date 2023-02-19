@@ -1,15 +1,16 @@
 import { debug } from "console"
 import { WebSocket } from "ws"
 import { createGame, createPlayer } from "./gameManagement"
+import { publishServerMessage, publishToPlayers } from "./server/publishing"
 import { ApplicationState, CreateGameMessage, CreatePlayerMessage, GameCreatedMessage, GameJoinedMessage, JoinGameMessage, PlayerCreatedMessage } from "./types"
 
-export const handlePlayerCreation = (message: CreatePlayerMessage, applicationState: ApplicationState, ws: WebSocket) => {
+export const handlePlayerCreation = (message: CreatePlayerMessage, applicationState: ApplicationState, ws: WebSocket, pubSubInfo: Map<String, WebSocket>) => {
     console.log(debug, `Creating player with name ${message.name}`)
     const player = createPlayer(message.name)
     applicationState.players = applicationState.players.concat(player)
     
-    const serverMessage: PlayerCreatedMessage = { player }
-    ws.send(JSON.stringify(serverMessage))
+    pubSubInfo.set(player.id, ws)
+    publishServerMessage({ player }, ws)
 }
 
 export const handleGameCreation = (message: CreateGameMessage, applicationState: ApplicationState, ws: WebSocket) => {
@@ -22,11 +23,10 @@ export const handleGameCreation = (message: CreateGameMessage, applicationState:
     applicationState.players = applicationState.players.filter(p => p.id !== message.playerId)
     applicationState.games = applicationState.games.concat(game)
     
-    const serverMessage: GameCreatedMessage = { game }
-    ws.send(JSON.stringify(serverMessage))
+    publishServerMessage({ game }, ws)
 }
 
-export const handleJoin = (message: JoinGameMessage, applicationState: ApplicationState, ws: WebSocket) => {
+export const handleJoin = (message: JoinGameMessage, applicationState: ApplicationState, pubSubInfo: Map<String, WebSocket>) => {
     console.log(debug, `Player with id ${message.playerId} joining game with id ${message.gameId}`)
 
     const player = applicationState.players.find(p => p.id === message.playerId)
@@ -45,6 +45,5 @@ export const handleJoin = (message: JoinGameMessage, applicationState: Applicati
     applicationState.games = applicationState.games
         .map(g => g.id === message.gameId ? gameJoined : g)
 
-    const serverMessage: GameJoinedMessage = { gameJoined }
-    ws.send(JSON.stringify(serverMessage))
+    publishToPlayers({ gameJoined }, pubSubInfo, gameJoined.players)
 }
