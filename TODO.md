@@ -49,6 +49,7 @@
         - [x] Broadcast to all players already in game
     - [x] Fix existing tests
     - [x] Add boolean property started to game
+    - [x] startGame handler
 - [ ] More gameplay part 2
     - [ ] Function for determining who bets next (with test)
         - [ ] Basic betting functionality and tests    

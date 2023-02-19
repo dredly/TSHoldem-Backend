@@ -2,7 +2,13 @@ import { debug } from "console"
 import { WebSocket } from "ws"
 import { createGame, createPlayer } from "./gameManagement"
 import { publishServerMessage, publishToPlayers } from "./server/publishing"
-import { ApplicationState, CreateGameMessage, CreatePlayerMessage, GameCreatedMessage, GameJoinedMessage, JoinGameMessage, PlayerCreatedMessage } from "./types"
+import { 
+    ApplicationState, 
+    CreateGameMessage, 
+    CreatePlayerMessage, 
+    JoinGameMessage, 
+    StartGameMessage 
+} from "./types"
 
 export const handlePlayerCreation = (message: CreatePlayerMessage, applicationState: ApplicationState, ws: WebSocket, pubSubInfo: Map<String, WebSocket>) => {
     console.log(debug, `Creating player with name ${message.name}`)
@@ -46,4 +52,19 @@ export const handleJoin = (message: JoinGameMessage, applicationState: Applicati
         .map(g => g.id === message.gameId ? gameJoined : g)
 
     publishToPlayers({ gameJoined }, pubSubInfo, gameJoined.players)
+}
+
+export const handleStart = (message: StartGameMessage, applicationState: ApplicationState, pubSubInfo: Map<String, WebSocket>) => {
+    console.log(debug, `Starting game with id ${message.gameId}`)
+
+    const game = applicationState.games.find(g => g.id === message.gameId)
+    if (!game) {
+        throw new Error("game not found")
+    }
+
+    const gameStarted = { ...game, started: true }
+    applicationState.games = applicationState.games
+        .map(g => g.id === message.gameId ? gameStarted : g)
+
+    publishToPlayers({ gameStarted }, pubSubInfo, gameStarted.players)
 }
