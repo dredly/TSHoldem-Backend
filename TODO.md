@@ -42,6 +42,11 @@
             - [x] Update types
             - [x] Add types for keeping track of whos turn it is to bet
 - [ ] Integration of basic game management with frontend
+    - [x] Publish event back to client for creating player
+    - [x] Publish event back to client for creating game
+    - [ ] Publish event back to client for joining game
+        - [x] Publish message to sender
+        - [ ] Broadcast to all players already in game
 - [ ] More gameplay part 2
     - [ ] Function for determining who bets next (with test)
         - [ ] Basic betting functionality and tests    

@@ -1,4 +1,4 @@
-import { WebSocketServer } from 'ws';
+import { WebSocket, WebSocketServer } from 'ws';
 import { parseClientMessage } from './parsers';
 import { isCreateGameMessage, isCreatePlayerMessage, isJoinGameMessage } from './typeGuards';
 import { handleGameCreation, handlePlayerCreation, handleJoin } from './handlers';
@@ -11,6 +11,9 @@ const applicationState: ApplicationState = {
     games: []
 }
 
+// Maps playerIds to their websockets
+const pubSubInfo = new Map<String, WebSocket[]>()
+
 wss.on("connection", ws => {
     console.log("Someone connected")
     ws.on("message", data => {
@@ -20,13 +23,13 @@ wss.on("connection", ws => {
             try {
                 const clientMessage = parseClientMessage(obj)
                 if (isCreatePlayerMessage(clientMessage)) {
-                    handlePlayerCreation(clientMessage, applicationState)
+                    handlePlayerCreation(clientMessage, applicationState, ws)
                 }
                 if (isCreateGameMessage(clientMessage)) {
-                    handleGameCreation(clientMessage, applicationState)
+                    handleGameCreation(clientMessage, applicationState, ws)
                 }
                 if (isJoinGameMessage(clientMessage)) {
-                    handleJoin(clientMessage, applicationState)
+                    handleJoin(clientMessage, applicationState, ws)
                 }
             } catch (err) {
                 if (err instanceof Error) {

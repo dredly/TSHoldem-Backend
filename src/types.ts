@@ -65,3 +65,17 @@ export interface JoinGameMessage {
 }
 
 export type ClientMessage = CreatePlayerMessage | CreateGameMessage | JoinGameMessage
+
+export interface PlayerCreatedMessage {
+    player: Player
+}
+
+export interface GameCreatedMessage {
+    game: Game
+}
+
+export interface GameJoinedMessage {
+    gameJoined: Game
+}
+
+export type ServerMessage = PlayerCreatedMessage | GameCreatedMessage | GameJoinedMessage
