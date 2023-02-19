@@ -47,7 +47,7 @@ describe("winPot function", () => {
             deck: [],
             cardsOnTable: [],
             pot: 600,
-            turnToBet: 0,
+            turnToBet: "foo",
             betAmount: 0
         }
         const updatedGame = winPot(game, [player1])
@@ -63,7 +63,7 @@ describe("winPot function", () => {
             deck: [],
             cardsOnTable: [],
             pot: 600,
-            turnToBet: 0,
+            turnToBet: "foo",
             betAmount: 0
         }
         const updatedGame = winPot(game, [player1, player2])

@@ -29,19 +29,22 @@
                 - [x] Split up cards.ts
                 - [x] Full hand compare functionality
         - [x] Find winners function
-- [ ] More Gameplay
+- [x] More Gameplay part 1
     - [x] Dealing cards
         - [x] Dealing to players
         - [x] Showing cards
     - [x] Shuffling cards
-    - [ ] Playing rounds
+    - [x] Playing rounds
         - [x] Prepare for round function
         - [x] blindsRound function
         - [x] round reset type function
         - [ ] Keep track of betting
             - [x] Update types
             - [x] Add types for keeping track of whos turn it is to bet
-            - [ ] Basic betting functionality and tests
+- [ ] Integration of basic game management with frontend
+- [ ] More gameplay part 2
+    - [ ] Function for determining who bets next (with test)
+        - [ ] Basic betting functionality and tests    
         - [ ] preflop bets
         - [ ] flop
         - [ ] preturn bets

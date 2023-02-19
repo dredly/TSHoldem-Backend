@@ -35,12 +35,14 @@ wss.on("connection", ws => {
             }
         } catch (err) {
             console.log("parsing error", err)
-        }
-        
+        }  
     })
     ws.on("close", () => {
         console.log("Someone disconnected")
     })
 })
 
-console.log("The WebSocket server is running on port 8080");
+wss.on("listening", () => {
+    console.log("The WebSocket server is running on port 8080");
+})
+

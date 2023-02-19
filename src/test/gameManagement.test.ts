@@ -43,7 +43,7 @@ describe("leaveGame function", () => {
             id: "1",
             players,
             deck: [],
-            turnToBet: 0,
+            turnToBet: "foo",
             cardsOnTable: [],
             pot: 0,
             betAmount: 0
@@ -57,7 +57,7 @@ describe("leaveGame function", () => {
             id: "1",
             players: [createPlayer("Miguel")],
             deck: [],
-            turnToBet: 0,
+            turnToBet: "foo",
             cardsOnTable: [],
             pot: 0,
             betAmount: 0

@@ -19,7 +19,7 @@ export const createGame = (player: Player): Game => {
     return {
         id: randomUUID(),
         players: [player],
-        turnToBet: 0,
+        turnToBet: player.id,
         deck: makeDeckDefault(),
         cardsOnTable: [],
         pot: 0,

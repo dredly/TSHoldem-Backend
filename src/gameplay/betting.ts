@@ -46,11 +46,14 @@ export const updateGameWithFold = (game: Game, player: Player): Game => {
     }
 }
 
-export const checkForOutstandingBets = (game: Game): boolean => {
-    // Function to be called at end of round of betting to see if there are players who still need to respond to a raise
-    return game.players
-        .filter(p => p.inPlay)
-        .some(p => p.moneyInPot < game.betAmount)
+export const nextPlayerToBet = (game: Game): String | undefined => {
+    // Returns either the id of the next player to bet, or undefined if the round of betting is over
+    const playersInPlay = game.players.filter(p => p.inPlay)
+    const playerIdx = playersInPlay.findIndex(p => p.id === game.turnToBet)
+    if (playerIdx === playersInPlay.length - 1) {
+        return playersInPlay.find(p => p.moneyInPot < game.betAmount)?.id
+    }
+    return playersInPlay[playerIdx + 1].id
 }
 
 export const winPot = (game: Game, winners: Player[]): Game => {

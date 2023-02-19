@@ -153,7 +153,7 @@ describe("getWinners function", () => {
             players,
             cardsOnTable,
             pot: 1000,
-            turnToBet: 0,
+            turnToBet: "foo",
             betAmount: 0,
             deck: []
         }
@@ -213,7 +213,7 @@ describe("getWinners function", () => {
             players,
             cardsOnTable,
             pot: 1000,
-            turnToBet: 0,
+            turnToBet: "foo",
             deck: [],
             betAmount: 0
         }
@@ -233,7 +233,7 @@ describe("prepareForRound function", () => {
             cardsOnTable: [],
             pot: 0,
             betAmount: 0,
-            turnToBet: 0,
+            turnToBet: "foo",
             players: [
                 {id: "1", name: "player1", role: "OTHER", cards: [], money: 42069, moneyInPot: 0, inPlay: true },
                 {id: "2", name: "player2", role: "OTHER", cards: [], money: 42069, moneyInPot: 0, inPlay: true },
@@ -270,7 +270,7 @@ describe("blindsRound function", () => {
                 {id: "1", name: "player4", role: "OTHER", cards: [], money: 50, moneyInPot: 0, inPlay: true }
             ],
             pot: 0,
-            turnToBet: 0,
+            turnToBet: "foo",
             betAmount: 0
         }
         const updatedGame = blindsRound(game)
@@ -328,7 +328,7 @@ describe("resetAfterRound function", () => {
             ],
             pot: 60,
             betAmount: 20,
-            turnToBet: 0,
+            turnToBet: "foo",
             players: [
                 {id: "1", name: "player1", role: "SMALL_BLIND", cards: p1Cards, money: 50, moneyInPot: 0, inPlay: true },
                 {id: "2", name: "player2", role: "BIG_BLIND", cards: p2Cards, money: 90, moneyInPot: 0, inPlay: true },
@@ -341,7 +341,7 @@ describe("resetAfterRound function", () => {
             cardsOnTable: [],
             pot: 0,
             betAmount: 0,
-            turnToBet: 0,
+            turnToBet: "foo",
             players: [
                 {id: "1", name: "player1", role: "BIG_BLIND", cards: [], money: 50, moneyInPot: 0, inPlay: true },
                 {id: "2", name: "player2", role: "SMALL_BLIND", cards: [], money: 90, moneyInPot: 0, inPlay: true },
