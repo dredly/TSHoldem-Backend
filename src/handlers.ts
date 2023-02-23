@@ -1,6 +1,7 @@
 import { debug } from "console"
 import { WebSocket } from "ws"
-import { createGame, createPlayer } from "./gameManagement"
+import { createGame, createPlayer, initialiseRoles } from "./gameManagement"
+import { blindsRound, prepareForRound } from "./gameplay/roundManagement"
 import { publishServerMessage, publishToPlayers } from "./server/publishing"
 import { 
     ApplicationState, 
@@ -62,7 +63,12 @@ export const handleStart = (message: StartGameMessage, applicationState: Applica
         throw new Error("game not found")
     }
 
-    const gameStarted = { ...game, started: true }
+    const gameStarted = blindsRound(prepareForRound({ 
+        ...game, 
+        players: initialiseRoles(game.players), 
+        started: true 
+    }))
+     
     applicationState.games = applicationState.games
         .map(g => g.id === message.gameId ? gameStarted : g)
 
