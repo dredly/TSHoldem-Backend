@@ -41,7 +41,7 @@
         - [ ] Keep track of betting
             - [x] Update types
             - [x] Add types for keeping track of whos turn it is to bet
-- [ ] Integration of basic game management with frontend
+- [x] Integration of basic game management with frontend
     - [x] Publish event back to client for creating player
     - [x] Publish event back to client for creating game
     - [x] Publish event back to client for joining game
@@ -52,7 +52,6 @@
     - [x] startGame handler
     - [x] Make the startGame handler actually prepare game and handle blinds
     - [x] Separate server message for starting game and updating game, to avoid weird behaviour
-    - [ ] Handler for players actually making a bet
 - [ ] More gameplay part 2
     - [ ] Function for determining who bets next (with test)
         - [ ] Basic betting functionality and tests    
