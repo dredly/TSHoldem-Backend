@@ -1,6 +1,12 @@
+import { WebSocket } from "ws"
 import { createGame, createPlayer } from "../gameManagement"
 import { handleGameCreation, handleJoin, handlePlayerCreation } from "../handlers"
 import { ApplicationState } from "../types"
+
+jest.mock("../server/publishing.ts")
+jest.mock("ws")
+const mockWs =  () => new WebSocket("ws://localhost:8080")
+const mockPubSubInfo = () => new Map()
 
 describe("handlePlayerCreation function", () => {
     it("adds a player to the application state", () => {
@@ -8,7 +14,7 @@ describe("handlePlayerCreation function", () => {
             players: [],
             games: []
         }
-        handlePlayerCreation({ name: "miguel" }, state)
+        handlePlayerCreation({ name: "miguel" }, state, mockWs(), mockPubSubInfo())
         expect(state.players).toHaveLength(1)
         expect(state.players[0].name).toBe("miguel")
     })
@@ -22,7 +28,7 @@ describe("handleGameCreation function", () => {
             players: [player],
             games: []
         }
-        handleGameCreation({ playerId }, state)
+        handleGameCreation({ playerId }, state, mockWs())
         expect(state.players).toHaveLength(0)
         expect(state.games).toHaveLength(1)
         expect(state.games[0].players[0]).toEqual(player)
@@ -33,7 +39,7 @@ describe("handleGameCreation function", () => {
             players: [],
             games: []
         }
-        expect(() => { handleGameCreation({ playerId: "foo" }, state) }).toThrowError("player not found")
+        expect(() => { handleGameCreation({ playerId: "foo" }, state, mockWs()) }).toThrowError("player not found")
     })
 })
 
@@ -52,11 +58,12 @@ describe("handleJoin function", () => {
                     turnToBet: host.id,
                     cardsOnTable: [],
                     pot: 0,
-                    betAmount: 0
+                    betAmount: 0,
+                    started: false
                 }
             ]
         }
-        handleJoin({ playerId: joinee.id, gameId: state.games[0].id }, state)
+        handleJoin({ playerId: joinee.id, gameId: state.games[0].id }, state, mockPubSubInfo())
         expect(state.players).toHaveLength(0)
         expect(state.games[0].players).toHaveLength(2)
         expect(state.games[0].players[1].name).toBe("Alice")
@@ -73,11 +80,12 @@ describe("handleJoin function", () => {
                     turnToBet: "foo",
                     cardsOnTable: [],
                     pot: 0,
-                    betAmount: 0
+                    betAmount: 0,
+                    started: false
                 }
             ]
         }
-        expect(() => {handleJoin({ playerId: "foo", gameId: "1" }, state)}).toThrowError("player not found")
+        expect(() => {handleJoin({ playerId: "foo", gameId: "1" }, state, mockPubSubInfo())}).toThrowError("player not found")
     })
 
     it("throws an error if given a game id not in the list of games", () => {
@@ -92,10 +100,11 @@ describe("handleJoin function", () => {
                     turnToBet: "foo",
                     cardsOnTable: [],
                     pot: 0,
-                    betAmount: 0
+                    betAmount: 0,
+                    started: false
                 }
             ]
         }
-        expect(() => {handleJoin({ playerId: joinee.id, gameId: "foo" }, state)}).toThrowError("game not found")
+        expect(() => {handleJoin({ playerId: joinee.id, gameId: "foo" }, state, mockPubSubInfo())}).toThrowError("game not found")
     })
 })

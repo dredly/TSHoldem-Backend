@@ -48,7 +48,8 @@ describe("winPot function", () => {
             cardsOnTable: [],
             pot: 600,
             turnToBet: "foo",
-            betAmount: 0
+            betAmount: 0,
+            started: true
         }
         const updatedGame = winPot(game, [player1])
         expect(updatedGame.pot).toBe(0)
@@ -64,7 +65,8 @@ describe("winPot function", () => {
             cardsOnTable: [],
             pot: 600,
             turnToBet: "foo",
-            betAmount: 0
+            betAmount: 0,
+            started: true
         }
         const updatedGame = winPot(game, [player1, player2])
         expect(updatedGame.pot).toBe(0)
