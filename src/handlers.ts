@@ -63,14 +63,18 @@ export const handleStart = (message: StartGameMessage, applicationState: Applica
         throw new Error("game not found")
     }
 
-    const gameStarted = blindsRound(prepareForRound({ 
+    const gameStarted = { 
         ...game, 
         players: initialiseRoles(game.players), 
         started: true 
-    }))
-     
+    }
+
+    const gameUpdated = blindsRound(prepareForRound(gameStarted))
+
     applicationState.games = applicationState.games
         .map(g => g.id === message.gameId ? gameStarted : g)
 
     publishToPlayers({ gameStarted }, pubSubInfo, gameStarted.players)
+    // May need to add slight delay here if frontend cannot handle
+    publishToPlayers({ gameUpdated}, pubSubInfo, gameUpdated.players)
 }

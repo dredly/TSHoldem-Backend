@@ -51,6 +51,7 @@
     - [x] Add boolean property started to game
     - [x] startGame handler
     - [x] Make the startGame handler actually prepare game and handle blinds
+    - [x] Separate server message for starting game and updating game, to avoid weird behaviour
     - [ ] Handler for players actually making a bet
 - [ ] More gameplay part 2
     - [ ] Function for determining who bets next (with test)

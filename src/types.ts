@@ -87,4 +87,13 @@ export interface GameStartedMessage {
     gameStarted: Game
 }
 
-export type ServerMessage = PlayerCreatedMessage | GameCreatedMessage | GameJoinedMessage | GameStartedMessage
+export interface GameUpdatedMessage {
+    gameUpdated: Game
+}
+
+export type ServerMessage = 
+    PlayerCreatedMessage | 
+    GameCreatedMessage | 
+    GameJoinedMessage |
+    GameStartedMessage |
+    GameUpdatedMessage
