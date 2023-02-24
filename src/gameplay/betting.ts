@@ -8,6 +8,16 @@ export const getBettingOrder = (players: Player[]): Player[] => {
     return players.slice(smallBlindIdx).concat(players.slice(0, smallBlindIdx))
 }
 
+export const nextPlayerToBet = (game: Game): String | undefined => {
+    // Returns either the id of the next player to bet, or undefined if the round of betting is over
+    const playersInPlay = game.players.filter(p => p.inPlay)
+    const playerIdx = playersInPlay.findIndex(p => p.id === game.turnToBet)
+    if (playerIdx === playersInPlay.length - 1) {
+        return playersInPlay.find(p => p.moneyInPot < game.betAmount)?.id
+    }
+    return playersInPlay[playerIdx + 1].id
+}
+
 export const betAmount = (player: Player, amount: number): Player => {
     if (amount > player.money) {
         throw new Error("Player does not have enough money")
@@ -44,16 +54,6 @@ export const updateGameWithFold = (game: Game, player: Player): Game => {
         ...game,
         players: game.players.map(p => p.id === player.id ? fold(p) : p)
     }
-}
-
-export const nextPlayerToBet = (game: Game): String | undefined => {
-    // Returns either the id of the next player to bet, or undefined if the round of betting is over
-    const playersInPlay = game.players.filter(p => p.inPlay)
-    const playerIdx = playersInPlay.findIndex(p => p.id === game.turnToBet)
-    if (playerIdx === playersInPlay.length - 1) {
-        return playersInPlay.find(p => p.moneyInPot < game.betAmount)?.id
-    }
-    return playersInPlay[playerIdx + 1].id
 }
 
 export const winPot = (game: Game, winners: Player[]): Game => {

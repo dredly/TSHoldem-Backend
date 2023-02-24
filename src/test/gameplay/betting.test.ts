@@ -1,5 +1,6 @@
-import { createPlayer } from "../../gameManagement"
-import { betAmount, getBettingOrder, updateGameWithBet, winPot } from "../../gameplay/betting"
+import { gameConfig } from "../../gameConfig"
+import { createGame, createPlayer } from "../../gameManagement"
+import { betAmount, getBettingOrder, nextPlayerToBet, updateGameWithBet, winPot } from "../../gameplay/betting"
 import { Player, Game } from "../../types"
 
 describe("getBettingOrder function", () => {
@@ -34,6 +35,50 @@ describe("betAmount function", () => {
     it("throws an error if a player tries to bet more than they have", () => {
         const player =  { ...createPlayer("bob"), money: 100 }
         expect(() => { betAmount(player, 135).money }).toThrowError("Player does not have enough money")
+    })
+})
+
+describe("nextPlayerToBet function", () => {
+    it("returns the id of the next player in the player list", () => {
+        const player1 = createPlayer("Tim")
+        const [player2, player3] = ["Jill", "Jim"].map(name => createPlayer(name))
+        const game: Game = { ...createGame(player1), players: [player1].concat([player2, player3]) } 
+        expect(nextPlayerToBet(game)).toBe(player2.id)
+    })
+
+    it("skips over a player who is not in play", () => {
+        const player1 = createPlayer("Tim")
+        const player2: Player = { ...createPlayer("Rudy"), inPlay: false }
+        const player3 = createPlayer("Manny")
+        const game: Game = { ...createGame(player1), players: [player1].concat([player2, player3]) } 
+        expect(nextPlayerToBet(game)).toBe(player3.id)
+    })
+
+    it("returns undefined when player is last in the betting order and there are no outstanding bets", () => {
+        const player1 = createPlayer("Tim")
+        const [player2, player3] = ["Jill", "Jim"].map(name => createPlayer(name))
+        const game: Game = { 
+            ...createGame(player1), 
+            players: [player1].concat([player2, player3]), 
+            turnToBet: player3.id 
+        }
+        expect(nextPlayerToBet(game)).toBeUndefined() 
+    })
+
+    it("goes back to a previous player in the betting order if there is an outstanding bet", () => {
+        const player1 = createPlayer("Tim")
+        const [player2, player3] = ["Jill", "Jim"].map(name => createPlayer(name))
+        const game: Game = { 
+            ...createGame(player1), 
+            players: [player1].concat([player2, player3]), 
+            turnToBet: player3.id 
+        }
+        const gameWithBets = updateGameWithBet(
+            updateGameWithBet(game, player2, 10),
+            player3,
+            10
+        )
+        expect(nextPlayerToBet(gameWithBets)).toBe(player1.id) 
     })
 })
 

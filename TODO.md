@@ -53,8 +53,8 @@
     - [x] Make the startGame handler actually prepare game and handle blinds
     - [x] Separate server message for starting game and updating game, to avoid weird behaviour
 - [ ] More gameplay part 2
-    - [ ] Function for determining who bets next (with test)
-        - [ ] Basic betting functionality and tests    
+    - [x] Function for determining who bets next (with test)
+    - [ ] Basic betting functionality and tests    
         - [ ] preflop bets
         - [ ] flop
         - [ ] preturn bets
@@ -69,6 +69,7 @@
     - [ ] Check that properties are actually strings and not just that they are not undefined
 - [ ] Niceties
     - [ ] TestUtils to eliminate repetition with test data
+    - [ ] Properly separate out all server related functionality
     - [ ] Eslint
     - [ ] Code coverage
 - [ ] Optimisations
