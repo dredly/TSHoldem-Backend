@@ -125,6 +125,7 @@ describe("handleBet function", () => {
         expect(state.games[0].pot).toBe(38)
         expect(state.games[0].players[0].money).toBe(gameConfig.startingMoney - 38)
         expect(state.games[0].players[0].moneyInPot).toBe(38)
+        expect(state.games[0].turnToBet).toBe(player2.id)
     })
 
     it("throws an exception when player tries to bet more than they have", () => {

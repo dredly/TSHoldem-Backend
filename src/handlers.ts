@@ -1,6 +1,6 @@
 import { WebSocket } from "ws"
 import { createGame, createPlayer, initialiseRoles } from "./gameManagement"
-import { updateGameWithBet } from "./gameplay/betting"
+import { nextPlayerToBet, updateGameWithBet } from "./gameplay/betting"
 import { blindsRound, prepareForRound } from "./gameplay/roundManagement"
 import { publishServerMessage, publishToPlayers } from "./server/publishing"
 import { 
@@ -8,6 +8,7 @@ import {
     BetMessage, 
     CreateGameMessage, 
     CreatePlayerMessage, 
+    Game, 
     JoinGameMessage, 
     StartGameMessage 
 } from "./types"
@@ -96,7 +97,16 @@ export const handleBet = (message: BetMessage, applicationState: ApplicationStat
         throw new Error("player betting out of turn")
     }
 
-    const gameUpdated = updateGameWithBet(game, player, message.amount)
+    const gameUpdatedWithBet = updateGameWithBet(game, player, message.amount)
+    const turnToBet = nextPlayerToBet(game)
+    if (!turnToBet) {
+        // This means the round of betting is over
+        throw new Error("FUNCTIONALITY NOT YET IMPLEMENTED")
+    }
+    const gameUpdated: Game = {
+        ...gameUpdatedWithBet,
+        turnToBet
+    }
 
     applicationState.games = applicationState.games
         .map(g => g.id === game.id ? gameUpdated : g)

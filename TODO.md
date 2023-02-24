@@ -58,6 +58,8 @@
     - [x] Function for determining who bets next (with test)
     - [ ] Basic betting functionality and tests   
         - [x] betting handler function 
+        - [ ] Folding functionality
+        - [ ] Do something when round of betting is over
 - [ ] Advanced gameplay
     - [ ] Increasing blinds
     - [ ] Elimination
