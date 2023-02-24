@@ -69,7 +69,17 @@ export interface StartGameMessage {
     gameId: String
 }
 
-export type ClientMessage = CreatePlayerMessage | CreateGameMessage | JoinGameMessage | StartGameMessage
+export interface BetMessage {
+    playerId: String
+    amount: number
+}
+
+export type ClientMessage = 
+    CreatePlayerMessage | 
+    CreateGameMessage | 
+    JoinGameMessage | 
+    StartGameMessage |
+    BetMessage
 
 export interface PlayerCreatedMessage {
     player: Player
