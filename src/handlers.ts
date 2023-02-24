@@ -1,10 +1,11 @@
-import { debug } from "console"
 import { WebSocket } from "ws"
 import { createGame, createPlayer, initialiseRoles } from "./gameManagement"
+import { updateGameWithBet } from "./gameplay/betting"
 import { blindsRound, prepareForRound } from "./gameplay/roundManagement"
 import { publishServerMessage, publishToPlayers } from "./server/publishing"
 import { 
     ApplicationState, 
+    BetMessage, 
     CreateGameMessage, 
     CreatePlayerMessage, 
     JoinGameMessage, 
@@ -12,7 +13,7 @@ import {
 } from "./types"
 
 export const handlePlayerCreation = (message: CreatePlayerMessage, applicationState: ApplicationState, ws: WebSocket, pubSubInfo: Map<String, WebSocket>) => {
-    console.log(debug, `Creating player with name ${message.name}`)
+    console.debug(`Creating player with name ${message.name}`)
     const player = createPlayer(message.name)
     applicationState.players = applicationState.players.concat(player)
     
@@ -21,7 +22,7 @@ export const handlePlayerCreation = (message: CreatePlayerMessage, applicationSt
 }
 
 export const handleGameCreation = (message: CreateGameMessage, applicationState: ApplicationState, ws: WebSocket) => {
-    console.log(debug, `Player with id ${message.playerId} creating game`)
+    console.debug(`Player with id ${message.playerId} creating game`)
     const player = applicationState.players.find(p => p.id === message.playerId)
     if (!player) {
         throw new Error("player not found")
@@ -34,7 +35,7 @@ export const handleGameCreation = (message: CreateGameMessage, applicationState:
 }
 
 export const handleJoin = (message: JoinGameMessage, applicationState: ApplicationState, pubSubInfo: Map<String, WebSocket>) => {
-    console.log(debug, `Player with id ${message.playerId} joining game with id ${message.gameId}`)
+    console.debug(`Player with id ${message.playerId} joining game with id ${message.gameId}`)
 
     const player = applicationState.players.find(p => p.id === message.playerId)
     if (!player) {
@@ -56,7 +57,7 @@ export const handleJoin = (message: JoinGameMessage, applicationState: Applicati
 }
 
 export const handleStart = (message: StartGameMessage, applicationState: ApplicationState, pubSubInfo: Map<String, WebSocket>) => {
-    console.log(debug, `Starting game with id ${message.gameId}`)
+    console.debug(`Starting game with id ${message.gameId}`)
 
     const game = applicationState.games.find(g => g.id === message.gameId)
     if (!game) {
@@ -75,6 +76,30 @@ export const handleStart = (message: StartGameMessage, applicationState: Applica
         .map(g => g.id === message.gameId ? gameStarted : g)
 
     publishToPlayers({ gameStarted }, pubSubInfo, gameStarted.players)
-    // May need to add slight delay here if frontend cannot handle
-    publishToPlayers({ gameUpdated}, pubSubInfo, gameUpdated.players)
+    publishToPlayers({ gameUpdated }, pubSubInfo, gameUpdated.players)
+}
+
+export const handleBet = (message: BetMessage, applicationState: ApplicationState, pubSubInfo: Map<String, WebSocket>) => {
+    console.debug(`Player with id ${message.playerId} bet $${message.amount}`)
+
+    const game = applicationState.games.find(g => g.players.map(p => p.id).includes(message.playerId))
+    if (!game) {
+        throw new Error("game with that player not found")
+    }
+
+    const player = game.players.find(p => p.id === message.playerId)
+    if (!player) {
+        throw new Error("player not found")
+    }
+
+    if (game.turnToBet !== player.id) {
+        throw new Error("player betting out of turn")
+    }
+
+    const gameUpdated = updateGameWithBet(game, player, message.amount)
+
+    applicationState.games = applicationState.games
+        .map(g => g.id === game.id ? gameUpdated : g)
+
+    publishToPlayers({ gameUpdated }, pubSubInfo, gameUpdated.players)
 }

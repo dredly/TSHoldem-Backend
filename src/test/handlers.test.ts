@@ -1,7 +1,8 @@
 import { WebSocket } from "ws"
+import { gameConfig } from "../gameConfig"
 import { createGame, createPlayer } from "../gameManagement"
-import { handleGameCreation, handleJoin, handlePlayerCreation } from "../handlers"
-import { ApplicationState } from "../types"
+import { handleBet, handleGameCreation, handleJoin, handlePlayerCreation } from "../handlers"
+import { ApplicationState, Game } from "../types"
 
 jest.mock("../server/publishing.ts")
 jest.mock("ws")
@@ -106,5 +107,58 @@ describe("handleJoin function", () => {
             ]
         }
         expect(() => {handleJoin({ playerId: joinee.id, gameId: "foo" }, state, mockPubSubInfo())}).toThrowError("game not found")
+    })
+})
+
+describe("handleBet function", () => {
+    it("works as intended when given valid arguments", () => {
+        const player1 = createPlayer("Tim")
+        const [player2, player3] = ["Jill", "Jim"].map(name => createPlayer(name))
+        const game: Game = { ...createGame(player1), players: [player1].concat([player2, player3]) }
+        const state: ApplicationState = {
+            players: [],
+            games: [game]
+        }
+
+        handleBet({ playerId: player1.id, amount: 38 }, state, mockPubSubInfo())
+        expect(state.games[0].betAmount).toBe(38)
+        expect(state.games[0].pot).toBe(38)
+        expect(state.games[0].players[0].money).toBe(gameConfig.startingMoney - 38)
+        expect(state.games[0].players[0].moneyInPot).toBe(38)
+    })
+
+    it("throws an exception when player tries to bet more than they have", () => {
+        const player1 = createPlayer("Tim")
+        const [player2, player3] = ["Jill", "Jim"].map(name => createPlayer(name))
+        const game: Game = { ...createGame(player1), players: [player1].concat([player2, player3]) }
+        const state: ApplicationState = {
+            players: [],
+            games: [game]
+        }
+
+        expect(() => {handleBet({ playerId: player1.id, amount: 8000 }, state, mockPubSubInfo())})
+            .toThrowError("Player does not have enough money")
+    })
+
+    it("throws an exception when player tries to bet out of turn", () => {
+        const player1 = createPlayer("Tim")
+        const [player2, player3] = ["Jill", "Jim"].map(name => createPlayer(name))
+        const game: Game = { ...createGame(player1), players: [player1].concat([player2, player3]) }
+        const state: ApplicationState = {
+            players: [],
+            games: [game]
+        }
+
+        expect(() => {handleBet({ playerId: player2.id, amount: 20 }, state, mockPubSubInfo())})
+            .toThrowError("player betting out of turn")
+    })
+
+    it("throws an exception if player not found in a game", () => {
+        const state: ApplicationState = {
+            players: [],
+            games: []
+        }
+        expect(() => {handleBet({ playerId: "foo", amount: 20 }, state, mockPubSubInfo())})
+            .toThrowError("game with that player not found")
     })
 })

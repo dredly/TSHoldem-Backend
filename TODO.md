@@ -56,13 +56,8 @@
     - [x] Check that properties are actually strings and not just that they are not undefined
 - [ ] More gameplay part 2
     - [x] Function for determining who bets next (with test)
-    - [ ] Basic betting functionality and tests    
-        - [ ] preflop bets
-        - [ ] flop
-        - [ ] preturn bets
-        - [ ] turn
-        - [ ] preriver bets
-        - [ ] river
+    - [ ] Basic betting functionality and tests   
+        - [x] betting handler function 
 - [ ] Advanced gameplay
     - [ ] Increasing blinds
     - [ ] Elimination
