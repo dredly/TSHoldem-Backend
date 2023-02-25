@@ -51,7 +51,10 @@ export const blindsRound = (game: Game): Game => {
     // Assume the player are in order small blind, big blind, rest
     const gameAfterSmallBlind = updateGameWithBet(gameAfterDealing, gameAfterDealing.players[0], smallBlindAmount)
     const gameAfterBigBlind = updateGameWithBet(gameAfterSmallBlind, gameAfterSmallBlind.players[1], bigBlindAmount)
-    return gameAfterBigBlind
+    return {
+        ...gameAfterBigBlind,
+        turnToBet: gameAfterBigBlind.players[0].id
+    } 
 }
 
 export const resetAfterRound = (game: Game): Game => {

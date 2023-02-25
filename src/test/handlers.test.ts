@@ -29,7 +29,7 @@ describe("handleGameCreation function", () => {
             players: [player],
             games: []
         }
-        handleGameCreation({ playerId }, state, mockWs())
+        handleGameCreation({ creatorId: playerId }, state, mockWs())
         expect(state.players).toHaveLength(0)
         expect(state.games).toHaveLength(1)
         expect(state.games[0].players[0]).toEqual(player)
@@ -40,7 +40,7 @@ describe("handleGameCreation function", () => {
             players: [],
             games: []
         }
-        expect(() => { handleGameCreation({ playerId: "foo" }, state, mockWs()) }).toThrowError("player not found")
+        expect(() => { handleGameCreation({ creatorId: "foo" }, state, mockWs()) }).toThrowError("player not found")
     })
 })
 
@@ -120,7 +120,7 @@ describe("handleBet function", () => {
             games: [game]
         }
 
-        handleBet({ playerId: player1.id, amount: 38 }, state, mockPubSubInfo())
+        handleBet({ bettingPlayerId: player1.id, amount: 38 }, state, mockPubSubInfo())
         expect(state.games[0].betAmount).toBe(38)
         expect(state.games[0].pot).toBe(38)
         expect(state.games[0].players[0].money).toBe(gameConfig.startingMoney - 38)
@@ -137,7 +137,7 @@ describe("handleBet function", () => {
             games: [game]
         }
 
-        expect(() => {handleBet({ playerId: player1.id, amount: 8000 }, state, mockPubSubInfo())})
+        expect(() => {handleBet({ bettingPlayerId: player1.id, amount: 8000 }, state, mockPubSubInfo())})
             .toThrowError("Player does not have enough money")
     })
 
@@ -150,7 +150,7 @@ describe("handleBet function", () => {
             games: [game]
         }
 
-        expect(() => {handleBet({ playerId: player2.id, amount: 20 }, state, mockPubSubInfo())})
+        expect(() => {handleBet({ bettingPlayerId: player2.id, amount: 20 }, state, mockPubSubInfo())})
             .toThrowError("player betting out of turn")
     })
 
@@ -159,7 +159,7 @@ describe("handleBet function", () => {
             players: [],
             games: []
         }
-        expect(() => {handleBet({ playerId: "foo", amount: 20 }, state, mockPubSubInfo())})
+        expect(() => {handleBet({ bettingPlayerId: "foo", amount: 20 }, state, mockPubSubInfo())})
             .toThrowError("game with that player not found")
     })
 })

@@ -23,13 +23,13 @@ export const handlePlayerCreation = (message: CreatePlayerMessage, applicationSt
 }
 
 export const handleGameCreation = (message: CreateGameMessage, applicationState: ApplicationState, ws: WebSocket) => {
-    console.debug(`Player with id ${message.playerId} creating game`)
-    const player = applicationState.players.find(p => p.id === message.playerId)
+    console.debug(`Player with id ${message.creatorId} creating game`)
+    const player = applicationState.players.find(p => p.id === message.creatorId)
     if (!player) {
         throw new Error("player not found")
     }
     const game = createGame(player)
-    applicationState.players = applicationState.players.filter(p => p.id !== message.playerId)
+    applicationState.players = applicationState.players.filter(p => p.id !== message.creatorId)
     applicationState.games = applicationState.games.concat(game)
     
     publishServerMessage({ game }, ws)
@@ -58,9 +58,9 @@ export const handleJoin = (message: JoinGameMessage, applicationState: Applicati
 }
 
 export const handleStart = (message: StartGameMessage, applicationState: ApplicationState, pubSubInfo: Map<String, WebSocket>) => {
-    console.debug(`Starting game with id ${message.gameId}`)
+    console.debug(`Starting game with id ${message.startingGameId}`)
 
-    const game = applicationState.games.find(g => g.id === message.gameId)
+    const game = applicationState.games.find(g => g.id === message.startingGameId)
     if (!game) {
         throw new Error("game not found")
     }
@@ -68,27 +68,31 @@ export const handleStart = (message: StartGameMessage, applicationState: Applica
     const gameStarted = { 
         ...game, 
         players: initialiseRoles(game.players), 
-        started: true 
+        started: true
     }
+
+    applicationState.games = applicationState.games
+        .map(g => g.id === message.startingGameId ? gameStarted : g)
+
+    publishToPlayers({ gameStarted }, pubSubInfo, gameStarted.players)
 
     const gameUpdated = blindsRound(prepareForRound(gameStarted))
 
     applicationState.games = applicationState.games
-        .map(g => g.id === message.gameId ? gameStarted : g)
+        .map(g => g.id === message.startingGameId ? gameUpdated : g)
 
-    publishToPlayers({ gameStarted }, pubSubInfo, gameStarted.players)
     publishToPlayers({ gameUpdated }, pubSubInfo, gameUpdated.players)
 }
 
 export const handleBet = (message: BetMessage, applicationState: ApplicationState, pubSubInfo: Map<String, WebSocket>) => {
-    console.debug(`Player with id ${message.playerId} bet $${message.amount}`)
+    console.debug(`Player with id ${message.bettingPlayerId} bet $${message.amount}`)
 
-    const game = applicationState.games.find(g => g.players.map(p => p.id).includes(message.playerId))
+    const game = applicationState.games.find(g => g.players.map(p => p.id).includes(message.bettingPlayerId))
     if (!game) {
         throw new Error("game with that player not found")
     }
 
-    const player = game.players.find(p => p.id === message.playerId)
+    const player = game.players.find(p => p.id === message.bettingPlayerId)
     if (!player) {
         throw new Error("player not found")
     }

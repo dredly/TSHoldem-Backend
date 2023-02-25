@@ -57,7 +57,7 @@ export interface CreatePlayerMessage {
 }
 
 export interface CreateGameMessage {
-    playerId: String
+    creatorId: String
 }
 
 export interface JoinGameMessage {
@@ -66,12 +66,16 @@ export interface JoinGameMessage {
 }
 
 export interface StartGameMessage {
-    gameId: String
+    startingGameId: String
 }
 
 export interface BetMessage {
-    playerId: String
+    bettingPlayerId: String
     amount: number
+}
+
+export interface FoldMessage {
+    foldingPlayerId: String
 }
 
 export type ClientMessage = 
@@ -79,7 +83,8 @@ export type ClientMessage =
     CreateGameMessage | 
     JoinGameMessage | 
     StartGameMessage |
-    BetMessage
+    BetMessage |
+    FoldMessage
 
 export interface PlayerCreatedMessage {
     player: Player
