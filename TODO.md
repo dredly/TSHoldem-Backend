@@ -60,7 +60,8 @@
     - [ ] Basic betting functionality and tests   
         - [x] betting handler function
         - [x] Fix bug to ensure the correct player starts with the betting privileges 
-        - [ ] Folding functionality
+        - [x] Folding functionality
+        - [ ] split up file for handlers
         - [ ] Do something when round of betting is over
             - [ ] Keep track of what stage we are in a round
         - [ ] Restrict second round of betting to only calls or folds

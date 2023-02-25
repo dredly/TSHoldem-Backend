@@ -1,7 +1,7 @@
 import { WebSocket } from "ws"
 import { gameConfig } from "../gameConfig"
 import { createGame, createPlayer } from "../gameManagement"
-import { handleBet, handleGameCreation, handleJoin, handlePlayerCreation } from "../handlers"
+import { handleBet, handleFold, handleGameCreation, handleJoin, handlePlayerCreation } from "../handlers"
 import { ApplicationState, Game } from "../types"
 
 jest.mock("../server/publishing.ts")
@@ -160,6 +160,44 @@ describe("handleBet function", () => {
             games: []
         }
         expect(() => {handleBet({ bettingPlayerId: "foo", amount: 20 }, state, mockPubSubInfo())})
+            .toThrowError("game with that player not found")
+    })
+})
+
+describe("handleFold function", () => {
+    it("works as intended when given valid arguments", () => {
+        const player1 = createPlayer("Tim")
+        const [player2, player3] = ["Jill", "Jim"].map(name => createPlayer(name))
+        const game: Game = { ...createGame(player1), players: [player1].concat([player2, player3]) }
+        const state: ApplicationState = {
+            players: [],
+            games: [game]
+        }
+
+        handleFold({ foldingPlayerId: player1.id }, state, mockPubSubInfo())
+        expect(state.games[0].players[0].inPlay).toBeFalsy()
+        expect(state.games[0].players[0].money).toBe(gameConfig.startingMoney)
+        expect(state.games[0].turnToBet).toBe(player2.id)
+    })
+
+    it("throws an error when player tries to fold out of turn", () => {
+        const player1 = createPlayer("Tim")
+        const [player2, player3] = ["Jill", "Jim"].map(name => createPlayer(name))
+        const game: Game = { ...createGame(player1), players: [player1].concat([player2, player3]) }
+        const state: ApplicationState = {
+            players: [],
+            games: [game]
+        }
+        expect(() => { handleFold({ foldingPlayerId: player2.id }, state, mockPubSubInfo()) })
+            .toThrowError("player betting out of turn")
+    })
+
+    it("throws an exception if player not found in a game", () => {
+        const state: ApplicationState = {
+            players: [],
+            games: []
+        }
+        expect(() => {handleFold({ foldingPlayerId: "foo" }, state, mockPubSubInfo())})
             .toThrowError("game with that player not found")
     })
 })

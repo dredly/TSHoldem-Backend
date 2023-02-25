@@ -1,6 +1,6 @@
 import { WebSocket } from "ws"
 import { createGame, createPlayer, initialiseRoles } from "./gameManagement"
-import { nextPlayerToBet, updateGameWithBet } from "./gameplay/betting"
+import { nextPlayerToBet, updateGameWithBet, updateGameWithFold } from "./gameplay/betting"
 import { blindsRound, prepareForRound } from "./gameplay/roundManagement"
 import { publishServerMessage, publishToPlayers } from "./server/publishing"
 import { 
@@ -8,6 +8,7 @@ import {
     BetMessage, 
     CreateGameMessage, 
     CreatePlayerMessage, 
+    FoldMessage, 
     Game, 
     JoinGameMessage, 
     StartGameMessage 
@@ -102,13 +103,48 @@ export const handleBet = (message: BetMessage, applicationState: ApplicationStat
     }
 
     const gameUpdatedWithBet = updateGameWithBet(game, player, message.amount)
-    const turnToBet = nextPlayerToBet(game)
+    const turnToBet = nextPlayerToBet(gameUpdatedWithBet)
     if (!turnToBet) {
         // This means the round of betting is over
         throw new Error("FUNCTIONALITY NOT YET IMPLEMENTED")
     }
     const gameUpdated: Game = {
         ...gameUpdatedWithBet,
+        turnToBet
+    }
+
+    applicationState.games = applicationState.games
+        .map(g => g.id === game.id ? gameUpdated : g)
+
+    publishToPlayers({ gameUpdated }, pubSubInfo, gameUpdated.players)
+}
+
+export const handleFold = (message: FoldMessage, applicationState: ApplicationState, pubSubInfo: Map<String, WebSocket>) => {
+    console.debug(`Player with id ${message.foldingPlayerId} folding`)
+
+    const game = applicationState.games.find(g => g.players.map(p => p.id).includes(message.foldingPlayerId))
+    if (!game) {
+        throw new Error("game with that player not found")
+    }
+
+    const player = game.players.find(p => p.id === message.foldingPlayerId)
+    if (!player) {
+        throw new Error("player not found")
+    }
+
+    if (game.turnToBet !== player.id) {
+        throw new Error("player betting out of turn")
+    }
+
+    const gameUpdatedWithFold = updateGameWithFold(game, player)
+    const turnToBet = nextPlayerToBet(gameUpdatedWithFold)
+    if (!turnToBet) {
+        // This means the round of betting is over
+        throw new Error("FUNCTIONALITY NOT YET IMPLEMENTED")
+    }
+
+    const gameUpdated: Game = {
+        ...gameUpdatedWithFold,
         turnToBet
     }
 
