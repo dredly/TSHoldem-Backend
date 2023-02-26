@@ -1,7 +1,8 @@
 import WebSocket from "ws"
-import { updateGameWithBet, nextPlayerToBet, updateGameWithFold } from "../../gameplay/betting"
+import { updateGameWithBet, updateGameWithFold, updateGameWithNextBet } from "../../gameplay/betting"
 import { BetMessage, ApplicationState, Game, FoldMessage } from "../../types"
 import { publishToPlayers } from "../publishing"
+import { handleDealing } from "./internalHandlers"
 
 export const handleBet = (message: BetMessage, applicationState: ApplicationState, pubSubInfo: Map<String, WebSocket>) => {
     console.debug(`Player with id ${message.bettingPlayerId} bet $${message.amount}`)
@@ -21,14 +22,13 @@ export const handleBet = (message: BetMessage, applicationState: ApplicationStat
     }
 
     const gameUpdatedWithBet = updateGameWithBet(game, player, message.amount)
-    const turnToBet = nextPlayerToBet(gameUpdatedWithBet)
-    if (!turnToBet) {
-        // This means the round of betting is over
-        throw new Error("FUNCTIONALITY NOT YET IMPLEMENTED")
-    }
-    const gameUpdated: Game = {
-        ...gameUpdatedWithBet,
-        turnToBet
+
+    const gameUpdated = updateGameWithNextBet(gameUpdatedWithBet)
+
+    if (gameUpdated.bettingInfo?.round !== game.bettingInfo?.round) {
+        console.debug("moving on to next round")
+        handleDealing(game, applicationState, pubSubInfo)
+        return
     }
 
     applicationState.games = applicationState.games
@@ -55,15 +55,12 @@ export const handleFold = (message: FoldMessage, applicationState: ApplicationSt
     }
 
     const gameUpdatedWithFold = updateGameWithFold(game, player)
-    const turnToBet = nextPlayerToBet(gameUpdatedWithFold)
-    if (!turnToBet) {
-        // This means the round of betting is over
-        throw new Error("FUNCTIONALITY NOT YET IMPLEMENTED")
-    }
+    const gameUpdated = updateGameWithNextBet(gameUpdatedWithFold)
 
-    const gameUpdated: Game = {
-        ...gameUpdatedWithFold,
-        turnToBet
+    if (gameUpdated.bettingInfo?.round !== game.bettingInfo?.round) {
+        console.debug("moving on to next round")
+        handleDealing(game, applicationState, pubSubInfo)
+        return
     }
 
     applicationState.games = applicationState.games

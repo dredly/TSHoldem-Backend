@@ -66,7 +66,8 @@
             - [x] Keep track of what stage we are in a round
             - [x] updateGameWithNextBet function
             - [x] Tests for updateGameWithNextBet function
-            - [ ] Deal cards when blinds are done
+            - [x] Deal cards when blinds are done
+            - [ ] Write test for handleDealing function
 - [ ] Advanced gameplay
     - [ ] Increasing blinds
     - [ ] Elimination

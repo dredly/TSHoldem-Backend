@@ -1,6 +1,7 @@
 import { gameConfig } from "../../../gameConfig"
 import { createPlayer, createGame } from "../../../gameManagement"
 import { handleBet, handleFold } from "../../../server/handlers/gamePlayHandlers"
+import * as internalHandlers from "../../../server/handlers/internalHandlers"
 import { Game, ApplicationState } from "../../../types"
 
 jest.mock("../../../server/publishing.ts")
@@ -11,7 +12,14 @@ describe("handleBet function", () => {
     it("works as intended when given valid arguments", () => {
         const player1 = createPlayer("Tim")
         const [player2, player3] = ["Jill", "Jim"].map(name => createPlayer(name))
-        const game: Game = { ...createGame(player1), players: [player1].concat([player2, player3]) }
+        const game: Game = { 
+            ...createGame(player1), 
+            players: [player1].concat([player2, player3]),
+            bettingInfo: {
+                round: "BLINDS",
+                isSecondPass: false
+            }
+        }
         const state: ApplicationState = {
             players: [],
             games: [game]
@@ -59,13 +67,42 @@ describe("handleBet function", () => {
         expect(() => {handleBet({ bettingPlayerId: "foo", amount: 20 }, state, mockPubSubInfo())})
             .toThrowError("game with that player not found")
     })
+
+    it("calls the handler for dealing cards if round of betting is over", () => {
+        const spy = jest.spyOn(internalHandlers, "handleDealing")
+
+        const player1 = createPlayer("Tim")
+        const [player2, player3] = ["Jill", "Jim"].map(name => createPlayer(name))
+        const game: Game = { 
+            ...createGame(player1), 
+            players: [player1].concat([player2, player3]),
+            turnToBet: player3.id,
+            bettingInfo: {
+                round: "BLINDS",
+                isSecondPass: false
+            }
+        }
+        const state: ApplicationState = {
+            players: [],
+            games: [game]
+        }
+        handleBet({ bettingPlayerId: player3.id, amount: 0 }, state, mockPubSubInfo())
+        expect(spy).toBeCalled()
+    })
 })
 
 describe("handleFold function", () => {
     it("works as intended when given valid arguments", () => {
         const player1 = createPlayer("Tim")
         const [player2, player3] = ["Jill", "Jim"].map(name => createPlayer(name))
-        const game: Game = { ...createGame(player1), players: [player1].concat([player2, player3]) }
+        const game: Game = { 
+            ...createGame(player1), 
+            players: [player1].concat([player2, player3]),
+            bettingInfo: {
+                round: "BLINDS",
+                isSecondPass: false
+            } 
+        }
         const state: ApplicationState = {
             players: [],
             games: [game]
