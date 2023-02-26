@@ -65,7 +65,8 @@
         - [ ] Do something when round of betting is over
             - [x] Keep track of what stage we are in a round
             - [x] updateGameWithNextBet function
-            - [ ] Tests for updateGameWithNextBet function
+            - [x] Tests for updateGameWithNextBet function
+            - [ ] Deal cards when blinds are done
 - [ ] Advanced gameplay
     - [ ] Increasing blinds
     - [ ] Elimination

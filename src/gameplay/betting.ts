@@ -86,16 +86,21 @@ export const updateGameWithNextBet = (game: Game): Game => {
             default:
                 throw new Error("Unexpected betting info");
         }
-        return { ...game, bettingInfo: updatedBettingInfo }
+        return { 
+            ...game,
+            turnToBet: game.players.filter(p => p.inPlay)[0].id, 
+            bettingInfo: updatedBettingInfo 
+        }
     }
     // Check if we are going into a second pass of bets
     if (game.players.findIndex(p => p.id === nextPlayerToBetId) < game.players.findIndex(p => p.id === game.turnToBet)) {
         return { 
             ...game,
+            turnToBet: nextPlayerToBetId,
             bettingInfo: { ...game.bettingInfo, isSecondPass: true } 
         }
     }
-    return game
+    return { ...game, turnToBet: nextPlayerToBetId }
 }
 
 export const winPot = (game: Game, winners: Player[]): Game => {
