@@ -299,6 +299,10 @@ describe("blindsRound function", () => {
                 { rank: 11, suit: "DIAMONDS"},
             ]
         ])
+        expect(updatedGame.bettingInfo).toEqual({
+            round: "BLINDS",
+            isSecondPass: false
+        })
     })
 })
 
@@ -351,7 +355,7 @@ describe("resetAfterRound function", () => {
                 {id: "1", name: "player1", role: "BIG_BLIND", cards: [], money: 50, moneyInPot: 0, inPlay: true },
                 {id: "2", name: "player2", role: "SMALL_BLIND", cards: [], money: 90, moneyInPot: 0, inPlay: true },
             ],
-            started: true
+            started: true,
         }
 
         const resetGame = resetAfterRound(game)

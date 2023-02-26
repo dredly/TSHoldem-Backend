@@ -53,7 +53,11 @@ export const blindsRound = (game: Game): Game => {
     const gameAfterBigBlind = updateGameWithBet(gameAfterSmallBlind, gameAfterSmallBlind.players[1], bigBlindAmount)
     return {
         ...gameAfterBigBlind,
-        turnToBet: gameAfterBigBlind.players[0].id
+        turnToBet: gameAfterBigBlind.players[0].id,
+        bettingInfo: {
+            round: "BLINDS",
+            isSecondPass: false
+        }
     } 
 }
 
@@ -64,6 +68,7 @@ export const resetAfterRound = (game: Game): Game => {
         betAmount: 0,
         deck: makeDeckDefault(),
         cardsOnTable: [],
-        players: switchRoles(game.players.map(p => ( { ...p, cards: [] } ))) 
+        players: switchRoles(game.players.map(p => ( { ...p, cards: [] } ))),
+        bettingInfo: undefined 
     }
 }

@@ -4,6 +4,13 @@ export type Suit = 'SPADES' | 'HEARTS' | 'DIAMONDS' | 'CLUBS'
 
 export type Hand = 'PAIR' | 'THREE OF A KIND' | 'FOUR OF A KIND' | 'STRAIGHT' | 'FLUSH' | 'HIGH CARD'
 
+export type BettingRound = 'BLINDS' | 'FLOP' | 'TURN' | 'RIVER'
+
+export interface BettingInfo {
+    round: BettingRound
+    isSecondPass: boolean
+}
+
 export interface HandChecker {
     (cards: Card[]): number | undefined
 }
@@ -38,7 +45,8 @@ export interface Game {
     cardsOnTable: Card[]
     pot: number,
     betAmount: number,
-    started: boolean
+    started: boolean,
+    bettingInfo?: BettingInfo
 }
 
 export interface ApplicationState {

@@ -1,7 +1,8 @@
 import { WebSocket, WebSocketServer } from 'ws';
 import { parseClientMessage } from './parsers';
-import { isBetMessage, isCreateGameMessage, isCreatePlayerMessage, isJoinGameMessage, isStartGameMessage } from './typeGuards';
-import { handleGameCreation, handlePlayerCreation, handleJoin, handleStart, handleBet } from './handlers';
+import { handlePlayerCreation, handleGameCreation, handleJoin, handleStart } from './server/handlers/gameManagementHandlers';
+import { handleBet, handleFold } from './server/handlers/gamePlayHandlers';
+import { isBetMessage, isCreateGameMessage, isCreatePlayerMessage, isFoldMessage, isJoinGameMessage, isStartGameMessage } from './typeGuards';
 import { ApplicationState } from './types';
 
 const wss = new WebSocketServer({ port: 8080 })
@@ -36,6 +37,9 @@ wss.on("connection", ws => {
                 }
                 if (isBetMessage(clientMessage)) {
                     handleBet(clientMessage, applicationState, pubSubInfo)
+                }
+                if (isFoldMessage(clientMessage)) {
+                    handleFold(clientMessage, applicationState, pubSubInfo)
                 }
             } catch (err) {
                 if (err instanceof Error) {
