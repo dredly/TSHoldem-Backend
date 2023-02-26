@@ -64,7 +64,8 @@
         - [x] split up file for handlers
         - [ ] Do something when round of betting is over
             - [x] Keep track of what stage we are in a round
-            - [ ] Restrict second round of betting to only calls or folds
+            - [x] updateGameWithNextBet function
+            - [ ] Tests for updateGameWithNextBet function
 - [ ] Advanced gameplay
     - [ ] Increasing blinds
     - [ ] Elimination
