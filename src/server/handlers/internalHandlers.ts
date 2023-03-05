@@ -1,5 +1,6 @@
 import WebSocket from "ws";
 import { revealCards } from "../../gameplay/cards/dealing";
+import { groupPlayersByScore } from "../../gameplay/roundManagement";
 import { ApplicationState, Game } from "../../types";
 import { publishToPlayers } from "../publishing";
 
@@ -11,4 +12,8 @@ export const handleDealing = (game: Game, applicationState: ApplicationState, pu
         .map(g => g.id === game.id ? gameUpdated : g)
 
     publishToPlayers({ gameUpdated }, pubSubInfo, gameUpdated.players)
+}
+
+export const handleEndOfRound = (game: Game, applicationState: ApplicationState, pubSubInfo: Map<String, WebSocket>) => {
+    const activePlayersByScore = groupPlayersByScore(game.players.filter(p => p.inPlay), game.cardsOnTable)
 }

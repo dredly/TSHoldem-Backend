@@ -1,5 +1,5 @@
 import { makeDeckDefault } from "../../gameplay/cards/cardUtils"
-import { blindsRound, getWinners, prepareForRound, resetAfterRound, sortPlayersByScore, switchRoles } from "../../gameplay/roundManagement"
+import { blindsRound, getWinners, prepareForRound, resetAfterRound, switchRoles } from "../../gameplay/roundManagement"
 import { Card, Game, Player } from "../../types"
 
 describe("switchRoles function", () => {
@@ -45,59 +45,6 @@ describe("switchRoles function", () => {
             {id: "3", name: "player3", role: "OTHER", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
             {id: "4", name: "player4", role: "SMALL_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true}
         ])
-    })
-})
-
-describe("sortPlayersByScoreFunction", () => {
-    it("sorts players in the expected order", () => {
-        const cardsOnTable: Card[] = [
-            { rank: 2, suit: "CLUBS" },
-            { rank: 2, suit: "DIAMONDS" },
-            { rank: 2, suit: "HEARTS" },
-            { rank: 1, suit: "CLUBS" },
-            { rank: 9, suit: "SPADES" }
-        ]
-        const players: Player[] = [
-            {
-                id: "1",
-                name: "Miguel",
-                role: "OTHER",
-                cards: [
-                    { rank: 3, suit: "DIAMONDS" },
-                    { rank: 11, suit: "SPADES" }
-                ],
-                money: 12, 
-                moneyInPot: 0, 
-                inPlay: true
-            },
-            {
-                id: "2",
-                name: "Jake",
-                role: "OTHER",
-                cards: [
-                    { rank: 2, suit: "SPADES" },
-                    { rank: 12, suit: "SPADES" }
-                ],
-                money: 12, 
-                moneyInPot: 0, 
-                inPlay: true
-            },
-            {
-                id: "3",
-                name: "Joel",
-                role: "OTHER",
-                cards: [
-                    { rank: 1, suit: "DIAMONDS" },
-                    { rank: 8, suit: "HEARTS" }
-                ],
-                money: 12, 
-                moneyInPot: 0, 
-                inPlay: true
-            }
-        ]
-
-        const sortedPlayerNames = sortPlayersByScore(players, cardsOnTable).map(p => p.name)
-        expect(sortedPlayerNames).toEqual(["Jake", "Joel", "Miguel"])
     })
 })
 
