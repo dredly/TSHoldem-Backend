@@ -1,4 +1,4 @@
-import { Game, Player } from "../types";
+import { BettingInfo, Game, Player } from "../types";
 
 export const getBettingOrder = (players: Player[]): Player[] => {
     const smallBlindIdx = players.findIndex(p => p.role == "SMALL_BLIND")
@@ -6,6 +6,16 @@ export const getBettingOrder = (players: Player[]): Player[] => {
         throw new Error("Player with role SMALL_BLIND not found")
     }
     return players.slice(smallBlindIdx).concat(players.slice(0, smallBlindIdx))
+}
+
+export const nextPlayerToBet = (game: Game): String | undefined => {
+    // Returns either the id of the next player to bet, or undefined if the round of betting is over
+    const playersInPlay = game.players.filter(p => p.inPlay)
+    const playerIdx = playersInPlay.findIndex(p => p.id === game.turnToBet)
+    if (playerIdx === playersInPlay.length - 1) {
+        return playersInPlay.find(p => p.moneyInPot < game.betAmount)?.id
+    }
+    return playersInPlay[playerIdx + 1].id
 }
 
 export const betAmount = (player: Player, amount: number): Player => {
@@ -46,14 +56,51 @@ export const updateGameWithFold = (game: Game, player: Player): Game => {
     }
 }
 
-export const nextPlayerToBet = (game: Game): String | undefined => {
-    // Returns either the id of the next player to bet, or undefined if the round of betting is over
-    const playersInPlay = game.players.filter(p => p.inPlay)
-    const playerIdx = playersInPlay.findIndex(p => p.id === game.turnToBet)
-    if (playerIdx === playersInPlay.length - 1) {
-        return playersInPlay.find(p => p.moneyInPot < game.betAmount)?.id
+export const updateGameWithNextBet = (game: Game): Game => {
+    if (!game.bettingInfo) throw new Error("Betting info undefined")
+    const nextPlayerToBetId = nextPlayerToBet(game)
+    if (!nextPlayerToBetId) {
+        let updatedBettingInfo: BettingInfo | undefined;
+        switch (game.bettingInfo?.round) {
+            case "BLINDS":
+                updatedBettingInfo = {
+                    round: "FLOP",
+                    isSecondPass: false
+                }
+                break;
+            case "FLOP":
+                updatedBettingInfo = {
+                    round: "TURN",
+                    isSecondPass: false
+                }
+                break;
+            case "TURN":
+                updatedBettingInfo = {
+                    round: "RIVER",
+                    isSecondPass: false
+                }
+                break;
+            case "RIVER":
+                updatedBettingInfo = undefined
+                break;
+            default:
+                throw new Error("Unexpected betting info");
+        }
+        return { 
+            ...game,
+            turnToBet: game.players.filter(p => p.inPlay)[0].id, 
+            bettingInfo: updatedBettingInfo 
+        }
     }
-    return playersInPlay[playerIdx + 1].id
+    // Check if we are going into a second pass of bets
+    if (game.players.findIndex(p => p.id === nextPlayerToBetId) < game.players.findIndex(p => p.id === game.turnToBet)) {
+        return { 
+            ...game,
+            turnToBet: nextPlayerToBetId,
+            bettingInfo: { ...game.bettingInfo, isSecondPass: true } 
+        }
+    }
+    return { ...game, turnToBet: nextPlayerToBetId }
 }
 
 export const winPot = (game: Game, winners: Player[]): Game => {

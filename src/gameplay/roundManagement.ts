@@ -5,6 +5,7 @@ import { getBettingOrder, updateGameWithBet } from "./betting";
 import { makeDeckDefault } from "./cards/cardUtils";
 import { dealRound } from "./cards/dealing";
 import { compareHands } from "./cards/handComparison";
+import { allHandCheckers, findBestHand } from "./cards/handEvaluation";
 
 export const switchRoles = (players: Player[]): Player[] => {
     return players
@@ -16,24 +17,26 @@ export const switchRoles = (players: Player[]): Player[] => {
         })
 }
 
-export const sortPlayersByScore = (players: Player[], cardsOnTable: Card[]): Player[] => {
-    return [ ...players ]
-        .sort((p1, p2) => -compareHands(p1.cards.concat(cardsOnTable), p2.cards.concat(cardsOnTable)))
+export const groupPlayersByScore = (players: Player[], cardsOnTable: Card[]): Player[][] => {
+    const result: Map<String, Player[]> = new Map()
+    for (const player of players) {
+        const score = findBestHand(player.cards.concat(cardsOnTable), allHandCheckers)
+        const existingGroup = result.get(JSON.stringify(score))
+        if (existingGroup) {
+            result.set(JSON.stringify(score), existingGroup.concat(player))
+        } else {
+            result.set(JSON.stringify(score), [player])
+        }
+    }
+    return [ ...result.values() ]
+        .sort((g1, g2) => -compareHands(g1[0].cards.concat(cardsOnTable), g2[0].cards.concat(cardsOnTable)))
 }
 
 export const getWinners = (game: Game): Player[] => {
-    const sortedByScore = sortPlayersByScore(game.players, game.cardsOnTable)
-    for (let i = 0; i < sortedByScore.length; i++) {
-        const player = sortedByScore[i]
-        if (i === sortedByScore.length - 1) {
-            return sortedByScore
-        }
-        const nextPlayer = sortedByScore[i + 1]
-        if (compareHands(player.cards.concat(game.cardsOnTable), nextPlayer.cards.concat(game.cardsOnTable))) {
-            return sortedByScore.slice(0, i + 1)
-        }
-    }
-    return sortedByScore
+    // For now just worry about getting the first group of winners as we arent doing all ins / partial pots yet
+    // probably need to filter out inactive players too in the future
+    const groupedByScore = groupPlayersByScore(game.players, game.cardsOnTable)
+    return groupedByScore[0]
 }
 
 export const prepareForRound = (game: Game): Game => {
@@ -51,7 +54,14 @@ export const blindsRound = (game: Game): Game => {
     // Assume the player are in order small blind, big blind, rest
     const gameAfterSmallBlind = updateGameWithBet(gameAfterDealing, gameAfterDealing.players[0], smallBlindAmount)
     const gameAfterBigBlind = updateGameWithBet(gameAfterSmallBlind, gameAfterSmallBlind.players[1], bigBlindAmount)
-    return gameAfterBigBlind
+    return {
+        ...gameAfterBigBlind,
+        turnToBet: gameAfterBigBlind.players[0].id,
+        bettingInfo: {
+            round: "BLINDS",
+            isSecondPass: false
+        }
+    } 
 }
 
 export const resetAfterRound = (game: Game): Game => {
@@ -61,6 +71,7 @@ export const resetAfterRound = (game: Game): Game => {
         betAmount: 0,
         deck: makeDeckDefault(),
         cardsOnTable: [],
-        players: switchRoles(game.players.map(p => ( { ...p, cards: [] } ))) 
+        players: switchRoles(game.players.map(p => ( { ...p, cards: [] } ))),
+        bettingInfo: undefined 
     }
 }

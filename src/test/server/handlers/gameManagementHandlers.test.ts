@@ -1,9 +1,9 @@
-import { WebSocket } from "ws"
-import { createGame, createPlayer } from "../gameManagement"
-import { handleGameCreation, handleJoin, handlePlayerCreation } from "../handlers"
-import { ApplicationState } from "../types"
+import WebSocket from "ws"
+import { createPlayer, createGame } from "../../../gameManagement"
+import { handlePlayerCreation, handleGameCreation, handleJoin } from "../../../server/handlers/gameManagementHandlers"
+import { ApplicationState } from "../../../types"
 
-jest.mock("../server/publishing.ts")
+jest.mock("../../../server/publishing.ts")
 jest.mock("ws")
 const mockWs =  () => new WebSocket("ws://localhost:8080")
 const mockPubSubInfo = () => new Map()
@@ -28,7 +28,7 @@ describe("handleGameCreation function", () => {
             players: [player],
             games: []
         }
-        handleGameCreation({ playerId }, state, mockWs())
+        handleGameCreation({ creatorId: playerId }, state, mockWs())
         expect(state.players).toHaveLength(0)
         expect(state.games).toHaveLength(1)
         expect(state.games[0].players[0]).toEqual(player)
@@ -39,7 +39,7 @@ describe("handleGameCreation function", () => {
             players: [],
             games: []
         }
-        expect(() => { handleGameCreation({ playerId: "foo" }, state, mockWs()) }).toThrowError("player not found")
+        expect(() => { handleGameCreation({ creatorId: "foo" }, state, mockWs()) }).toThrowError("player not found")
     })
 })
 

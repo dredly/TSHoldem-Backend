@@ -52,23 +52,31 @@
     - [x] startGame handler
     - [x] Make the startGame handler actually prepare game and handle blinds
     - [x] Separate server message for starting game and updating game, to avoid weird behaviour
-- [ ] More gameplay part 2
-    - [ ] Function for determining who bets next (with test)
-        - [ ] Basic betting functionality and tests    
-        - [ ] preflop bets
-        - [ ] flop
-        - [ ] preturn bets
-        - [ ] turn
-        - [ ] preriver bets
-        - [ ] river
+- [x] Better typechecking
+    - [x] Check that properties are actually strings and not just that they are not undefined
+- [x] Rename id propertites on client messages to prevent any possible collisions
+- [x] More gameplay part 2
+    - [x] Function for determining who bets next (with test)
+    - [x] Basic betting functionality and tests   
+        - [x] betting handler function
+        - [x] Fix bug to ensure the correct player starts with the betting privileges 
+        - [x] Folding functionality
+        - [x] split up file for handlers
+        - [x] Do something when round of betting is over
+            - [x] Keep track of what stage we are in a round
+            - [x] updateGameWithNextBet function
+            - [x] Tests for updateGameWithNextBet function
+            - [x] Deal cards when blinds are done
+            - [x] Write test for handleDealing function
+            - [x] End of round logic
+            - [x] Make round end early if everyone but 1 player folds
 - [ ] Advanced gameplay
     - [ ] Increasing blinds
     - [ ] Elimination
     - [ ] All ins (maybe will be handled by proper betting)
-- [ ] Better typechecking
-    - [ ] Check that properties are actually strings and not just that they are not undefined
 - [ ] Niceties
     - [ ] TestUtils to eliminate repetition with test data
+    - [ ] Properly separate out all server related functionality
     - [ ] Eslint
     - [ ] Code coverage
 - [ ] Optimisations
