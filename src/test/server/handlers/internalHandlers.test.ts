@@ -1,16 +1,17 @@
-import { createGame, createPlayer } from "../../../gameManagement"
-import { makeDeckDefault } from "../../../gameplay/cards/cardUtils"
-import { handleDealing, handleEndOfRound } from "../../../server/handlers/internalHandlers"
-import { Game, ApplicationState, Player, Card } from "../../../types"
+import WebSocket from "ws";
+import { createGame, createPlayer } from "../../../gameManagement";
+import { makeDeckDefault } from "../../../gameplay/cards/cardUtils";
+import { handleDealing, handleEndOfRound } from "../../../server/handlers/internalHandlers";
+import { Game, ApplicationState, Player } from "../../../types";
 
-jest.mock("../../../server/publishing.ts")
-jest.mock("ws")
-const mockPubSubInfo = () => new Map()
+jest.mock("../../../server/publishing.ts");
+jest.mock("ws");
+const mockPubSubInfo = () => new Map<string, WebSocket>();
 
 describe("handleDealing function", () => {
     it("deals the flop", () => {
-        const player1 = createPlayer("Tim")
-        const [player2, player3] = ["Jill", "Jim"].map(name => createPlayer(name))
+        const player1 = createPlayer("Tim");
+        const [player2, player3] = ["Jill", "Jim"].map(name => createPlayer(name));
         const game: Game = { 
             ...createGame(player1), 
             players: [player1].concat([player2, player3]),
@@ -19,24 +20,24 @@ describe("handleDealing function", () => {
                 round: "FLOP",
                 isSecondPass: false
             }
-        }
+        };
         const state: ApplicationState = {
             players: [],
             games: [game]
-        }
+        };
 
-        const deckSizeBefore = game.deck.length
-        const cardsOnTableSizeBefore = game.cardsOnTable.length
+        const deckSizeBefore = game.deck.length;
+        const cardsOnTableSizeBefore = game.cardsOnTable.length;
 
-        handleDealing(game, state, mockPubSubInfo())
-        expect(state.games[0].deck).toHaveLength(deckSizeBefore - 3)
-        expect(state.games[0].cardsOnTable).toHaveLength(cardsOnTableSizeBefore + 3)
-    })
+        handleDealing(game, state, mockPubSubInfo());
+        expect(state.games[0].deck).toHaveLength(deckSizeBefore - 3);
+        expect(state.games[0].cardsOnTable).toHaveLength(cardsOnTableSizeBefore + 3);
+    });
 
     it("deals the turn", () => {
-        const player1 = createPlayer("Tim")
-        const [player2, player3] = ["Jill", "Jim"].map(name => createPlayer(name))
-        const defaultDeck = makeDeckDefault()
+        const player1 = createPlayer("Tim");
+        const [player2, player3] = ["Jill", "Jim"].map(name => createPlayer(name));
+        const defaultDeck = makeDeckDefault();
 
         const game: Game = { 
             ...createGame(player1), 
@@ -48,21 +49,21 @@ describe("handleDealing function", () => {
             },
             deck: defaultDeck.slice(3),
             cardsOnTable: defaultDeck.slice(0, 3)
-        }
+        };
 
-        const deckSizeBefore = game.deck.length
-        const cardsOnTableSizeBefore = game.cardsOnTable.length
+        const deckSizeBefore = game.deck.length;
+        const cardsOnTableSizeBefore = game.cardsOnTable.length;
 
         const state: ApplicationState = {
             players: [],
             games: [game]
-        }
+        };
 
-        handleDealing(game, state, mockPubSubInfo())
-        expect(state.games[0].deck).toHaveLength(deckSizeBefore - 1)
-        expect(state.games[0].cardsOnTable).toHaveLength(cardsOnTableSizeBefore + 1)
-    })
-})
+        handleDealing(game, state, mockPubSubInfo());
+        expect(state.games[0].deck).toHaveLength(deckSizeBefore - 1);
+        expect(state.games[0].cardsOnTable).toHaveLength(cardsOnTableSizeBefore + 1);
+    });
+});
 
 describe("handleEndOfRound function", () => {
     it("works as expected when the round ends after the river", () => {
@@ -74,7 +75,7 @@ describe("handleEndOfRound function", () => {
             ],
             moneyInPot: 50,
             role: "SMALL_BLIND"
-        }
+        };
         const player2: Player = { 
             ...createPlayer("Jill"),
             cards: [
@@ -83,7 +84,7 @@ describe("handleEndOfRound function", () => {
             ],
             moneyInPot: 50,
             role: "BIG_BLIND"
-        } 
+        }; 
         const player3: Player = {
             ...createPlayer("Amedeo"),
             cards: [
@@ -92,7 +93,7 @@ describe("handleEndOfRound function", () => {
             ],
             inPlay: false,
             moneyInPot: 25
-        }
+        };
 
         const game: Game = { 
             ...createGame(player1), 
@@ -110,18 +111,18 @@ describe("handleEndOfRound function", () => {
                 { rank: 3, suit: "CLUBS" }
             ],
             pot: 125
-        }
+        };
 
         const state: ApplicationState = {
             players: [],
             games: [game]
-        }
+        };
 
-        handleEndOfRound(game, state, mockPubSubInfo())
-        const gameAfter = state.games[0]
-        expect(gameAfter.players.find(p => p.id === player2.id)?.money).toBe(625)
-        expect(gameAfter.betAmount).toBe(0)
-        expect(gameAfter.pot).toBe(0)
-        expect(gameAfter.cardsOnTable).toHaveLength(0)
-    })
-})
+        handleEndOfRound(game, state, mockPubSubInfo());
+        const gameAfter = state.games[0];
+        expect(gameAfter.players.find(p => p.id === player2.id)?.money).toBe(625);
+        expect(gameAfter.betAmount).toBe(0);
+        expect(gameAfter.pot).toBe(0);
+        expect(gameAfter.cardsOnTable).toHaveLength(0);
+    });
+});

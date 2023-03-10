@@ -1,10 +1,10 @@
-export type Role = 'SMALL_BLIND' | 'BIG_BLIND' | 'OTHER'
+export type Role = "SMALL_BLIND" | "BIG_BLIND" | "OTHER";
 
-export type Suit = 'SPADES' | 'HEARTS' | 'DIAMONDS' | 'CLUBS'
+export type Suit = "SPADES" | "HEARTS" | "DIAMONDS" | "CLUBS";
 
-export type Hand = 'PAIR' | 'THREE OF A KIND' | 'FOUR OF A KIND' | 'STRAIGHT' | 'FLUSH' | 'HIGH CARD'
+export type Hand = "PAIR" | "THREE OF A KIND" | "FOUR OF A KIND" | "STRAIGHT" | "FLUSH" | "HIGH CARD";
 
-export type BettingRound = 'BLINDS' | 'FLOP' | 'TURN' | 'RIVER'
+export type BettingRound = "BLINDS" | "FLOP" | "TURN" | "RIVER";
 
 export interface BettingInfo {
     round: BettingRound
@@ -28,8 +28,8 @@ export interface Card {
 }
 
 export interface Player {
-    id: String,
-    name: String,
+    id: string,
+    name: string,
     role: Role,
     cards: Card[]
     money: number,
@@ -38,9 +38,9 @@ export interface Player {
 }
 
 export interface Game {
-    id: String,
+    id: string,
     players: Player[],
-    turnToBet: String, // the id of the player currently betting
+    turnToBet: string, // the id of the player currently betting
     deck: Card[],
     cardsOnTable: Card[]
     pot: number,
@@ -61,29 +61,29 @@ export interface GameConfig {
 }
 
 export interface CreatePlayerMessage {
-    name: String
+    name: string
 }
 
 export interface CreateGameMessage {
-    creatorId: String
+    creatorId: string
 }
 
 export interface JoinGameMessage {
-    playerId: String
-    gameId: String
+    playerId: string
+    gameId: string
 }
 
 export interface StartGameMessage {
-    startingGameId: String
+    startingGameId: string
 }
 
 export interface BetMessage {
-    bettingPlayerId: String
+    bettingPlayerId: string
     amount: number
 }
 
 export interface FoldMessage {
-    foldingPlayerId: String
+    foldingPlayerId: string
 }
 
 export type ClientMessage = 
@@ -92,7 +92,7 @@ export type ClientMessage =
     JoinGameMessage | 
     StartGameMessage |
     BetMessage |
-    FoldMessage
+    FoldMessage;
 
 export interface PlayerCreatedMessage {
     player: Player
@@ -119,4 +119,4 @@ export type ServerMessage =
     GameCreatedMessage | 
     GameJoinedMessage |
     GameStartedMessage |
-    GameUpdatedMessage
+    GameUpdatedMessage;

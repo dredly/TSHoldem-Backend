@@ -1,19 +1,19 @@
-import { makeDeckDefault } from "../../gameplay/cards/cardUtils"
-import { blindsRound, getWinners, prepareForRound, resetAfterRound, switchRoles } from "../../gameplay/roundManagement"
-import { Card, Game, Player } from "../../types"
+import { makeDeckDefault } from "../../gameplay/cards/cardUtils";
+import { blindsRound, getWinners, prepareForRound, resetAfterRound, switchRoles } from "../../gameplay/roundManagement";
+import { Card, Game, Player } from "../../types";
 
 describe("switchRoles function", () => {
     it("works for 2 players", () => {
         const before: Player[] = [
             {id: "1", name: "player1", role: "SMALL_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
             {id: "2", name: "player2", role: "BIG_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true}
-        ]
-        const after = switchRoles(before)
+        ];
+        const after = switchRoles(before);
         expect(after).toEqual([
             {id: "1", name: "player1", role: "BIG_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
             {id: "2", name: "player2", role: "SMALL_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true}
-        ])
-    })
+        ]);
+    });
 
     it("works for more players with no overshoot", () => {
         const before: Player[] = [
@@ -21,15 +21,15 @@ describe("switchRoles function", () => {
             {id: "2", name: "player2", role: "SMALL_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
             {id: "3", name: "player3", role: "BIG_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
             {id: "4", name: "player4", role: "OTHER", cards: [], money: 42069, moneyInPot: 0, inPlay: true}
-        ]
-        const after = switchRoles(before)
+        ];
+        const after = switchRoles(before);
         expect(after).toEqual([
             {id: "1", name: "player1", role: "OTHER", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
             {id: "2", name: "player2", role: "OTHER", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
             {id: "3", name: "player3", role: "SMALL_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
             {id: "4", name: "player4", role: "BIG_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true}
-        ])
-    })
+        ]);
+    });
 
     it("works for more players with overshoot", () => {
         const before: Player[] = [
@@ -37,16 +37,16 @@ describe("switchRoles function", () => {
             {id: "2", name: "player2", role: "OTHER", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
             {id: "3", name: "player3", role: "SMALL_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
             {id: "4", name: "player4", role: "BIG_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true}
-        ]
-        const after = switchRoles(before)
+        ];
+        const after = switchRoles(before);
         expect(after).toEqual([
             {id: "1", name: "player1", role: "BIG_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
             {id: "2", name: "player2", role: "OTHER", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
             {id: "3", name: "player3", role: "OTHER", cards: [], money: 42069, moneyInPot: 0, inPlay: true},
             {id: "4", name: "player4", role: "SMALL_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true}
-        ])
-    })
-})
+        ]);
+    });
+});
 
 describe("getWinners function", () => {
     it("finds a sole winner when there is one", () => {
@@ -56,7 +56,7 @@ describe("getWinners function", () => {
             { rank: 2, suit: "HEARTS" },
             { rank: 1, suit: "CLUBS" },
             { rank: 9, suit: "SPADES" }
-        ]
+        ];
         const players: Player[] = [
             {
                 id: "1",
@@ -94,7 +94,7 @@ describe("getWinners function", () => {
                 moneyInPot: 0, 
                 inPlay: true
             }
-        ]
+        ];
         const game: Game = {
             id: "1",
             players,
@@ -104,11 +104,11 @@ describe("getWinners function", () => {
             betAmount: 0,
             deck: [],
             started: true
-        }
+        };
 
-        const winnerNames = getWinners(game).map(w => w.name)
-        expect(winnerNames).toEqual(["Jake"])
-    })
+        const winnerNames = getWinners(game).map(w => w.name);
+        expect(winnerNames).toEqual(["Jake"]);
+    });
 
     it("handles a 2 way tie", () => {
         const cardsOnTable: Card[] = [
@@ -117,7 +117,7 @@ describe("getWinners function", () => {
             { rank: 2, suit: "HEARTS" },
             { rank: 1, suit: "CLUBS" },
             { rank: 9, suit: "SPADES" }
-        ]
+        ];
         const players: Player[] = [
             {
                 id: "1",
@@ -155,7 +155,7 @@ describe("getWinners function", () => {
                 moneyInPot: 0, 
                 inPlay: true
             }
-        ]
+        ];
         const game: Game = {
             id: "1",
             players,
@@ -165,14 +165,14 @@ describe("getWinners function", () => {
             deck: [],
             betAmount: 0,
             started: true
-        }
+        };
 
-        const winnerNames = getWinners(game).map(w => w.name)
-        expect(winnerNames).toHaveLength(2)
-        expect(winnerNames).toContain("Jake")
-        expect(winnerNames).toContain("Joel")
-    })
-})
+        const winnerNames = getWinners(game).map(w => w.name);
+        expect(winnerNames).toHaveLength(2);
+        expect(winnerNames).toContain("Jake");
+        expect(winnerNames).toContain("Joel");
+    });
+});
 
 describe("prepareForRound function", () => {
     it("shuffles the cards and orders the players as expected", () => {
@@ -190,14 +190,14 @@ describe("prepareForRound function", () => {
                 {id: "4", name: "player4", role: "BIG_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true }
             ],
             started: true
-        }
-        const preparedGame = prepareForRound(initialGame)
-        expect(preparedGame.deck).not.toEqual(makeDeckDefault())
+        };
+        const preparedGame = prepareForRound(initialGame);
+        expect(preparedGame.deck).not.toEqual(makeDeckDefault());
         expect(preparedGame.players.map(p => p.id)).toEqual([
             "3", "4", "1", "2"
-        ])
-    })
-})
+        ]);
+    });
+});
 
 describe("blindsRound function", () => {
     it("handles the bets and deals out cards as expected", () => {
@@ -223,15 +223,15 @@ describe("blindsRound function", () => {
             turnToBet: "foo",
             betAmount: 0,
             started: true
-        }
-        const updatedGame = blindsRound(game)
-        expect(updatedGame.players.map(p => p.money)).toEqual([49, 48, 50])
-        expect(updatedGame.pot).toBe(3)
-        expect(updatedGame.betAmount).toBe(2)
+        };
+        const updatedGame = blindsRound(game);
+        expect(updatedGame.players.map(p => p.money)).toEqual([49, 48, 50]);
+        expect(updatedGame.pot).toBe(3);
+        expect(updatedGame.betAmount).toBe(2);
         expect(updatedGame.deck).toEqual([
             { rank: 8, suit: "SPADES" },
             { rank: 1, suit: "HEARTS"}
-        ])
+        ]);
         expect(updatedGame.players.map(p => p.cards)).toEqual([
             [
                 { rank: 4, suit: "CLUBS" },
@@ -245,24 +245,24 @@ describe("blindsRound function", () => {
                 { rank: 9, suit: "SPADES" },
                 { rank: 11, suit: "DIAMONDS"},
             ]
-        ])
+        ]);
         expect(updatedGame.bettingInfo).toEqual({
             round: "BLINDS",
             isSecondPass: false
-        })
-    })
-})
+        });
+    });
+});
 
 describe("resetAfterRound function", () => {
     it("resets the game back to a clean state", () => {
         const p1Cards: Card[] = [
             { rank: 12, suit: "CLUBS" },
             { rank: 1, suit: "HEARTS" },
-        ]
+        ];
         const p2Cards: Card[] = [
             { rank: 3, suit: "CLUBS" },
             { rank: 4, suit: "SPADES" },
-        ]
+        ];
         const game: Game = {
             id: "5",
             deck: [
@@ -289,7 +289,7 @@ describe("resetAfterRound function", () => {
                 {id: "2", name: "player2", role: "BIG_BLIND", cards: p2Cards, money: 90, moneyInPot: 0, inPlay: true },
             ],
             started: true
-        }
+        };
 
         const expectedResetGame: Game = {
             id: "5",
@@ -303,9 +303,9 @@ describe("resetAfterRound function", () => {
                 {id: "2", name: "player2", role: "SMALL_BLIND", cards: [], money: 90, moneyInPot: 0, inPlay: true },
             ],
             started: true,
-        }
+        };
 
-        const resetGame = resetAfterRound(game)
-        expect(resetGame).toEqual(expectedResetGame)
-    })
-})
+        const resetGame = resetAfterRound(game);
+        expect(resetGame).toEqual(expectedResetGame);
+    });
+});

@@ -5,11 +5,11 @@ export const gameConfig: GameConfig = {
     startingBlind: 2,
     // order of the ranking is important
     handRankings: [
-        'FOUR OF A KIND',
-        'FLUSH',
-        'STRAIGHT',
-        'THREE OF A KIND',
-        'PAIR',
-        'HIGH CARD'
+        "FOUR OF A KIND",
+        "FLUSH",
+        "STRAIGHT",
+        "THREE OF A KIND",
+        "PAIR",
+        "HIGH CARD"
     ]
-}
+};
