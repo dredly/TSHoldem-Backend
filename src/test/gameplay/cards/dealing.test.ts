@@ -1,6 +1,6 @@
-import { createPlayer } from "../../../gameManagement"
-import { dealRound, revealCards } from "../../../gameplay/cards/dealing"
-import { Game } from "../../../types"
+import { createPlayer } from "../../../gameManagement";
+import { dealRound, revealCards } from "../../../gameplay/cards/dealing";
+import { Game } from "../../../types";
 
 describe("dealRound function", () => {
     it("should deal cards to players as expected", () => {
@@ -26,12 +26,12 @@ describe("dealRound function", () => {
                 createPlayer("Amy")
             ],
             started: true
-        }
-        const updatedGame = dealRound(game)
+        };
+        const updatedGame = dealRound(game);
         expect(updatedGame.deck).toEqual([
             { rank: 7, suit: "CLUBS" },
             { rank: 1, suit: "SPADES"},
-        ])
+        ]);
         expect(updatedGame.players.map(p => p.cards)).toEqual([
             [
                 { rank: 4, suit: "CLUBS" },
@@ -45,9 +45,9 @@ describe("dealRound function", () => {
                 { rank: 9, suit: "CLUBS" },
                 { rank: 10, suit: "SPADES"}, 
             ],
-        ])
-    })
-})
+        ]);
+    });
+});
 
 describe("revealCards function", () => {
     it("should work as expected with different numbers of cards", () => {
@@ -69,9 +69,9 @@ describe("revealCards function", () => {
             cardsOnTable: [],
             players: [],
             started: true
-        }
+        };
 
-        const gameAfterFlop = revealCards(game, 3)
+        const gameAfterFlop = revealCards(game, 3);
         expect(gameAfterFlop).toEqual({
             id: "1",
             pot: 322,
@@ -91,9 +91,9 @@ describe("revealCards function", () => {
             ],
             players: [],
             started: true
-        })
+        });
 
-        const gameAfterTurn = revealCards(gameAfterFlop, 1)
+        const gameAfterTurn = revealCards(gameAfterFlop, 1);
         expect(gameAfterTurn).toEqual({
             id: "1",
             pot: 322,
@@ -113,6 +113,6 @@ describe("revealCards function", () => {
             ],
             players: [],
             started: true
-        })
-    })
-})
+        });
+    });
+});
