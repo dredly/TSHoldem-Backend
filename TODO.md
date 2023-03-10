@@ -68,7 +68,7 @@
             - [x] Tests for updateGameWithNextBet function
             - [x] Deal cards when blinds are done
             - [x] Write test for handleDealing function
-            - [ ] End of round logic
+            - [x] End of round logic
             - [ ] Make round end early if everyone but 1 player folds
 - [ ] Advanced gameplay
     - [ ] Increasing blinds

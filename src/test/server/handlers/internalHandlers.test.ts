@@ -1,7 +1,7 @@
 import { createGame, createPlayer } from "../../../gameManagement"
 import { makeDeckDefault } from "../../../gameplay/cards/cardUtils"
-import { handleDealing } from "../../../server/handlers/internalHandlers"
-import { Game, ApplicationState } from "../../../types"
+import { handleDealing, handleEndOfRound } from "../../../server/handlers/internalHandlers"
+import { Game, ApplicationState, Player, Card } from "../../../types"
 
 jest.mock("../../../server/publishing.ts")
 jest.mock("ws")
@@ -61,5 +61,67 @@ describe("handleDealing function", () => {
         handleDealing(game, state, mockPubSubInfo())
         expect(state.games[0].deck).toHaveLength(deckSizeBefore - 1)
         expect(state.games[0].cardsOnTable).toHaveLength(cardsOnTableSizeBefore + 1)
+    })
+})
+
+describe("handleEndOfRound function", () => {
+    it("works as expected when the round ends after the river", () => {
+        const player1: Player = { 
+            ...createPlayer("Tim"),
+            cards: [
+                { rank: 4, suit: "SPADES" },
+                { rank: 9, suit: "DIAMONDS" },
+            ],
+            moneyInPot: 50,
+            role: "SMALL_BLIND"
+        }
+        const player2: Player = { 
+            ...createPlayer("Jill"),
+            cards: [
+                { rank: 5, suit: "SPADES" },
+                { rank: 6, suit: "DIAMONDS" },
+            ],
+            moneyInPot: 50,
+            role: "BIG_BLIND"
+        } 
+        const player3: Player = {
+            ...createPlayer("Amedeo"),
+            cards: [
+                { rank: 10, suit: "SPADES" },
+                { rank: 3, suit: "DIAMONDS" },
+            ],
+            inPlay: false,
+            moneyInPot: 25
+        }
+
+        const game: Game = { 
+            ...createGame(player1), 
+            players: [player1].concat([player2, player3]),
+            bettingInfo: {
+                round: "RIVER",
+                isSecondPass: false
+            },
+            deck: [],
+            cardsOnTable: [
+                { rank: 2, suit: "HEARTS" },
+                { rank: 4, suit: "CLUBS" },
+                { rank: 10, suit: "HEARTS" },
+                { rank: 1, suit: "DIAMONDS" },
+                { rank: 3, suit: "CLUBS" }
+            ],
+            pot: 125
+        }
+
+        const state: ApplicationState = {
+            players: [],
+            games: [game]
+        }
+
+        handleEndOfRound(game, state, mockPubSubInfo())
+        const gameAfter = state.games[0]
+        expect(gameAfter.players.find(p => p.id === player2.id)?.money).toBe(625)
+        expect(gameAfter.betAmount).toBe(0)
+        expect(gameAfter.pot).toBe(0)
+        expect(gameAfter.cardsOnTable).toHaveLength(0)
     })
 })
