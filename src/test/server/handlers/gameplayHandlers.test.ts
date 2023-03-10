@@ -6,6 +6,7 @@ import { Game, ApplicationState } from "../../../types"
 
 jest.mock("../../../server/publishing.ts")
 jest.mock("ws")
+jest.mock("../../../server/handlers/internalHandlers.ts")
 const mockPubSubInfo = () => new Map()
 
 describe("handleBet function", () => {
@@ -133,5 +134,27 @@ describe("handleFold function", () => {
         }
         expect(() => {handleFold({ foldingPlayerId: "foo" }, state, mockPubSubInfo())})
             .toThrowError("game with that player not found")
+    })
+
+    it("ends the round early if player folding is the second last in play", () => {
+        const spy = jest.spyOn(internalHandlers, "handleEndOfRound")
+
+        const player1 = {
+            ...createPlayer("Tim"),
+            inPlay: false
+        }
+        const [player2, player3] = ["Jill", "Jim"].map(name => createPlayer(name))
+        const game: Game = { 
+            ...createGame(player1), 
+            players: [player1].concat([player2, player3]),
+            turnToBet: player3.id 
+        }
+        const state: ApplicationState = {
+            players: [],
+            games: [game]
+        }
+
+        handleFold({ foldingPlayerId: player3.id }, state, mockPubSubInfo())
+        expect(spy).toBeCalled()
     })
 })

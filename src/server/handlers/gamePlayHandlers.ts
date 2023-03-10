@@ -2,7 +2,7 @@ import WebSocket from "ws"
 import { updateGameWithBet, updateGameWithFold, updateGameWithNextBet } from "../../gameplay/betting"
 import { BetMessage, ApplicationState, Game, FoldMessage } from "../../types"
 import { publishToPlayers } from "../publishing"
-import { handleDealing } from "./internalHandlers"
+import { handleDealing, handleEndOfRound } from "./internalHandlers"
 
 export const handleBet = (message: BetMessage, applicationState: ApplicationState, pubSubInfo: Map<String, WebSocket>) => {
     console.debug(`Player with id ${message.bettingPlayerId} bet $${message.amount}`)
@@ -55,6 +55,14 @@ export const handleFold = (message: FoldMessage, applicationState: ApplicationSt
     }
 
     const gameUpdatedWithFold = updateGameWithFold(game, player)
+
+    // check if everyone has now folded except for one player
+    if (gameUpdatedWithFold.players.filter(p => p.inPlay).length < 2) {
+        console.debug("ending round early")
+        handleEndOfRound(game, applicationState, pubSubInfo)
+        return
+    } 
+
     const gameUpdated = updateGameWithNextBet(gameUpdatedWithFold)
 
     if (gameUpdated.bettingInfo?.round !== game.bettingInfo?.round) {

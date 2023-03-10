@@ -55,21 +55,21 @@
 - [x] Better typechecking
     - [x] Check that properties are actually strings and not just that they are not undefined
 - [x] Rename id propertites on client messages to prevent any possible collisions
-- [ ] More gameplay part 2
+- [x] More gameplay part 2
     - [x] Function for determining who bets next (with test)
-    - [ ] Basic betting functionality and tests   
+    - [x] Basic betting functionality and tests   
         - [x] betting handler function
         - [x] Fix bug to ensure the correct player starts with the betting privileges 
         - [x] Folding functionality
         - [x] split up file for handlers
-        - [ ] Do something when round of betting is over
+        - [x] Do something when round of betting is over
             - [x] Keep track of what stage we are in a round
             - [x] updateGameWithNextBet function
             - [x] Tests for updateGameWithNextBet function
             - [x] Deal cards when blinds are done
             - [x] Write test for handleDealing function
             - [x] End of round logic
-            - [ ] Make round end early if everyone but 1 player folds
+            - [x] Make round end early if everyone but 1 player folds
 - [ ] Advanced gameplay
     - [ ] Increasing blinds
     - [ ] Elimination
