@@ -27,7 +27,7 @@ export const handleBet = (message: BetMessage, applicationState: ApplicationStat
 
     if (gameUpdated.bettingInfo?.round !== game.bettingInfo?.round) {
         console.debug("moving on to next round");
-        handleDealing(gameUpdated, applicationState, pubSubInfo); // If this works also fix for handleFold
+        handleDealing(gameUpdated, applicationState, pubSubInfo);
         return;
     }
 
