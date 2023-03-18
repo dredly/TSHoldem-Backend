@@ -12,8 +12,15 @@ export const nextPlayerToBet = (game: Game): string | undefined => {
     // Returns either the id of the next player to bet, or undefined if the round of betting is over
     const playersInPlay = game.players.filter(p => p.inPlay);
     const playerIdx = playersInPlay.findIndex(p => p.id === game.turnToBet);
+    console.debug("playersInPlay", playersInPlay);
+    console.debug("playerIdx", playerIdx);
     if (playerIdx === playersInPlay.length - 1) {
         return playersInPlay.find(p => p.moneyInPot < game.betAmount)?.id;
+    }
+    if (game.bettingInfo && game.bettingInfo.isSecondPass) {
+        return playersInPlay.slice(playerIdx + 1)
+            .concat(playersInPlay.slice(0, playerIdx + 1))
+            .find(p => p.moneyInPot < game.betAmount)?.id;
     }
     return playersInPlay[playerIdx + 1].id;
 };

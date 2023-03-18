@@ -91,6 +91,29 @@ describe("handleBet function", () => {
         handleBet({ bettingPlayerId: player3.id, amount: 0 }, state, mockPubSubInfo());
         expect(spy).toBeCalled();
     });
+
+    it("calls the handler for ending a round when round is over", () => {
+        const spy = jest.spyOn(internalHandlers, "handleEndOfRound");
+
+        const player1 = createPlayer("Tim");
+        const [player2, player3] = ["Jill", "Jim"].map(name => createPlayer(name));
+        const game: Game = { 
+            ...createGame(player1), 
+            players: [player1].concat([player2, player3]),
+            turnToBet: player3.id,
+            bettingInfo: {
+                round: "RIVER",
+                isSecondPass: false
+            }
+        };
+        const state: ApplicationState = {
+            players: [],
+            games: [game]
+        };
+        handleBet({ bettingPlayerId: player3.id, amount: 0 }, state, mockPubSubInfo());
+
+        expect(spy).toBeCalled();
+    });
 });
 
 describe("handleFold function", () => {

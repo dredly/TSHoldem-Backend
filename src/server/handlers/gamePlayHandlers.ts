@@ -25,9 +25,15 @@ export const handleBet = (message: BetMessage, applicationState: ApplicationStat
 
     const gameUpdated = updateGameWithNextBet(gameUpdatedWithBet);
 
-    if (gameUpdated.bettingInfo?.round !== game.bettingInfo?.round) {
+    if (!gameUpdated.bettingInfo) {
+        console.debug("ending round");
+        handleEndOfRound(gameUpdated, applicationState, pubSubInfo);
+        return;
+    }
+
+    if (gameUpdated.bettingInfo.round !== game.bettingInfo?.round) {
         console.debug("moving on to next round");
-        handleDealing(game, applicationState, pubSubInfo);
+        handleDealing(gameUpdated, applicationState, pubSubInfo);
         return;
     }
 
@@ -59,7 +65,7 @@ export const handleFold = (message: FoldMessage, applicationState: ApplicationSt
     // check if everyone has now folded except for one player
     if (gameUpdatedWithFold.players.filter(p => p.inPlay).length < 2) {
         console.debug("ending round early");
-        handleEndOfRound(game, applicationState, pubSubInfo);
+        handleEndOfRound(gameUpdatedWithFold, applicationState, pubSubInfo);
         return;
     } 
 
@@ -67,7 +73,7 @@ export const handleFold = (message: FoldMessage, applicationState: ApplicationSt
 
     if (gameUpdated.bettingInfo?.round !== game.bettingInfo?.round) {
         console.debug("moving on to next round");
-        handleDealing(game, applicationState, pubSubInfo);
+        handleDealing(gameUpdated, applicationState, pubSubInfo);
         return;
     }
 
