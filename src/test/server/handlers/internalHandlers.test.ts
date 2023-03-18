@@ -1,4 +1,5 @@
 import WebSocket from "ws";
+import { gameConfig } from "../../../gameConfig";
 import { createGame, createPlayer } from "../../../gameManagement";
 import { makeDeckDefault } from "../../../gameplay/cards/cardUtils";
 import { handleDealing, handleEndOfRound } from "../../../server/handlers/internalHandlers";
@@ -120,9 +121,14 @@ describe("handleEndOfRound function", () => {
 
         handleEndOfRound(game, state, mockPubSubInfo());
         const gameAfter = state.games[0];
-        expect(gameAfter.players.find(p => p.id === player2.id)?.money).toBe(625);
-        expect(gameAfter.betAmount).toBe(0);
-        expect(gameAfter.pot).toBe(0);
+        const winningPlayer = gameAfter.players.find(p => p.id === player2.id);
+        if (!winningPlayer) throw new Error("Winning player not found");
+        const winningPlayerTotalMoney = winningPlayer.money + winningPlayer.moneyInPot;
+        
+        expect(winningPlayerTotalMoney).toBe(625);
+        
+        expect(gameAfter.betAmount).toBe(gameConfig.startingBlind);
+        expect(gameAfter.pot).toBe(gameConfig.startingBlind * 1.5);
         expect(gameAfter.cardsOnTable).toHaveLength(0);
     });
 });
