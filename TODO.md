@@ -78,7 +78,7 @@
 - [ ] Niceties
     - [ ] TestUtils to eliminate repetition with test data
     - [ ] Properly separate out all server related functionality
-    - [ ] Eslint
+    - [x] Eslint
     - [ ] Code coverage
 - [ ] Optimisations
     - [ ] Optimise order of hand checking, e.g. check for pairs before checking for 3s and 4s
