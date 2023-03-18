@@ -25,7 +25,13 @@ export const handleBet = (message: BetMessage, applicationState: ApplicationStat
 
     const gameUpdated = updateGameWithNextBet(gameUpdatedWithBet);
 
-    if (gameUpdated.bettingInfo?.round !== game.bettingInfo?.round) {
+    if (!gameUpdated.bettingInfo) {
+        console.debug("ending round");
+        handleEndOfRound(gameUpdated, applicationState, pubSubInfo);
+        return;
+    }
+
+    if (gameUpdated.bettingInfo.round !== game.bettingInfo?.round) {
         console.debug("moving on to next round");
         handleDealing(gameUpdated, applicationState, pubSubInfo);
         return;
