@@ -1,7 +1,7 @@
 import WebSocket from "ws";
 import { winPot } from "../../gameplay/betting";
 import { revealCards } from "../../gameplay/cards/dealing";
-import { groupPlayersByScore, prepareForRound, resetAfterRound } from "../../gameplay/roundManagement";
+import { blindsRound, groupPlayersByScore, prepareForRound, resetAfterRound } from "../../gameplay/roundManagement";
 import { ApplicationState, Game } from "../../types";
 import { publishToPlayers } from "../publishing";
 
@@ -19,8 +19,11 @@ export const handleEndOfRound = (game: Game, applicationState: ApplicationState,
     const activePlayersByScore = groupPlayersByScore(game.players.filter(p => p.inPlay), game.cardsOnTable);
     const winners = activePlayersByScore[0];
     const gameUpdatedWithWinnings = winPot(game, winners);
-    const gameUpdated = prepareForRound(
-        resetAfterRound(gameUpdatedWithWinnings)
+    // TODO: try to bring in some sort of pipe operator
+    const gameUpdated = blindsRound(
+        prepareForRound(
+            resetAfterRound(gameUpdatedWithWinnings)
+        )
     );
 
     applicationState.games = applicationState.games
