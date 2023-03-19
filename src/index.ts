@@ -4,8 +4,18 @@ import { handlePlayerCreation, handleGameCreation, handleJoin, handleStart } fro
 import { handleBet, handleFold } from "./server/handlers/gamePlayHandlers";
 import { isBetMessage, isCreateGameMessage, isCreatePlayerMessage, isFoldMessage, isJoinGameMessage, isStartGameMessage } from "./typeGuards";
 import { ApplicationState } from "./types";
+import express from "express";
+import cors from "cors";
 
-const wss = new WebSocketServer({ port: 8080 });
+
+const PORT = process.env.PORT || "8080";
+
+const expressServer = express()
+    .use(cors())
+    .get("/", (_req, res) => { res.send("healthy"); })
+    .listen(PORT, () => console.log(`Listening on ${PORT}`));
+
+const wss = new WebSocketServer({ server: expressServer });
 
 const applicationState: ApplicationState = {
     players: [],
