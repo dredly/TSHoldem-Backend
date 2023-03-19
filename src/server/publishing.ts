@@ -6,6 +6,8 @@ export const publishServerMessage = (message: ServerMessage, ws: WebSocket): voi
 };
 
 export const publishToPlayers = (message: ServerMessage, pubSubInfo: Map<string, WebSocket>, players: Player[]): void => {
+    console.log("PUBLISHING TO PLAYERS");
+    console.log("pubSubInfo", pubSubInfo);
     players.forEach(p => {
         const ws = pubSubInfo.get(p.id);
         if (!ws) {
