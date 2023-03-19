@@ -9,7 +9,7 @@
     "lint": "eslint src --ext ts",
     "fix": "eslint src --ext ts --fix",
     "build": "tsc",
-    "start": "tsc && node build/index.js"
+    "start": "node build/index.js"
   },
   "keywords": [],
   "author": "",

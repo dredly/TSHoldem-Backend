@@ -1,6 +1,6 @@
-# fly.toml file generated for ts-holdem on 2023-03-18T23:22:03Z
+# fly.toml file generated for tsholdem-v2 on 2023-03-19T15:44:55Z
 
-app = "ts-holdem"
+app = "tsholdem-v2"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
