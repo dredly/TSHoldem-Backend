@@ -72,13 +72,14 @@
             - [x] Make round end early if everyone but 1 player folds
     - [x] Handle end of round when it actually gets to the end
 - [ ] Advanced gameplay
+    - [x] Elimination
+    - [ ] All ins (make sure they work)
     - [ ] Increasing blinds
-    - [ ] Elimination
-    - [ ] All ins (maybe will be handled by proper betting)
 - [ ] Niceties
     - [ ] TestUtils to eliminate repetition with test data
     - [ ] Properly separate out all server related functionality
     - [x] Eslint
     - [ ] Code coverage
 - [ ] Optimisations
+    - [ ] Clean up resources on disconnect, game end etc
     - [ ] Optimise order of hand checking, e.g. check for pairs before checking for 3s and 4s

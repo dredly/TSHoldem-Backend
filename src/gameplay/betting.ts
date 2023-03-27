@@ -116,6 +116,8 @@ export const winPot = (game: Game, winners: Player[]): Game => {
     return {
         ...game,
         pot: 0,
-        players: game.players.map(p => winnerIds.includes(p.id) ? { ...p, money: p.money + share } : p)
+        players: game.players
+            .map(p => winnerIds.includes(p.id) ? { ...p, money: p.money + share } : p)
+            .filter(p => p.money)
     };
 };

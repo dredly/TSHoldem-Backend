@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "npx nodemon",
-    "test": "npx jest",
+    "test": "npx jest src",
     "lint": "eslint src --ext ts",
     "fix": "eslint src --ext ts --fix",
     "build": "tsc",
