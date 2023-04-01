@@ -17,8 +17,7 @@ export const handleDealing = (game: Game, applicationState: ApplicationState, pu
 
 export const handleEndOfRound = (game: Game, applicationState: ApplicationState, pubSubInfo: Map<string, WebSocket>) => {
     const activePlayersByScore = groupPlayersByScore(game.players.filter(p => p.inPlay), game.cardsOnTable);
-    const winners = activePlayersByScore[0];
-    const gameUpdatedWithWinnings = winPot(game, winners);
+    const gameUpdatedWithWinnings = winPot(game, activePlayersByScore);
     // TODO: try to bring in some sort of pipe operator
     const gameUpdated = blindsRound(
         prepareForRound(

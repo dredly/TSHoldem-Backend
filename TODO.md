@@ -74,6 +74,7 @@
 - [ ] Advanced gameplay
     - [x] Elimination
     - [ ] All ins (make sure they work)
+    - [ ] Remove the property of pot on game since it is calculated from the sum of players money in the pot and therefore redundant
     - [ ] Increasing blinds
 - [ ] Niceties
     - [ ] TestUtils to eliminate repetition with test data

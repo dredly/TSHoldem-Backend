@@ -110,14 +110,37 @@ export const updateGameWithNextBet = (game: Game): Game => {
     return { ...game, turnToBet: nextPlayerToBetId };
 };
 
-export const winPot = (game: Game, winners: Player[]): Game => {
-    const winnerIds = winners.map(w => w.id);
-    const share = Math.floor(game.pot / winners.length);
-    return {
-        ...game,
-        pot: 0,
-        players: game.players
-            .map(p => winnerIds.includes(p.id) ? { ...p, money: p.money + share } : p)
-            .filter(p => p.money)
-    };
+const getWinningsFromOtherPlayer = (winner: Player, otherPlayer: Player, numOfWinners: number): number => {
+    // Ensures that a player cannot win more than they put in
+    return Math.min(winner.moneyInPot, Math.floor(otherPlayer.moneyInPot / numOfWinners));
+};
+
+export const winPot = (game: Game, playersRankedByScore: Player[][]): Game => {
+    // TODO: handle the possibility of split pots, all ins etc
+    // const winnerIds = winners.map(w => w.id);
+    // const share = Math.floor(game.pot / winners.length);
+    // return {
+    //     ...game,
+    //     pot: 0,
+    //     players: game.players
+    //         .map(p => winnerIds.includes(p.id) ? { ...p, money: p.money + share } : p)
+    //         .filter(p => p.money)
+    // };
+    const winners = playersRankedByScore[0];
+    const losers = playersRankedByScore.slice(1).flat();
+    for (const winner of winners) {
+        for (const loser of losers) {
+            const moneyToTake = getWinningsFromOtherPlayer(winner, loser, winners.length);
+            winner.money += moneyToTake;
+            loser.money -= moneyToTake;
+        }
+    }
+
+    // TODO: figure out what to do with players who have folded
+
+    const losersWithMoneyLeft = losers.filter(loser => loser.moneyInPot);
+    if (losersWithMoneyLeft.length) {
+        // TODO pass in the updated game in here otherwise will definitely mess up
+        return winPot(game, playersRankedByScore.slice(1));
+    }
 };
