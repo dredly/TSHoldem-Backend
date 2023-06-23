@@ -39,8 +39,7 @@ export const fold = (player: Player): Player => {
 export const updateGameWithBet = (game: Game, player: Player, amount: number): Game => {
     const updatedPlayer = betAmount(player, amount);
     return { 
-        ...game, 
-        pot: game.pot + amount,
+        ...game,
         betAmount: Math.max(game.betAmount, updatedPlayer.moneyInPot),
         players: game.players.map(p => p.id === player.id ? updatedPlayer : p)
     };
@@ -116,31 +115,38 @@ const getWinningsFromOtherPlayer = (winner: Player, otherPlayer: Player, numOfWi
 };
 
 export const winPot = (game: Game, playersRankedByScore: Player[][]): Game => {
-    // TODO: handle the possibility of split pots, all ins etc
-    // const winnerIds = winners.map(w => w.id);
-    // const share = Math.floor(game.pot / winners.length);
-    // return {
-    //     ...game,
-    //     pot: 0,
-    //     players: game.players
-    //         .map(p => winnerIds.includes(p.id) ? { ...p, money: p.money + share } : p)
-    //         .filter(p => p.money)
-    // };
     const winners = playersRankedByScore[0];
     const losers = playersRankedByScore.slice(1).flat();
     for (const winner of winners) {
         for (const loser of losers) {
             const moneyToTake = getWinningsFromOtherPlayer(winner, loser, winners.length);
             winner.money += moneyToTake;
-            loser.money -= moneyToTake;
+            loser.moneyInPot -= moneyToTake;
         }
+        // The winner also gets back the money they put in of course
+        winner.money += winner.moneyInPot;
+        winner.moneyInPot = 0;
     }
 
-    // TODO: figure out what to do with players who have folded
+    const winnersAndLosers = winners.concat(losers);
+
+    const gameUpdatedWithWinnings = {
+        ...game,
+        players: game.players
+            .map(p => {
+                const updatedPlayer = winnersAndLosers.find(wl => wl.id === p.id);
+                if (!updatedPlayer) {
+                    throw new Error("Could not find player in winners and losers");
+                }
+                return updatedPlayer;
+            })
+            .filter(p => p.money)
+    };
 
     const losersWithMoneyLeft = losers.filter(loser => loser.moneyInPot);
     if (losersWithMoneyLeft.length) {
-        // TODO pass in the updated game in here otherwise will definitely mess up
-        return winPot(game, playersRankedByScore.slice(1));
+        return winPot(gameUpdatedWithWinnings, playersRankedByScore.slice(1));
     }
+
+    return gameUpdatedWithWinnings;
 };

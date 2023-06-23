@@ -43,7 +43,6 @@ export interface Game {
     turnToBet: string, // the id of the player currently betting
     deck: Card[],
     cardsOnTable: Card[]
-    pot: number,
     betAmount: number,
     started: boolean,
     bettingInfo?: BettingInfo
