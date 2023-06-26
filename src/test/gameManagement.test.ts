@@ -45,7 +45,6 @@ describe("leaveGame function", () => {
             deck: [],
             turnToBet: "foo",
             cardsOnTable: [],
-            pot: 0,
             betAmount: 0,
             started: false
         };
@@ -60,7 +59,6 @@ describe("leaveGame function", () => {
             deck: [],
             turnToBet: "foo",
             cardsOnTable: [],
-            pot: 0,
             betAmount: 0,
             started: false
         };

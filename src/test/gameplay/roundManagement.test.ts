@@ -1,3 +1,4 @@
+import { getAmountInPot } from "../../gameplay/betting";
 import { makeDeckDefault } from "../../gameplay/cards/cardUtils";
 import { blindsRound, getWinners, prepareForRound, resetAfterRound, switchRoles } from "../../gameplay/roundManagement";
 import { Card, Game, Player } from "../../types";
@@ -99,7 +100,6 @@ describe("getWinners function", () => {
             id: "1",
             players,
             cardsOnTable,
-            pot: 1000,
             turnToBet: "foo",
             betAmount: 0,
             deck: [],
@@ -160,7 +160,6 @@ describe("getWinners function", () => {
             id: "1",
             players,
             cardsOnTable,
-            pot: 1000,
             turnToBet: "foo",
             deck: [],
             betAmount: 0,
@@ -180,7 +179,6 @@ describe("prepareForRound function", () => {
             id: "1",
             deck: makeDeckDefault(),
             cardsOnTable: [],
-            pot: 0,
             betAmount: 0,
             turnToBet: "foo",
             players: [
@@ -219,14 +217,13 @@ describe("blindsRound function", () => {
                 {id: "3", name: "player3", role: "BIG_BLIND", cards: [], money: 50, moneyInPot: 0, inPlay: true },
                 {id: "1", name: "player4", role: "OTHER", cards: [], money: 50, moneyInPot: 0, inPlay: true }
             ],
-            pot: 0,
             turnToBet: "foo",
             betAmount: 0,
             started: true
         };
         const updatedGame = blindsRound(game);
         expect(updatedGame.players.map(p => p.money)).toEqual([49, 48, 50]);
-        expect(updatedGame.pot).toBe(3);
+        expect(getAmountInPot(updatedGame)).toBe(3);
         expect(updatedGame.betAmount).toBe(2);
         expect(updatedGame.deck).toEqual([
             { rank: 8, suit: "SPADES" },
@@ -281,7 +278,6 @@ describe("resetAfterRound function", () => {
                 { rank: 6, suit: "DIAMONDS" },
                 { rank: 9, suit: "CLUBS" },
             ],
-            pot: 60,
             betAmount: 20,
             turnToBet: "foo",
             players: [
@@ -295,7 +291,6 @@ describe("resetAfterRound function", () => {
             id: "5",
             deck: makeDeckDefault(),
             cardsOnTable: [],
-            pot: 0,
             betAmount: 0,
             turnToBet: "foo",
             players: [

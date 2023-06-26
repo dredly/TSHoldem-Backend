@@ -1,6 +1,7 @@
 import WebSocket from "ws";
 import { gameConfig } from "../../../gameConfig";
 import { createGame, createPlayer } from "../../../gameManagement";
+import { getAmountInPot } from "../../../gameplay/betting";
 import { makeDeckDefault } from "../../../gameplay/cards/cardUtils";
 import { handleDealing, handleEndOfRound } from "../../../server/handlers/internalHandlers";
 import { Game, ApplicationState, Player } from "../../../types";
@@ -111,7 +112,6 @@ describe("handleEndOfRound function", () => {
                 { rank: 1, suit: "DIAMONDS" },
                 { rank: 3, suit: "CLUBS" }
             ],
-            pot: 125
         };
 
         const state: ApplicationState = {
@@ -128,7 +128,7 @@ describe("handleEndOfRound function", () => {
         expect(winningPlayerTotalMoney).toBe(625);
         
         expect(gameAfter.betAmount).toBe(gameConfig.startingBlind);
-        expect(gameAfter.pot).toBe(gameConfig.startingBlind * 1.5);
+        expect(getAmountInPot(gameAfter)).toBe(gameConfig.startingBlind * 1.5);
         expect(gameAfter.cardsOnTable).toHaveLength(0);
     });
 });

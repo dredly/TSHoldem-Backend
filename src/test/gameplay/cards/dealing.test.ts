@@ -6,7 +6,6 @@ describe("dealRound function", () => {
     it("should deal cards to players as expected", () => {
         const game: Game = {
             id: "1",
-            pot: 322,
             betAmount: 0,
             turnToBet: "foo",
             deck: [
@@ -53,7 +52,6 @@ describe("revealCards function", () => {
     it("should work as expected with different numbers of cards", () => {
         const game: Game = {
             id: "1",
-            pot: 322,
             betAmount: 0,
             turnToBet: "foo",
             deck: [

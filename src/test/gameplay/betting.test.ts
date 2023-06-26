@@ -1,5 +1,5 @@
 import { createGame, createPlayer } from "../../gameManagement";
-import { betAmount, getBettingOrder, nextPlayerToBet, updateGameWithBet, updateGameWithNextBet, winPot } from "../../gameplay/betting";
+import { betAmount, getAmountInPot, getBettingOrder, nextPlayerToBet, updateGameWithBet, updateGameWithNextBet, winPot } from "../../gameplay/betting";
 import { Player, Game } from "../../types";
 
 describe("getBettingOrder function", () => {
@@ -240,8 +240,5 @@ describe("winPot function", () => {
 });
 
 function assertNoMoneyLeftInPot(game: Game) {
-    const totalMoneyInPot = game.players
-        .map(p => p.moneyInPot)
-        .reduce((a, b) => a + b);
-    expect(totalMoneyInPot).toBe(0);
+    expect(getAmountInPot(game)).toBe(0);
 }

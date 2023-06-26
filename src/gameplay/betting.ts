@@ -116,7 +116,10 @@ const getWinningsFromOtherPlayer = (winner: Player, otherPlayer: Player, numOfWi
 
 export const winPot = (game: Game, playersRankedByScore: Player[][]): Game => {
     const winners = playersRankedByScore[0];
-    const losers = playersRankedByScore.slice(1).flat();
+    const losers = playersRankedByScore
+        .slice(1)
+        .flat()
+        .concat(game.players.filter(p => !p.inPlay));
     for (const winner of winners) {
         for (const loser of losers) {
             const moneyToTake = getWinningsFromOtherPlayer(winner, loser, winners.length);
@@ -149,4 +152,10 @@ export const winPot = (game: Game, playersRankedByScore: Player[][]): Game => {
     }
 
     return gameUpdatedWithWinnings;
+};
+
+export const getAmountInPot = (game: Game): number => {
+    return game.players
+        .map(p => p.moneyInPot)
+        .reduce((a, b) => a + b);
 };
