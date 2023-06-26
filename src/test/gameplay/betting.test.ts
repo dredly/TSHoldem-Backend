@@ -179,6 +179,7 @@ describe("winPot function", () => {
         };
         const updatedGame = winPot(game, [[player1], [player2]]);
         expect(updatedGame.players[0].money).toBe(700);
+        assertNoMoneyLeftInPot(updatedGame);
     });
 
     it("works with multiple winners", () => {
@@ -196,6 +197,7 @@ describe("winPot function", () => {
         const updatedGame = winPot(game, [[player1, player2]]);
         expect(updatedGame.players[0].money).toBe(400);
         expect(updatedGame.players[1].money).toBe(500);
+        assertNoMoneyLeftInPot(updatedGame);
     });
 
     it("eliminates any players who end up with no money", () => {
@@ -215,6 +217,7 @@ describe("winPot function", () => {
         expect(updatedGame.players).toHaveLength(2);
         expect(updatedGame.players[0].money).toBe(800);
         expect(updatedGame.players[1].money).toBe(200);
+        assertNoMoneyLeftInPot(updatedGame);
     });
 
     it("does not eliminate a player who went all in but then wins the pot", () => {
@@ -232,5 +235,13 @@ describe("winPot function", () => {
         };
         const updatedGame = winPot(game, [[player1], [player2, player3]]);
         expect(updatedGame.players).toHaveLength(3);
+        assertNoMoneyLeftInPot(updatedGame);
     });
 });
+
+function assertNoMoneyLeftInPot(game: Game) {
+    const totalMoneyInPot = game.players
+        .map(p => p.moneyInPot)
+        .reduce((a, b) => a + b);
+    expect(totalMoneyInPot).toBe(0);
+}

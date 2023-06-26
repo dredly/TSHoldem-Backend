@@ -74,7 +74,12 @@
 - [ ] Advanced gameplay
     - [x] Elimination
     - [ ] All ins (make sure they work)
+        - [x] Code
+        - [x] Test that players all have moneyInPot = 0 after winPot function is called 
+        - [ ] Specific test cases
     - [ ] Remove the property of pot on game since it is calculated from the sum of players money in the pot and therefore redundant
+        - [x] Remove
+        - [ ] Fix broken tests (will also need to update frontend)
     - [ ] Increasing blinds
 - [ ] Niceties
     - [ ] TestUtils to eliminate repetition with test data
