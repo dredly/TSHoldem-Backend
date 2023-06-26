@@ -1,7 +1,7 @@
 import WebSocket from "ws";
 import { gameConfig } from "../../../gameConfig";
 import { createGame, createPlayer } from "../../../gameManagement";
-import { getAmountInPot } from "../../../gameplay/betting";
+import { getAmountInPot } from "../../../gameplay/betting/bettingUtils";
 import { makeDeckDefault } from "../../../gameplay/cards/cardUtils";
 import { handleDealing, handleEndOfRound } from "../../../server/handlers/internalHandlers";
 import { Game, ApplicationState, Player } from "../../../types";

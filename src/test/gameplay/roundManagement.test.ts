@@ -1,4 +1,4 @@
-import { getAmountInPot } from "../../gameplay/betting";
+import { getAmountInPot } from "../../gameplay/betting/bettingUtils";
 import { makeDeckDefault } from "../../gameplay/cards/cardUtils";
 import { blindsRound, getWinners, prepareForRound, resetAfterRound, switchRoles } from "../../gameplay/roundManagement";
 import { Card, Game, Player } from "../../types";

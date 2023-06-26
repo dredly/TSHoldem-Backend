@@ -1,5 +1,5 @@
 import WebSocket from "ws";
-import { updateGameWithBet, updateGameWithFold, updateGameWithNextBet } from "../../gameplay/betting";
+import { updateGameWithBet, updateGameWithNextBet, updateGameWithFold } from "../../gameplay/betting/gameUpdates";
 import { BetMessage, ApplicationState, FoldMessage } from "../../types";
 import { publishToPlayers } from "../publishing";
 import { handleDealing, handleEndOfRound } from "./internalHandlers";
