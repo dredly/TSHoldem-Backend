@@ -1,5 +1,5 @@
 import WebSocket from "ws";
-import { winPot } from "../../gameplay/betting";
+import { winPot } from "../../gameplay/betting/winning";
 import { revealCards } from "../../gameplay/cards/dealing";
 import { blindsRound, groupPlayersByScore, prepareForRound, resetAfterRound } from "../../gameplay/roundManagement";
 import { ApplicationState, Game } from "../../types";

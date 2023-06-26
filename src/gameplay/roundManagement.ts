@@ -1,7 +1,8 @@
 import shuffle from "lodash.shuffle";
 import { gameConfig } from "../gameConfig";
 import { Card, Game, Player } from "../types";
-import { getBettingOrder, updateGameWithBet } from "./betting";
+import { getBettingOrder } from "./betting/bettingUtils";
+import { updateGameWithBet } from "./betting/gameUpdates";
 import { makeDeckDefault } from "./cards/cardUtils";
 import { dealRound } from "./cards/dealing";
 import { compareHands } from "./cards/handComparison";

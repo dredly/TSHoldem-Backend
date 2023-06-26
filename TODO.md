@@ -82,6 +82,8 @@
         - [x] Remove
         - [x] Fix broken tests (will also need to update frontend)
     - [ ] Break down betting file
+        - [x] Break down
+        - [ ] Fix broken tests
     - [ ] Increasing blinds
 - [ ] Niceties
     - [ ] TestUtils to eliminate repetition with test data
