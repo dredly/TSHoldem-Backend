@@ -72,7 +72,6 @@ describe("revealCards function", () => {
         const gameAfterFlop = revealCards(game, 3);
         expect(gameAfterFlop).toEqual({
             id: "1",
-            pot: 322,
             betAmount: 0,
             turnToBet: "foo",
             deck: [
@@ -94,7 +93,6 @@ describe("revealCards function", () => {
         const gameAfterTurn = revealCards(gameAfterFlop, 1);
         expect(gameAfterTurn).toEqual({
             id: "1",
-            pot: 322,
             betAmount: 0,
             turnToBet: "foo",
             deck: [
