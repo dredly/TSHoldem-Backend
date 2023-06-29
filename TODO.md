@@ -73,11 +73,11 @@
     - [x] Handle end of round when it actually gets to the end
 - [ ] Advanced gameplay
     - [x] Elimination
-    - [ ] All ins (make sure they work)
+    - [x] All ins (make sure they work)
         - [x] Code
         - [x] Test that players all have moneyInPot = 0 after winPot function is called
         - [x] Fix new winPot function failing on folds
-        - [ ] Specific test cases
+        - [x] Specific test cases
     - [x] Remove the property of pot on game since it is calculated from the sum of players money in the pot and therefore redundant
         - [x] Remove
         - [x] Fix broken tests (will also need to update frontend)

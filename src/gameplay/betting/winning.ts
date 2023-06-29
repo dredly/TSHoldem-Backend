@@ -30,7 +30,7 @@ export const winPot = (game: Game, playersRankedByScore: Player[][]): Game => {
             .map(p => {
                 const updatedPlayer = winnersAndLosers.find(wl => wl.id === p.id);
                 if (!updatedPlayer) {
-                    throw new Error("Could not find player in winners and losers");
+                    return p;
                 }
                 return updatedPlayer;
             })
