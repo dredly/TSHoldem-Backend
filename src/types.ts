@@ -55,8 +55,10 @@ export interface ApplicationState {
 
 export interface GameConfig {
     startingMoney: number
-    startingBlind: number,
-    handRankings: Hand[]
+    startingSmallBlind: number,
+    handRankings: Hand[],
+    blindIncreases: number[],
+    roundsPerBlindIncrease: number
 }
 
 export interface CreatePlayerMessage {

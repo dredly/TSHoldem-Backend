@@ -127,8 +127,8 @@ describe("handleEndOfRound function", () => {
         
         expect(winningPlayerTotalMoney).toBe(625);
         
-        expect(gameAfter.betAmount).toBe(gameConfig.startingBlind);
-        expect(getAmountInPot(gameAfter)).toBe(gameConfig.startingBlind * 1.5);
+        expect(gameAfter.betAmount).toBe(2 * gameConfig.startingSmallBlind);
+        expect(getAmountInPot(gameAfter)).toBe(3 * gameConfig.startingSmallBlind);
         expect(gameAfter.cardsOnTable).toHaveLength(0);
     });
 });
