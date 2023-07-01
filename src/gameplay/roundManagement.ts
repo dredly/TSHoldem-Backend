@@ -44,7 +44,7 @@ export const prepareForRound = (game: Game): Game => {
     return {
         ...game, 
         deck: shuffle(game.deck),
-        players: getBettingOrder(game.players)
+        players: getBettingOrder(game.players),
     };
 };
 
@@ -72,6 +72,7 @@ export const resetAfterRound = (game: Game): Game => {
         deck: makeDeckDefault(),
         cardsOnTable: [],
         players: switchRoles(game.players.map(p => ( { ...p, cards: [], moneyInPot: 0 } ))),
-        bettingInfo: undefined
+        bettingInfo: undefined,
+        round: game.round + 1
     };
 };

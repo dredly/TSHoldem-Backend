@@ -46,7 +46,8 @@ describe("leaveGame function", () => {
             turnToBet: "foo",
             cardsOnTable: [],
             betAmount: 0,
-            started: false
+            started: false,
+            round:0,
         };
         const updatedGame = leaveGame(game, players[2]);
         expect(updatedGame.players).toHaveLength(2);
@@ -60,7 +61,8 @@ describe("leaveGame function", () => {
             turnToBet: "foo",
             cardsOnTable: [],
             betAmount: 0,
-            started: false
+            started: false,
+            round: 0
         };
         const playerNotInGame = createPlayer("Outsider Joe");
         expect(() => { leaveGame(game, playerNotInGame); }).toThrowError("Tried to leave game but player not in it");

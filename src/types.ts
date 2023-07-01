@@ -45,6 +45,7 @@ export interface Game {
     cardsOnTable: Card[]
     betAmount: number,
     started: boolean,
+    round: number,
     bettingInfo?: BettingInfo
 }
 

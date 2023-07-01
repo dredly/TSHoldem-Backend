@@ -87,7 +87,9 @@
     - [ ] Increasing blinds
         - [x] Add config
         - [x] Switch to storing the small blind instead of the big blind so we dont need all that floor division stuff
-        - [ ] Make games keep track of which round they're on
+        - [x] Make games keep track of which round they're on
+            - [x] Add round field
+            - [x] Increment round field when round is over
         - [ ] Actually increment the blinds
 - [ ] Niceties
     - [ ] TestUtils to eliminate repetition with test data

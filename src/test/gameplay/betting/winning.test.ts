@@ -14,7 +14,8 @@ describe("winPot function", () => {
             cardsOnTable: [],
             turnToBet: "foo",
             betAmount: 0,
-            started: true
+            started: true,
+            round: 0
         };
         const updatedGame = winPot(game, [[player1], [player2]]);
         expect(updatedGame.players[0].money).toBe(700);
@@ -31,7 +32,8 @@ describe("winPot function", () => {
             cardsOnTable: [],
             turnToBet: "foo",
             betAmount: 0,
-            started: true
+            started: true,
+            round: 0
         };
         const updatedGame = winPot(game, [[player1, player2]]);
         expect(updatedGame.players[0].money).toBe(400);
@@ -50,7 +52,8 @@ describe("winPot function", () => {
             cardsOnTable: [],
             turnToBet: "foo",
             betAmount: 0,
-            started: true
+            started: true,
+            round: 0
         };
         const updatedGame = winPot(game, [[player2], [player1, player3]]);
         expect(updatedGame.players).toHaveLength(2);
@@ -70,7 +73,8 @@ describe("winPot function", () => {
             cardsOnTable: [],
             turnToBet: "foo",
             betAmount: 0,
-            started: true
+            started: true,
+            round: 0
         };
         const updatedGame = winPot(game, [[player1], [player2, player3]]);
         expect(updatedGame.players).toHaveLength(3);
@@ -88,7 +92,8 @@ describe("winPot function", () => {
             cardsOnTable: [],
             turnToBet: "foo",
             betAmount: 0,
-            started: true
+            started: true,
+            round: 0
         };
         const updatedGame = winPot(game, [[player1], [player2], [player3]]);
         expect(updatedGame.players[0].money).toBe(800);

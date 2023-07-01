@@ -130,5 +130,6 @@ describe("handleEndOfRound function", () => {
         expect(gameAfter.betAmount).toBe(2 * gameConfig.startingSmallBlind);
         expect(getAmountInPot(gameAfter)).toBe(3 * gameConfig.startingSmallBlind);
         expect(gameAfter.cardsOnTable).toHaveLength(0);
+        expect(gameAfter.round).toBe(1);
     });
 });

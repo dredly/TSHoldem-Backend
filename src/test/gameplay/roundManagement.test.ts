@@ -103,7 +103,8 @@ describe("getWinners function", () => {
             turnToBet: "foo",
             betAmount: 0,
             deck: [],
-            started: true
+            started: true,
+            round: 0
         };
 
         const winnerNames = getWinners(game).map(w => w.name);
@@ -163,7 +164,8 @@ describe("getWinners function", () => {
             turnToBet: "foo",
             deck: [],
             betAmount: 0,
-            started: true
+            started: true,
+            round: 0
         };
 
         const winnerNames = getWinners(game).map(w => w.name);
@@ -187,7 +189,8 @@ describe("prepareForRound function", () => {
                 {id: "3", name: "player3", role: "SMALL_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true },
                 {id: "4", name: "player4", role: "BIG_BLIND", cards: [], money: 42069, moneyInPot: 0, inPlay: true }
             ],
-            started: true
+            started: true,
+            round: 0
         };
         const preparedGame = prepareForRound(initialGame);
         expect(preparedGame.deck).not.toEqual(makeDeckDefault());
@@ -219,7 +222,8 @@ describe("blindsRound function", () => {
             ],
             turnToBet: "foo",
             betAmount: 0,
-            started: true
+            started: true,
+            round: 0
         };
         const updatedGame = blindsRound(game);
         expect(updatedGame.players.map(p => p.money)).toEqual([49, 48, 50]);
@@ -284,7 +288,8 @@ describe("resetAfterRound function", () => {
                 {id: "1", name: "player1", role: "SMALL_BLIND", cards: p1Cards, money: 50, moneyInPot: 0, inPlay: true },
                 {id: "2", name: "player2", role: "BIG_BLIND", cards: p2Cards, money: 90, moneyInPot: 0, inPlay: true },
             ],
-            started: true
+            started: true,
+            round: 0
         };
 
         const expectedResetGame: Game = {
@@ -298,6 +303,7 @@ describe("resetAfterRound function", () => {
                 {id: "2", name: "player2", role: "SMALL_BLIND", cards: [], money: 90, moneyInPot: 0, inPlay: true },
             ],
             started: true,
+            round: 1
         };
 
         const resetGame = resetAfterRound(game);
