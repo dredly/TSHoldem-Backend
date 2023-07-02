@@ -71,7 +71,7 @@
             - [x] End of round logic
             - [x] Make round end early if everyone but 1 player folds
     - [x] Handle end of round when it actually gets to the end
-- [ ] Advanced gameplay
+- [x] Advanced gameplay
     - [x] Elimination
     - [x] All ins (make sure they work)
         - [x] Code
