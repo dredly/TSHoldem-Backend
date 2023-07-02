@@ -1,7 +1,8 @@
 import shuffle from "lodash.shuffle";
 import { gameConfig } from "../gameConfig";
 import { Card, Game, Player } from "../types";
-import { getBettingOrder, updateGameWithBet } from "./betting";
+import { getBettingOrder } from "./betting/bettingUtils";
+import { updateGameWithBet } from "./betting/gameUpdates";
 import { makeDeckDefault } from "./cards/cardUtils";
 import { dealRound } from "./cards/dealing";
 import { compareHands } from "./cards/handComparison";
@@ -43,13 +44,13 @@ export const prepareForRound = (game: Game): Game => {
     return {
         ...game, 
         deck: shuffle(game.deck),
-        players: getBettingOrder(game.players)
+        players: getBettingOrder(game.players),
     };
 };
 
 export const blindsRound = (game: Game): Game => {
-    // for now dont worry about increasing the blinds
-    const [ smallBlindAmount, bigBlindAmount ] = [Math.floor(gameConfig.startingBlind * 0.5), gameConfig.startingBlind];
+    const smallBlindAmount = getSmallBlind(game.round);
+    const bigBlindAmount = 2 * smallBlindAmount;
     const gameAfterDealing = dealRound(game);
     // Assume the player are in order small blind, big blind, rest
     const gameAfterSmallBlind = updateGameWithBet(gameAfterDealing, gameAfterDealing.players[0], smallBlindAmount);
@@ -67,11 +68,18 @@ export const blindsRound = (game: Game): Game => {
 export const resetAfterRound = (game: Game): Game => {
     return {
         ...game,
-        pot: 0,
         betAmount: 0,
         deck: makeDeckDefault(),
         cardsOnTable: [],
         players: switchRoles(game.players.map(p => ( { ...p, cards: [], moneyInPot: 0 } ))),
-        bettingInfo: undefined
+        bettingInfo: undefined,
+        round: game.round + 1
     };
 };
+
+function getSmallBlind(round: number): number {
+    const lookupIdx = Math.min(
+        Math.floor(round / gameConfig.roundsPerBlindIncrease), gameConfig.smallBlinds.length - 1
+    );
+    return gameConfig.smallBlinds[lookupIdx];
+}

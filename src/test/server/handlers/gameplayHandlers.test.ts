@@ -1,6 +1,7 @@
 import WebSocket from "ws";
 import { gameConfig } from "../../../gameConfig";
 import { createPlayer, createGame } from "../../../gameManagement";
+import { getAmountInPot } from "../../../gameplay/betting/bettingUtils";
 import { handleBet, handleFold } from "../../../server/handlers/gamePlayHandlers";
 import * as internalHandlers from "../../../server/handlers/internalHandlers";
 import { Game, ApplicationState } from "../../../types";
@@ -29,7 +30,7 @@ describe("handleBet function", () => {
 
         handleBet({ bettingPlayerId: player1.id, amount: 38 }, state, mockPubSubInfo());
         expect(state.games[0].betAmount).toBe(38);
-        expect(state.games[0].pot).toBe(38);
+        expect(getAmountInPot(state.games[0])).toBe(38);
         expect(state.games[0].players[0].money).toBe(gameConfig.startingMoney - 38);
         expect(state.games[0].players[0].moneyInPot).toBe(38);
         expect(state.games[0].turnToBet).toBe(player2.id);

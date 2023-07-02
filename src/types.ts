@@ -43,9 +43,9 @@ export interface Game {
     turnToBet: string, // the id of the player currently betting
     deck: Card[],
     cardsOnTable: Card[]
-    pot: number,
     betAmount: number,
     started: boolean,
+    round: number,
     bettingInfo?: BettingInfo
 }
 
@@ -56,8 +56,9 @@ export interface ApplicationState {
 
 export interface GameConfig {
     startingMoney: number
-    startingBlind: number,
-    handRankings: Hand[]
+    handRankings: Hand[],
+    smallBlinds: number[],
+    roundsPerBlindIncrease: number
 }
 
 export interface CreatePlayerMessage {

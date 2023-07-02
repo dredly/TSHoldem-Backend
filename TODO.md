@@ -71,14 +71,33 @@
             - [x] End of round logic
             - [x] Make round end early if everyone but 1 player folds
     - [x] Handle end of round when it actually gets to the end
-- [ ] Advanced gameplay
-    - [ ] Increasing blinds
-    - [ ] Elimination
-    - [ ] All ins (maybe will be handled by proper betting)
+- [x] Advanced gameplay
+    - [x] Elimination
+    - [x] All ins (make sure they work)
+        - [x] Code
+        - [x] Test that players all have moneyInPot = 0 after winPot function is called
+        - [x] Fix new winPot function failing on folds
+        - [x] Specific test cases
+    - [x] Remove the property of pot on game since it is calculated from the sum of players money in the pot and therefore redundant
+        - [x] Remove
+        - [x] Fix broken tests (will also need to update frontend)
+    - [x] Break down betting file
+        - [x] Break down
+        - [x] Fix broken tests
+    - [x] Increasing blinds
+        - [x] Add config
+        - [x] Switch to storing the small blind instead of the big blind so we dont need all that floor division stuff
+        - [x] Make games keep track of which round they're on
+            - [x] Add round field
+            - [x] Increment round field when round is over
+        - [x] Actually increment the blinds
+            - [x] increment the blinds
+            - [x] New test cases
 - [ ] Niceties
     - [ ] TestUtils to eliminate repetition with test data
     - [ ] Properly separate out all server related functionality
     - [x] Eslint
     - [ ] Code coverage
 - [ ] Optimisations
+    - [ ] Clean up resources on disconnect, game end etc
     - [ ] Optimise order of hand checking, e.g. check for pairs before checking for 3s and 4s

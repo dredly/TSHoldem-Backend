@@ -56,9 +56,9 @@ describe("handleJoin function", () => {
                     deck: [],
                     turnToBet: host.id,
                     cardsOnTable: [],
-                    pot: 0,
                     betAmount: 0,
-                    started: false
+                    started: false,
+                    round: 0
                 }
             ]
         };
@@ -78,9 +78,9 @@ describe("handleJoin function", () => {
                     deck: [],
                     turnToBet: "foo",
                     cardsOnTable: [],
-                    pot: 0,
                     betAmount: 0,
-                    started: false
+                    started: false,
+                    round: 0
                 }
             ]
         };
@@ -98,9 +98,9 @@ describe("handleJoin function", () => {
                     deck: [],
                     turnToBet: "foo",
                     cardsOnTable: [],
-                    pot: 0,
                     betAmount: 0,
-                    started: false
+                    started: false,
+                    round: 0
                 }
             ]
         };

@@ -22,9 +22,9 @@ export const createGame = (player: Player): Game => {
         turnToBet: player.id,
         deck: makeDeckDefault(),
         cardsOnTable: [],
-        pot: 0,
         betAmount: 0,
-        started: false
+        started: false,
+        round: 0
     };
 };
 
