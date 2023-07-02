@@ -127,9 +127,45 @@ describe("handleEndOfRound function", () => {
         
         expect(winningPlayerTotalMoney).toBe(625);
         
-        expect(gameAfter.betAmount).toBe(2 * gameConfig.startingSmallBlind);
-        expect(getAmountInPot(gameAfter)).toBe(3 * gameConfig.startingSmallBlind);
+        expect(gameAfter.betAmount).toBe(2 * gameConfig.smallBlinds[0]);
+        expect(getAmountInPot(gameAfter)).toBe(3 * gameConfig.smallBlinds[0]);
         expect(gameAfter.cardsOnTable).toHaveLength(0);
         expect(gameAfter.round).toBe(1);
+    });
+
+    it("increases the blind according to gameConfig", () => {
+        const player1: Player = { ...createPlayer("Miguel"), role: "SMALL_BLIND" };
+        const player2: Player = { ...createPlayer("Jose"), role: "BIG_BLIND" };
+        const game: Game = {
+            ...createGame(player1),
+            players: [player1].concat(player2),
+            round: 3
+        };
+        const state: ApplicationState = {
+            players: [],
+            games: [game]
+        };
+
+        handleEndOfRound(game, state, mockPubSubInfo());
+        const gameAfter = state.games[0];
+        expect(getAmountInPot(gameAfter)).toBe(3 * gameConfig.smallBlinds[1]); 
+    });
+
+    it("works when the maximum blind amount has been reached", () => {
+        const player1: Player = { ...createPlayer("Miguel"), role: "SMALL_BLIND" };
+        const player2: Player = { ...createPlayer("Jose"), role: "BIG_BLIND" };
+        const game: Game = {
+            ...createGame(player1),
+            players: [player1].concat(player2),
+            round: 200
+        };
+        const state: ApplicationState = {
+            players: [],
+            games: [game]
+        };
+
+        handleEndOfRound(game, state, mockPubSubInfo());
+        const gameAfter = state.games[0];
+        expect(getAmountInPot(gameAfter)).toBe(3 * gameConfig.smallBlinds[gameConfig.smallBlinds.length - 1]); 
     });
 });

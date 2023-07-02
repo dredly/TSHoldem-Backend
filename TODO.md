@@ -84,13 +84,15 @@
     - [x] Break down betting file
         - [x] Break down
         - [x] Fix broken tests
-    - [ ] Increasing blinds
+    - [x] Increasing blinds
         - [x] Add config
         - [x] Switch to storing the small blind instead of the big blind so we dont need all that floor division stuff
         - [x] Make games keep track of which round they're on
             - [x] Add round field
             - [x] Increment round field when round is over
-        - [ ] Actually increment the blinds
+        - [x] Actually increment the blinds
+            - [x] increment the blinds
+            - [x] New test cases
 - [ ] Niceties
     - [ ] TestUtils to eliminate repetition with test data
     - [ ] Properly separate out all server related functionality

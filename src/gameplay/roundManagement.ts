@@ -49,8 +49,8 @@ export const prepareForRound = (game: Game): Game => {
 };
 
 export const blindsRound = (game: Game): Game => {
-    // for now dont worry about increasing the blinds
-    const [ smallBlindAmount, bigBlindAmount ] = [gameConfig.startingSmallBlind, gameConfig.startingSmallBlind * 2];
+    const smallBlindAmount = getSmallBlind(game.round);
+    const bigBlindAmount = 2 * smallBlindAmount;
     const gameAfterDealing = dealRound(game);
     // Assume the player are in order small blind, big blind, rest
     const gameAfterSmallBlind = updateGameWithBet(gameAfterDealing, gameAfterDealing.players[0], smallBlindAmount);
@@ -76,3 +76,10 @@ export const resetAfterRound = (game: Game): Game => {
         round: game.round + 1
     };
 };
+
+function getSmallBlind(round: number): number {
+    const lookupIdx = Math.min(
+        Math.floor(round / gameConfig.roundsPerBlindIncrease), gameConfig.smallBlinds.length - 1
+    );
+    return gameConfig.smallBlinds[lookupIdx];
+}
