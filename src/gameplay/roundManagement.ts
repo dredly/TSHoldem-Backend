@@ -7,6 +7,7 @@ import { makeDeckDefault } from "./cards/cardUtils";
 import { dealRound } from "./cards/dealing";
 import { compareHands } from "./cards/handComparison";
 import { allHandCheckers, findBestHand } from "./cards/handEvaluation";
+import { winPot } from "./betting/winning";
 
 export const switchRoles = (players: Player[]): Player[] => {
     return players
@@ -75,6 +76,16 @@ export const resetAfterRound = (game: Game): Game => {
         bettingInfo: undefined,
         round: game.round + 1
     };
+};
+
+export const updateGameWithEndOfRound = (game: Game): Game => {
+    const activePlayersByScore = groupPlayersByScore(game.players.filter(p => p.inPlay), game.cardsOnTable);
+    const gameUpdatedWithWinnings = winPot(game, activePlayersByScore);
+    return blindsRound(
+        prepareForRound(
+            resetAfterRound(gameUpdatedWithWinnings)
+        )
+    );
 };
 
 function getSmallBlind(round: number): number {

@@ -1,11 +1,10 @@
 import WebSocket from "ws";
-import { createPlayer, createGame, initialiseRoles } from "../../gameManagement";
+import { createPlayer, createGameFromPlayerId, startGame } from "../../gameManagement";
 import { blindsRound, prepareForRound } from "../../gameplay/roundManagement";
 import { CreatePlayerMessage, ApplicationState, CreateGameMessage, JoinGameMessage, StartGameMessage } from "../../types";
 import { publishServerMessage, publishToPlayers } from "../publishing";
 
 export const handlePlayerCreation = (message: CreatePlayerMessage, applicationState: ApplicationState, ws: WebSocket, pubSubInfo: Map<string, WebSocket>) => {
-    console.debug(`Creating player with name ${message.name}`);
     const player = createPlayer(message.name);
     applicationState.players = applicationState.players.concat(player);
     
@@ -14,12 +13,7 @@ export const handlePlayerCreation = (message: CreatePlayerMessage, applicationSt
 };
 
 export const handleGameCreation = (message: CreateGameMessage, applicationState: ApplicationState, ws: WebSocket) => {
-    console.debug(`Player with id ${message.creatorId} creating game`);
-    const player = applicationState.players.find(p => p.id === message.creatorId);
-    if (!player) {
-        throw new Error("player not found");
-    }
-    const game = createGame(player);
+    const game = createGameFromPlayerId(message.creatorId, applicationState);
     applicationState.players = applicationState.players.filter(p => p.id !== message.creatorId);
     applicationState.games = applicationState.games.concat(game);
     
@@ -56,11 +50,7 @@ export const handleStart = (message: StartGameMessage, applicationState: Applica
         throw new Error("game not found");
     }
 
-    const gameStarted = { 
-        ...game, 
-        players: initialiseRoles(game.players), 
-        started: true
-    };
+    const gameStarted = startGame(game);
 
     applicationState.games = applicationState.games
         .map(g => g.id === message.startingGameId ? gameStarted : g);

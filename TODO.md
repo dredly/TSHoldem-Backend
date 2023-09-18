@@ -93,9 +93,11 @@
         - [x] Actually increment the blinds
             - [x] increment the blinds
             - [x] New test cases
+- [ ] Server refactor
+    - [x] Slim down handlers as much as possible
+    - [ ] Proper websocket upgrade thingy
 - [ ] Niceties
     - [ ] TestUtils to eliminate repetition with test data
-    - [ ] Properly separate out all server related functionality
     - [x] Eslint
     - [ ] Code coverage
 - [ ] Optimisations

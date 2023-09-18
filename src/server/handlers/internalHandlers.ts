@@ -1,7 +1,6 @@
 import WebSocket from "ws";
-import { winPot } from "../../gameplay/betting/winning";
 import { revealCards } from "../../gameplay/cards/dealing";
-import { blindsRound, groupPlayersByScore, prepareForRound, resetAfterRound } from "../../gameplay/roundManagement";
+import { updateGameWithEndOfRound } from "../../gameplay/roundManagement";
 import { ApplicationState, Game } from "../../types";
 import { publishToPlayers } from "../publishing";
 
@@ -16,14 +15,7 @@ export const handleDealing = (game: Game, applicationState: ApplicationState, pu
 };
 
 export const handleEndOfRound = (game: Game, applicationState: ApplicationState, pubSubInfo: Map<string, WebSocket>) => {
-    const activePlayersByScore = groupPlayersByScore(game.players.filter(p => p.inPlay), game.cardsOnTable);
-    const gameUpdatedWithWinnings = winPot(game, activePlayersByScore);
-
-    const gameUpdated = blindsRound(
-        prepareForRound(
-            resetAfterRound(gameUpdatedWithWinnings)
-        )
-    );
+    const gameUpdated = updateGameWithEndOfRound(game);
 
     applicationState.games = applicationState.games
         .map(g => g.id === game.id ? gameUpdated : g);

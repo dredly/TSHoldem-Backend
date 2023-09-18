@@ -1,5 +1,5 @@
 import WebSocket from "ws";
-import { updateGameWithBet, updateGameWithNextBet, updateGameWithFold } from "../../gameplay/betting/gameUpdates";
+import { updateGameWithNextBet, updateGameWithBetFromPlayerId, updateGameWithFoldFromPlayerId } from "../../gameplay/betting/gameUpdates";
 import { BetMessage, ApplicationState, FoldMessage } from "../../types";
 import { publishToPlayers } from "../publishing";
 import { handleDealing, handleEndOfRound } from "./internalHandlers";
@@ -12,18 +12,7 @@ export const handleBet = (message: BetMessage, applicationState: ApplicationStat
         throw new Error("game with that player not found");
     }
 
-    const player = game.players.find(p => p.id === message.bettingPlayerId);
-    if (!player) {
-        throw new Error("player not found");
-    }
-
-    if (game.turnToBet !== player.id) {
-        throw new Error("player betting out of turn");
-    }
-
-    const gameUpdatedWithBet = updateGameWithBet(game, player, message.amount);
-
-    const gameUpdated = updateGameWithNextBet(gameUpdatedWithBet);
+    const gameUpdated = updateGameWithBetFromPlayerId(game, message.bettingPlayerId, message.amount);
 
     if (!gameUpdated.bettingInfo) {
         console.debug("ending round");
@@ -51,16 +40,7 @@ export const handleFold = (message: FoldMessage, applicationState: ApplicationSt
         throw new Error("game with that player not found");
     }
 
-    const player = game.players.find(p => p.id === message.foldingPlayerId);
-    if (!player) {
-        throw new Error("player not found");
-    }
-
-    if (game.turnToBet !== player.id) {
-        throw new Error("player betting out of turn");
-    }
-
-    const gameUpdatedWithFold = updateGameWithFold(game, player);
+    const gameUpdatedWithFold = updateGameWithFoldFromPlayerId(game, message.foldingPlayerId);
 
     // check if everyone has now folded except for one player
     if (gameUpdatedWithFold.players.filter(p => p.inPlay).length < 2) {

@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 import { gameConfig } from "./gameConfig";
 import { makeDeckDefault } from "./gameplay/cards/cardUtils";
-import { Game, Player } from "./types";
+import { ApplicationState, Game, Player } from "./types";
 
 export const createPlayer = (name: string): Player => {
     return {
@@ -35,6 +35,14 @@ export const joinGame = (game: Game, player: Player): Game => {
     };
 };
 
+export const startGame = (game: Game): Game => {
+    return {
+        ...game, 
+        players: initialiseRoles(game.players), 
+        started: true
+    };
+};
+
 export const leaveGame = (game: Game, player: Player): Game => {
     if (!game.players.find(p => p.id === player.id)) {
         throw new Error("Tried to leave game but player not in it");
@@ -57,4 +65,12 @@ export const initialiseRoles = (players: Player[]): Player[] => {
         if (idx === 2) return { ...p, role: "BIG_BLIND" };
         return p;
     });
+};
+
+export const createGameFromPlayerId = (playerId: string, applicationState: ApplicationState): Game => {
+    const player = applicationState.players.find(p => p.id === playerId);
+    if (!player) {
+        throw new Error("player not found");
+    }
+    return createGame(player);
 };

@@ -41,3 +41,15 @@ export const getAmountInPot = (game: Game): number => {
         .map(p => p.moneyInPot)
         .reduce((a, b) => a + b);
 };
+
+export const getBettingPlayer = (game: Game, playerId: string): Player => {
+    const player = game.players.find(p => p.id === playerId);
+    if (!player) {
+        throw new Error("player not found");
+    }
+
+    if (game.turnToBet !== player.id) {
+        throw new Error("player betting out of turn");
+    }
+    return player;
+};

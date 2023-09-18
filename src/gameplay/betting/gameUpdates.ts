@@ -1,5 +1,5 @@
 import { Game, Player, BettingInfo } from "../../types";
-import { betAmount, fold, nextPlayerToBet } from "./bettingUtils";
+import { betAmount, fold, getBettingPlayer, nextPlayerToBet } from "./bettingUtils";
 
 export const updateGameWithBet = (game: Game, player: Player, amount: number): Game => {
     const updatedPlayer = betAmount(player, amount);
@@ -72,4 +72,18 @@ export const updateGameWithNextBet = (game: Game): Game => {
         };
     }
     return { ...game, turnToBet: nextPlayerToBetId };
+};
+
+export const updateGameWithBetAndMoveOn = (game: Game, player: Player, amount: number): Game => {
+    return updateGameWithNextBet(updateGameWithBet(game, player,amount));
+};
+
+export const updateGameWithBetFromPlayerId = (game: Game, playerId: string, amount: number): Game => {
+    const player = getBettingPlayer(game, playerId);
+    return updateGameWithBetAndMoveOn(game, player, amount);
+};
+
+export const updateGameWithFoldFromPlayerId = (game: Game, playerId: string): Game => {
+    const player = getBettingPlayer(game, playerId);
+    return updateGameWithFold(game, player);
 };
